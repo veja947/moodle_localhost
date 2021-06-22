@@ -39,14 +39,24 @@ class block_testblock extends block_base {
             return $this->content;
         }
 
-        $usersHTML = '';
-        $users = $DB->get_records('user');
-        foreach ($users as $user) {
-            $usersHTML .= $user->firstname . ' ' . $user->lastname . '<br>';
+        // name is defined in settings.php line 5
+        $showCourses = get_config('block_testblock', 'showcourses');
+        $resultHTML = '';
+
+        if ($showCourses) {
+            $courses = $DB->get_records('course');
+            foreach ($courses as $course) {
+                $resultHTML .= $course->fullname . '<br>';
+            }
+        } else {
+            $users = $DB->get_records('user');
+            foreach ($users as $user) {
+                $resultHTML .= $user->firstname . ' ' . $user->lastname . '<br>';
+            }
         }
 
         $this->content = new stdClass;
-        $this->content->text = $usersHTML;
+        $this->content->text = $resultHTML;
         $this->content->footer = 'this is the footer';
 
         return $this->content;
