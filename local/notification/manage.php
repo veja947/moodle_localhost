@@ -20,3 +20,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
+require_once(__DIR__ . '/../../config.php'); // load config.php
+
+$PAGE->set_url(new moodle_url('/local/notification/manage.php'));
+
+$PAGE->set_context(\context_system::instance());
+
+$PAGE->set_title('Manage Notifications');
+
+$templateContext = (object)[
+  'title_content_diy' => 'I am the title',
+];
+
+echo $OUTPUT->render_from_template('local_notification/manage', $templateContext);
