@@ -33,4 +33,6 @@ $templateContext = (object)[
   'title_content_diy' => 'I am the title',
 ];
 
+echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_notification/manage', $templateContext);
+echo $OUTPUT->footer();

@@ -24,15 +24,34 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/notification/classes/form/editform.php');
 
+global $DB;
+
 $PAGE->set_url(new moodle_url('/local/notification/edit.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Edit Notification Form');
 
 
-echo $OUTPUT->header();
-
 // display the edit form
 $mform = new editform();
+
+
+if ($mform->is_cancelled()) {
+    // go back to manage.php page
+    redirect($CFG->wwwroot . '/local/notification/manage.php', 'You cancelled the notification form');
+} else if ($fromform = $mform->get_data()) {
+
+    // insert the data into the db table
+    $newnotification = new stdClass();
+    $newnotification->notificationtext = $fromform->notificationtext;
+    $newnotification->notificationtype = $fromform->notificationtype;
+
+    $DB->insert_record('local_notification', $newnotification);
+
+    // go back to manage.php page
+    redirect($CFG->wwwroot . '/local/notification/manage.php', 'You created a new notification: ' . $fromform->notificationtext);
+}
+
+echo $OUTPUT->header();
 
 $mform->display();
 
