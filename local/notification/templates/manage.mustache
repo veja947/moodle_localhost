@@ -1,1 +1,7 @@
-<h1>{{ title_content_diy }}</h1>
+<h1>List of Notifications</h1>
+
+{{#notification_list}}
+    <p>{{ notificationtext }}</p>
+{{/notification_list}}
+
+<input type="button" class="btn btn-primary" value="Create" onclick="location.href='{{edit_url}}'" />
