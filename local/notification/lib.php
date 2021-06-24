@@ -35,14 +35,14 @@ function local_notification_before_footer() {
 //    $notificationlist = $DB->get_record_sql($selectUnreadNotificationSql, $params);
     $notificationlist = $DB->get_records('local_notification');
 
-    foreach ($notificationlist as $notification) {
-        \core\notification::add($notification->notificationtext, $notification->notificationtype);
-
-        $readrecord = new stdClass();
-        $readrecord->notificationid = $notification->id;
-        $readrecord->userid = $USER->id;
-        $readrecord->timeread = time();
-
+//    foreach ($notificationlist as $notification) {
+//        \core\notification::add($notification->notificationtext, $notification->notificationtype);
+//
+//        $readrecord = new stdClass();
+//        $readrecord->notificationid = $notification->id;
+//        $readrecord->userid = $USER->id;
+//        $readrecord->timeread = time();
+//
 //        $DB->insert_record('local_notification_read', $readrecord);
-    }
+//    }
 }
