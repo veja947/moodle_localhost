@@ -39,12 +39,12 @@ class editform extends moodleform {
 
         // add notification type selector
         $options = array();
-        $options[0] = \core\output\notification::NOTIFY_SUCCESS;
-        $options[1] = \core\output\notification::NOTIFY_ERROR;
-        $options[2] = \core\output\notification::NOTIFY_INFO;
-        $options[3] = \core\output\notification::NOTIFY_WARNING;
+        $options[\core\output\notification::NOTIFY_SUCCESS] = \core\output\notification::NOTIFY_SUCCESS;
+        $options[\core\output\notification::NOTIFY_ERROR] = \core\output\notification::NOTIFY_ERROR;
+        $options[\core\output\notification::NOTIFY_INFO] = \core\output\notification::NOTIFY_INFO;
+        $options[\core\output\notification::NOTIFY_WARNING] = \core\output\notification::NOTIFY_WARNING;
         $mform->addElement('select', 'notificationtype', 'Notification Type', $options);
-        $mform->setDefault('notificationtype', '3');
+        $mform->setDefault('notificationtype', \core\output\notification::NOTIFY_INFO);
 
 
         // add submit and cancel button

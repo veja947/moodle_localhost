@@ -21,5 +21,28 @@
  */
 
 function local_notification_before_footer() {
-    \core\notification::add('the test message notification', \core\output\notification::NOTIFY_SUCCESS);
+    global $DB, $USER;
+
+//    $selectUnreadNotificationSql = "SELECT ln.id AS id, ln.notificationtext AS text, ln.notificationtype AS type
+//                    FROM {local_notification} ln
+//                    LEFT JOIN {local_notification_read} lnr ON ln.id = lnr.notificationid
+//                    WHERE  lnr.userid <> :userid";
+//
+//    $params = [
+//        'userid' => $USER->id,
+//    ];
+//
+//    $notificationlist = $DB->get_record_sql($selectUnreadNotificationSql, $params);
+    $notificationlist = $DB->get_records('local_notification');
+
+    foreach ($notificationlist as $notification) {
+        \core\notification::add($notification->notificationtext, $notification->notificationtype);
+
+        $readrecord = new stdClass();
+        $readrecord->notificationid = $notification->id;
+        $readrecord->userid = $USER->id;
+        $readrecord->timeread = time();
+
+//        $DB->insert_record('local_notification_read', $readrecord);
+    }
 }
