@@ -22,5 +22,5 @@
  */
 
 function local_acccount_before_footer() {
-    \core\notification::add('the test 4 acccount', \core\output\notification::NOTIFY_SUCCESS);
+//    \core\notification::add('the test 4 acccount', \core\output\notification::NOTIFY_SUCCESS);
 }

@@ -22,15 +22,17 @@
  */
 
 require_once(__DIR__ . '/../../config.php'); // load config.php
+global $DB;
 
 $PAGE->set_url(new moodle_url('/local/acccount/manage.php'));
-
 $PAGE->set_context(\context_system::instance());
-
 $PAGE->set_title('Manage Acccounts');
 
+$acccountsList = $DB->get_records('local_acccount');
+
 $templateContext = (object)[
-    'title_content_diy' => 'I am the acccount title',
+    'acccount_list' => array_values($acccountsList),
+    'edit_url' => new moodle_url('/local/acccount/edit.php'),
 ];
 
 echo $OUTPUT->header();
