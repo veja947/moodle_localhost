@@ -24,17 +24,38 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/acccount/classes/form/edit.php');
 
+global $DB;
+
 $PAGE->set_url(new moodle_url('/local/acccount/edit.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Edit Acccount Form');
 
 
-echo $OUTPUT->header();
-
 // display the edit form
 $mform = new edit();
+if ($mform->is_cancelled()) {
+    // go back to manage.php page
+    redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You cancelled the acccount edit form');
+} else if ($fromform = $mform->get_data()) {
 
+    // insert the data into the db table
+    $newAcccount = new stdClass();
+    $newAcccount->name = $fromform->acccountname;
+    $newAcccount->sitename = $fromform->acccountsitename;
+    $newAcccount->siteshortname = $fromform->acccountsiteshortname;
+    $newAcccount->timecreated = time();
+    $newAcccount->timemodified = time();
+    $DB->insert_record('local_acccount', $newAcccount);
+
+    // go back to manage.php page
+    redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->acccountname);
+}
+
+
+
+
+
+echo $OUTPUT->header();
 $mform->display();
-
 echo $OUTPUT->footer();
 
