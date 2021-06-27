@@ -1,5 +1,13 @@
 <h1>List of Acccounts</h1>
 
-{{#acccount_list}}
-    <p>{{ name }}</p>
-{{/acccount_list}}
+<div>
+    <input type="button" class="btn btn-primary" value="Create" onclick="location.href='{{edit_url}}'"
+</div>
+
+<div>
+    {{#acccount_list}}
+        <div class="list-inline-item">
+            <a href="{{edit_url}}?acccountid={{id}}">{{name}}</a>
+        </div>
+    {{/acccount_list}}
+</div>

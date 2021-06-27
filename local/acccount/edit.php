@@ -30,9 +30,25 @@ $PAGE->set_url(new moodle_url('/local/acccount/edit.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Edit Acccount Form');
 
-
 // display the edit form
 $mform = new edit();
+
+$acccountId = $_GET['acccountid'];
+
+if ($acccountId) {
+    $acccount = $DB->get_record('local_acccount',['id' => $acccountId]);
+    $formData = (object)array(
+        'acccountname' => $acccount->name,
+        'acccountsitename' => $acccount->sitename,
+        'acccountsiteshortname' => $acccount->siteshortname,
+    );
+
+    $mform->set_data($formData);
+}
+
+
+
+
 if ($mform->is_cancelled()) {
     // go back to manage.php page
     redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You cancelled the acccount edit form');
