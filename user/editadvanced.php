@@ -217,6 +217,9 @@ if ($userform->is_cancelled()) {
         }
         user_update_user($usernew, false, false);
 
+        // new: update acccount-user table
+        user_update_acccount($usernew);
+
         // Set new password if specified.
         if (!empty($usernew->newpassword)) {
             if ($authplugin->can_change_password()) {

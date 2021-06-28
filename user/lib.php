@@ -1378,3 +1378,14 @@ function user_edit_map_field_purpose($userid, $fieldname) {
     return $purpose;
 }
 
+function user_update_acccount($usernew) {
+    global $DB;
+    // insert the data into the db table
+    $newUserAcccount = new stdClass();
+    $newUserAcccount->acccountid = $usernew->acccount;
+    $newUserAcccount->userid = $usernew->id;
+    $newUserAcccount->timecreated = time();
+    $newUserAcccount->timemodified = time();
+    $DB->insert_record('local_acccount_user', $newUserAcccount);
+}
+
