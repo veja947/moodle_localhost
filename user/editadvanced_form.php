@@ -106,6 +106,9 @@ class user_editadvanced_form extends moodleform {
             $mform->disabledIf('username', 'auth', 'in', $cannotchangeusername);
         }
 
+        // new: add Acccount Selector
+        useredit_get_acccount_fields($mform);
+
         $mform->addElement('selectgroups', 'auth', get_string('chooseauthmethod', 'auth'), $authoptions);
         $mform->addHelpButton('auth', 'chooseauthmethod', 'auth');
 

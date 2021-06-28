@@ -495,3 +495,14 @@ function useredit_get_disabled_name_fields($enabledadditionalusernames = null) {
     }
     return $result;
 }
+
+function useredit_get_acccount_fields($mform) {
+    global $DB;
+
+    $acccountsList = $DB->get_records('local_acccount');
+    $choices = [];
+    foreach ($acccountsList as $a) {
+        $choices[$a->id] = $a->name;
+    }
+    $mform->addElement('select', 'acccount', get_string('chooseacccount'), $choices);
+}
