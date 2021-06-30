@@ -1378,14 +1378,26 @@ function user_edit_map_field_purpose($userid, $fieldname) {
     return $purpose;
 }
 
-function user_update_acccount($usernew) {
+function user_update_acccount($user) {
     global $DB;
-    // insert the data into the db table
-    $newUserAcccount = new stdClass();
-    $newUserAcccount->acccountid = $usernew->acccount;
-    $newUserAcccount->userid = $usernew->id;
-    $newUserAcccount->timecreated = time();
-    $newUserAcccount->timemodified = time();
-    $DB->insert_record('local_acccount_user', $newUserAcccount);
+    if (!is_object($user)) {
+        $user = (object) $user;
+    }
+
+    // check update or create
+    $acccount = $DB->get_record('local_acccount_user', ['userid' => $user->id]);
+    if ($acccount) {
+        // update current data
+        $acccount->acccountid = $user->acccount;
+        $DB->update_record('local_acccount_user', $acccount);
+    } else {
+        // insert new data into the db table
+        $newUserAcccount = new stdClass();
+        $newUserAcccount->acccountid = $user->acccount;
+        $newUserAcccount->userid = $user->id;
+        $newUserAcccount->timecreated = time();
+        $newUserAcccount->timemodified = time();
+        $DB->insert_record('local_acccount_user', $newUserAcccount);
+    }
 }
 

@@ -107,7 +107,10 @@ class user_editadvanced_form extends moodleform {
         }
 
         // new: add Acccount Selector
-        useredit_get_acccount_fields($mform);
+        useredit_get_acccount_fields($mform, $user);
+
+        // new: set Acccount Selector value
+        useredit_set_acccount_fields($user);
 
         $mform->addElement('selectgroups', 'auth', get_string('chooseauthmethod', 'auth'), $authoptions);
         $mform->addHelpButton('auth', 'chooseauthmethod', 'auth');
