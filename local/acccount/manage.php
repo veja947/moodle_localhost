@@ -22,6 +22,8 @@
  */
 
 require_once(__DIR__ . '/../../config.php'); // load config.php
+require_once($CFG->libdir.'/adminlib.php');
+admin_externalpage_setup('acccountslist');
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/acccount/manage.php'));
