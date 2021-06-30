@@ -1390,14 +1390,15 @@ function user_update_acccount($user) {
         // update current data
         $acccount->acccountid = $user->acccount;
         $DB->update_record('local_acccount_user', $acccount);
-    } else {
-        // insert new data into the db table
-        $newUserAcccount = new stdClass();
-        $newUserAcccount->acccountid = $user->acccount;
-        $newUserAcccount->userid = $user->id;
-        $newUserAcccount->timecreated = time();
-        $newUserAcccount->timemodified = time();
-        $DB->insert_record('local_acccount_user', $newUserAcccount);
+        return;
     }
+
+    // insert new data into the db table
+    $newUserAcccount = new stdClass();
+    $newUserAcccount->acccountid = $user->acccount;
+    $newUserAcccount->userid = $user->id;
+    $newUserAcccount->timecreated = time();
+    $newUserAcccount->timemodified = time();
+    $DB->insert_record('local_acccount_user', $newUserAcccount);
 }
 
