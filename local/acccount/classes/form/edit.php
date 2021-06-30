@@ -29,9 +29,11 @@ class edit extends moodleform {
     {
         global $CFG;
 
-
-        $data    = $this->_customdata['data'];
         $mform = $this->_form;
+
+        // 0. acccount id
+        $mform->addElement('hidden', 'acccoundid');
+        $mform->setType('acccoundid', PARAM_INT);
 
         // 1. acccount name
         $mform->addElement('text', 'acccountname', 'Acccount Name');
