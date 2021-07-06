@@ -23,12 +23,18 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/acccount/classes/form/edit.php');
+require_once($CFG->libdir . '/adminlib.php');
+
+$pagetitle = 'Edit Acccount Form';
 
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/acccount/edit.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Edit Acccount Form');
+$PAGE->set_title($pagetitle);
+$PAGE->set_pagelayout('admin');
+$PAGE->set_pagetype('admin-local-acccount-edit');
+
 
 // display the edit form
 $mform = new edit();
@@ -78,8 +84,9 @@ if ($mform->is_cancelled()) {
 }
 
 
-
 echo $OUTPUT->header();
+echo $OUTPUT->heading($pagetitle);
+// TODO: fix $PAGE navbar missing
 $mform->display();
 echo $OUTPUT->footer();
 

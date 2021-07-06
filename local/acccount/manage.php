@@ -26,6 +26,8 @@ require_once($CFG->libdir.'/adminlib.php');
 admin_externalpage_setup('acccountslist');
 global $DB;
 
+$test = $PAGE->navbar->get_content();
+echo $test;
 $PAGE->set_url(new moodle_url('/local/acccount/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Acccounts');
