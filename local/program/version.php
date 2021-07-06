@@ -15,28 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Version details
  *
- * @package    local_acccount
+ * @package    local_program
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php'); // load config.php
-require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('acccountslist');
-global $DB;
+defined('MOODLE_INTERNAL') || die();
 
-$PAGE->set_url(new moodle_url('/local/acccount/manage.php'));
-$PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Manage Acccounts');
-
-$acccountsList = $DB->get_records('local_acccount');
-
-$templateContext = (object)[
-    'acccount_list' => array_values($acccountsList),
-    'edit_url' => new moodle_url('/local/acccount/edit.php'),
-];
-
-echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_acccount/manage', $templateContext);
-echo $OUTPUT->footer();
+$plugin->version   = 2021051700;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2021051100;        // Requires this Moodle version.
+$plugin->component = 'local_program';      // Full name of the plugin (used for diagnostics)

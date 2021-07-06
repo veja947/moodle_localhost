@@ -16,27 +16,11 @@
 
 /**
  *
- * @package    local_acccount
+ * @package    local_program
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php'); // load config.php
-require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('acccountslist');
-global $DB;
-
-$PAGE->set_url(new moodle_url('/local/acccount/manage.php'));
-$PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Manage Acccounts');
-
-$acccountsList = $DB->get_records('local_acccount');
-
-$templateContext = (object)[
-    'acccount_list' => array_values($acccountsList),
-    'edit_url' => new moodle_url('/local/acccount/edit.php'),
-];
-
-echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_acccount/manage', $templateContext);
-echo $OUTPUT->footer();
+function local_program_before_footer() {
+    \core\notification::add('the test 4 program', \core\output\notification::NOTIFY_SUCCESS);
+}

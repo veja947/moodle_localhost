@@ -16,27 +16,25 @@
 
 /**
  *
- * @package    local_acccount
+ * @package    local_program
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../config.php'); // load config.php
 require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('acccountslist');
 global $DB;
 
-$PAGE->set_url(new moodle_url('/local/acccount/manage.php'));
-$PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Manage Acccounts');
+$PAGE->set_url(new moodle_url('/local/program/manage.php'));
 
-$acccountsList = $DB->get_records('local_acccount');
+$PAGE->set_context(\context_system::instance());
+
+$PAGE->set_title('Manage Programs');
 
 $templateContext = (object)[
-    'acccount_list' => array_values($acccountsList),
-    'edit_url' => new moodle_url('/local/acccount/edit.php'),
+    'title_content_diy' => 'I am the program title',
 ];
 
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_acccount/manage', $templateContext);
+echo $OUTPUT->render_from_template('local_program/manage', $templateContext);
 echo $OUTPUT->footer();
