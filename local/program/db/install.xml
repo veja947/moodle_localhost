@@ -32,5 +32,22 @@
         <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
+    <TABLE NAME="local_program_accccount" COMMENT="acccount allocation to programs">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Program"/>
+        <FIELD NAME="acccountid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="local_program" REFFIELDS="id"/>
+        <KEY NAME="acccountid" TYPE="foreign" FIELDS="acccountid" REFTABLE="local_acccount" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="acccountidunique" UNIQUE="true" FIELDS="acccountid"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>

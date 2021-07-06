@@ -20,19 +20,21 @@
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__ . '/../../config.php'); // load config.php
 
-function local_program_before_footer() {
-//    \core\notification::add('the test 4 program', \core\output\notification::NOTIFY_SUCCESS);
-}
+require_once(__DIR__ . '/../../config.php');
+require_once($CFG->dirroot . '/local/program/classes/form/edit.php');
 
-/**
- * Returns an array of courses
- *
- * @return array of mappings
- */
-function program_get_courses() {
-    global $DB;
-    $courses = $DB->get_records_menu('course', null, '', 'id,fullname');
-    return $courses ?? [];
-}
+$PAGE->set_url(new moodle_url('/local/program/edit.php'));
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title('Edit Program Form');
+
+
+echo $OUTPUT->header();
+
+// display the edit form
+$mform = new edit();
+
+$mform->display();
+
+echo $OUTPUT->footer();
+
