@@ -45,11 +45,16 @@ class edit extends moodleform {
         $mform->setType('programshortname', PARAM_NOTAGS);
         $mform->setDefault('programshortname', '');
 
-        // 3. courses list
-        $select = $mform->addElement('select', 'coursesinprogram', 'Courses In Program', program_get_courses());
+        // 3. acccount selector
+        $mform->addElement('select', 'programacccount', 'Program Acccount', program_get_acccounts());
+        $mform->setType('programacccount', PARAM_NOTAGS);
+        $mform->setDefault('programacccount', '');
+
+        // 4. courses list
+        $select = $mform->addElement('select', 'programcourses', 'Courses In Program', program_get_courses());
         $select->setMultiple(true);
-        $mform->setType('coursesinprogram', PARAM_NOTAGS);
-        $mform->setDefault('coursesinprogram', '');
+        $mform->setType('programcourses', PARAM_NOTAGS);
+        $mform->setDefault('programcourses', '');
 
         // add submit and cancel button
         $this->add_action_buttons();

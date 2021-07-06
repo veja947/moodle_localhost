@@ -29,12 +29,28 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Edit Program Form');
 
 
-echo $OUTPUT->header();
-
-// display the edit form
 $mform = new edit();
+if ($mform->is_cancelled()) {
+    // go back to manage.php page
+    redirect($CFG->wwwroot . '/local/program/manage.php', 'You cancelled the program edit form');
+} else if ($fromform = $mform->get_data()) {
 
+    // insert the data into the program table
+    $newProgram = new stdClass();
+    $newProgram->name = $fromform->programname;
+    $newProgram->shortname = $fromform->programshortname;
+    $newProgram->timecreated = time();
+    $newProgram->timemodified = time();
+    $DB->insert_record('local_program', $newProgram);
+
+
+
+    // go back to manage.php page
+    redirect($CFG->wwwroot . '/local/program/manage.php', 'You created a new Program: ' . $fromform->programname);
+}
+
+
+echo $OUTPUT->header();
 $mform->display();
-
 echo $OUTPUT->footer();
 

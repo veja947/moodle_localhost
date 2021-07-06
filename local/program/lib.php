@@ -33,6 +33,15 @@ function local_program_before_footer() {
  */
 function program_get_courses() {
     global $DB;
-    $courses = $DB->get_records_menu('course', null, '', 'id,fullname');
-    return $courses ?? [];
+    return $DB->get_records_menu('course', null, '', 'id,fullname') ?? [];
+}
+
+/**
+ * Returns an array of acccounts
+ *
+ * @return array of mappings
+ */
+function program_get_acccounts() {
+    global $DB;
+    return $DB->get_records_menu('local_acccount', null, '', 'id,name') ?? [];
 }
