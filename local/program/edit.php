@@ -41,9 +41,25 @@ if ($mform->is_cancelled()) {
     $newProgram->shortname = $fromform->programshortname;
     $newProgram->timecreated = time();
     $newProgram->timemodified = time();
-    $DB->insert_record('local_program', $newProgram);
+    $programid = $DB->insert_record('local_program', $newProgram);
 
+    // insert the courses into program-course table
+    foreach ($fromform->programcourses as $id) {
+        $object = new stdClass();
+        $object->programid = $programid;
+        $object->courseid = $id;
+        $object->timecreated = time();
+        $object->timemodified = time();
+        $DB->insert_record('local_program_course', $object);
+    }
 
+    // insert the data into program-acccount table
+    $newObject = new stdClass();
+    $newObject->programid = $programid;
+    $newObject->acccountid = $fromform->programacccount;
+    $newObject->timecreated = time();
+    $newObject->timemodified = time();
+    $DB->insert_record('local_program_acccount', $newObject);
 
     // go back to manage.php page
     redirect($CFG->wwwroot . '/local/program/manage.php', 'You created a new Program: ' . $fromform->programname);

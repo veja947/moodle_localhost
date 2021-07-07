@@ -32,7 +32,7 @@
         <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="local_program_accccount" COMMENT="acccount allocation to programs">
+    <TABLE NAME="local_program_acccount" COMMENT="acccount allocation to programs">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Program"/>
