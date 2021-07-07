@@ -57,6 +57,29 @@
 
     require_login($course);
 
+
+
+
+    //TODO: new -- check $USER has the permission to access the course or not
+    $user_acccount_id = $DB->get_record('local_acccount_user', ['userid' => $USER->id], 'acccountid')->acccountid;
+    $sql = 'select courseid from {local_program_course} lpc
+            where lpc.programid in (select programid from {local_program_acccount} lpa
+            where acccountid = :acccountid) and courseid = :courseid limit 1';
+    $eligble_course = $DB->get_records_sql($sql,
+        [
+            'acccountid' => $user_acccount_id,
+            'courseid' => $id,
+        ]);
+    // if $eligble_course length is 0, then this course is not allowed to access
+    if (!$eligble_course) {
+        \core\notification::add('You cannot access this course based on the acccount you choose.', \core\output\notification::NOTIFY_ERROR);
+
+    }
+
+
+
+
+
     // Switchrole - sanity check in cost-order...
     $reset_user_allowed_editing = false;
     if ($switchrole > 0 && confirm_sesskey() &&
