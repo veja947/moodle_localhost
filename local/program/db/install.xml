@@ -62,7 +62,7 @@
         <KEY NAME="acccountid" TYPE="foreign" FIELDS="acccountid" REFTABLE="local_acccount" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="programidunique" UNIQUE="true" FIELDS="programid"/>
+<!--        <INDEX NAME="programidunique" UNIQUE="true" FIELDS="programid"/>-->
       </INDEXES>
     </TABLE>
   </TABLES>

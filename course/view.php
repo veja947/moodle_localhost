@@ -73,7 +73,7 @@
     // if $eligble_course length is 0, then this course is not allowed to access
     if (!$eligble_course) {
         \core\notification::add('You cannot access this course based on the acccount you choose.', \core\output\notification::NOTIFY_ERROR);
-
+        redirect($CFG->wwwroot .'/');
     }
 
 
