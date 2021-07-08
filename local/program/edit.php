@@ -30,6 +30,25 @@ $PAGE->set_title('Edit Program Form');
 
 
 $mform = new edit();
+
+$programId = $_GET['programid'];
+if ($programId) {
+    $programWithAcccount = $DB->get_record_sql('
+        SELECT * FROM mdl_local_program lp
+        LEFT JOIN mdl_local_program_acccount lpc ON lp.id = lpc.programid
+        WHERE lp.id = :programid
+    ', ['programid' => $programId]);
+    $formData = (object)array(
+        'programname' => $programWithAcccount->name,
+        'programshortname' => $programWithAcccount->shortname,
+        'programacccount' => $programWithAcccount->acccountid,
+        'programcourses' => [2,3],
+    );
+
+    $mform->set_data($formData);
+}
+
+
 if ($mform->is_cancelled()) {
     // go back to manage.php page
     redirect($CFG->wwwroot . '/local/program/manage.php', 'You cancelled the program edit form');

@@ -26,13 +26,14 @@ require_once($CFG->libdir.'/adminlib.php');
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/program/manage.php'));
-
 $PAGE->set_context(\context_system::instance());
-
 $PAGE->set_title('Manage Programs');
 
+$programsList = $DB->get_records('local_program');
+
 $templateContext = (object)[
-    'title_content_diy' => 'I am the program title',
+    'programs_list' => array_values($programsList),
+    'edit_url' => new moodle_url('/local/program/edit.php'),
 ];
 
 echo $OUTPUT->header();
