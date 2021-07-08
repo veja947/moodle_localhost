@@ -29,7 +29,6 @@ class edit extends moodleform {
     {
         global $CFG;
 
-        $data = $this->_customdata['data'];
         $mform = $this->_form;
 
         // 0. acccount id

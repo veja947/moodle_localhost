@@ -31,7 +31,7 @@ $PAGE->set_title('Edit Program Form');
 
 $mform = new edit();
 
-$programId = $_GET['programid'];
+$programId = $_GET['programid'] ?? null;
 if ($programId) {
     $programWithAcccount = $DB->get_record_sql('
         SELECT * FROM mdl_local_program lp
