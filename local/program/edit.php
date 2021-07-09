@@ -34,15 +34,15 @@ $programId = $_GET['programid'] ?? null;
 if ($programId) {
     // set program info and acccount info
     $programWithAcccount = $DB->get_record_sql('
-        SELECT * FROM mdl_local_program lp
-        LEFT JOIN mdl_local_program_acccount lpc ON lp.id = lpc.programid
+        SELECT * FROM {local_program} lp
+        LEFT JOIN {local_program_acccount} lpc ON lp.id = lpc.programid
         WHERE lp.id = :programid
     ', ['programid' => $programId]);
 
     // set courses info
     $programWithCourses = $DB->get_records_sql('
-        SELECT courseid FROM mdl_local_program lp
-        LEFT JOIN mdl_local_program_course lpc ON lp.id = lpc.programid
+        SELECT courseid FROM {local_program} lp
+        LEFT JOIN {local_program_course} lpc ON lp.id = lpc.programid
         WHERE lp.id = :programid
     ', ['programid' => $programId]);
     $courseIdArray = [];
