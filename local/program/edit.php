@@ -28,21 +28,33 @@ $PAGE->set_url(new moodle_url('/local/program/edit.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Edit Program Form');
 
-
 $mform = new edit();
 
 $programId = $_GET['programid'] ?? null;
 if ($programId) {
+    // set program info and acccount info
     $programWithAcccount = $DB->get_record_sql('
         SELECT * FROM mdl_local_program lp
         LEFT JOIN mdl_local_program_acccount lpc ON lp.id = lpc.programid
         WHERE lp.id = :programid
     ', ['programid' => $programId]);
+
+    // set courses info
+    $programWithCourses = $DB->get_records_sql('
+        SELECT courseid FROM mdl_local_program lp
+        LEFT JOIN mdl_local_program_course lpc ON lp.id = lpc.programid
+        WHERE lp.id = :programid
+    ', ['programid' => $programId]);
+    $courseIdArray = [];
+    foreach ($programWithCourses as $course) {
+        array_push($courseIdArray, $course->courseid);
+    }
+
     $formData = (object)array(
         'programname' => $programWithAcccount->name,
         'programshortname' => $programWithAcccount->shortname,
         'programacccount' => $programWithAcccount->acccountid,
-        'programcourses' => [2,3],
+        'programcourses' => $courseIdArray,
     );
 
     $mform->set_data($formData);
