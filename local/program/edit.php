@@ -51,6 +51,7 @@ if ($programId) {
     }
 
     $formData = (object)array(
+        'programid' => $programId,
         'programname' => $programWithAcccount->name,
         'programshortname' => $programWithAcccount->shortname,
         'programacccount' => $programWithAcccount->acccountid,
@@ -66,31 +67,35 @@ if ($mform->is_cancelled()) {
     redirect($CFG->wwwroot . '/local/program/manage.php', 'You cancelled the program edit form');
 } else if ($fromform = $mform->get_data()) {
 
-    // insert the data into the program table
-    $newProgram = new stdClass();
-    $newProgram->name = $fromform->programname;
-    $newProgram->shortname = $fromform->programshortname;
-    $newProgram->timecreated = time();
-    $newProgram->timemodified = time();
-    $programid = $DB->insert_record('local_program', $newProgram);
+    if ($pid = $fromform->programid) {
+        // TODO: update current program
+    } else {
+        // insert the data into the program table
+        $newProgram = new stdClass();
+        $newProgram->name = $fromform->programname;
+        $newProgram->shortname = $fromform->programshortname;
+        $newProgram->timecreated = time();
+        $newProgram->timemodified = time();
+        $programid = $DB->insert_record('local_program', $newProgram);
 
-    // insert the courses into program-course table
-    foreach ($fromform->programcourses as $id) {
-        $object = new stdClass();
-        $object->programid = $programid;
-        $object->courseid = $id;
-        $object->timecreated = time();
-        $object->timemodified = time();
-        $DB->insert_record('local_program_course', $object);
+        // insert the courses into program-course table
+        foreach ($fromform->programcourses as $id) {
+            $object = new stdClass();
+            $object->programid = $programid;
+            $object->courseid = $id;
+            $object->timecreated = time();
+            $object->timemodified = time();
+            $DB->insert_record('local_program_course', $object);
+        }
+
+        // insert the data into program-acccount table
+        $newObject = new stdClass();
+        $newObject->programid = $programid;
+        $newObject->acccountid = $fromform->programacccount;
+        $newObject->timecreated = time();
+        $newObject->timemodified = time();
+        $DB->insert_record('local_program_acccount', $newObject);
     }
-
-    // insert the data into program-acccount table
-    $newObject = new stdClass();
-    $newObject->programid = $programid;
-    $newObject->acccountid = $fromform->programacccount;
-    $newObject->timecreated = time();
-    $newObject->timemodified = time();
-    $DB->insert_record('local_program_acccount', $newObject);
 
     // go back to manage.php page
     redirect($CFG->wwwroot . '/local/program/manage.php', 'You created a new Program: ' . $fromform->programname);
