@@ -89,4 +89,12 @@ class manager
         \cache::make('local_tenant', 'mytenant')->purge();
         \cache::make('local_tenant', 'tenants')->purge();
     }
+
+    /**
+     * Base URL to view tenants list
+     * @return \moodle_url
+     */
+    public static function get_base_url() : \moodle_url {
+        return new \moodle_url('/local/tenant/index.php');
+    }
 }
