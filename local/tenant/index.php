@@ -17,7 +17,7 @@
 /**
  * Version details
  *
- * @package    local_acccount
+ * @package    local_tenant
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

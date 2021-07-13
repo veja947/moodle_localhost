@@ -48,6 +48,7 @@ if ($acccountId) {
         'acccountname' => $acccount->name,
         'acccountsitename' => $acccount->sitename,
         'acccountsiteshortname' => $acccount->siteshortname,
+        'acccountidnumber' => $acccount->idnumber,
     );
 
     $mform->set_data($formData);
@@ -67,6 +68,7 @@ if ($mform->is_cancelled()) {
         $acccount->name = $fromform->acccountname;
         $acccount->sitename = $fromform->acccountsitename;
         $acccount->siteshortname = $fromform->acccountsiteshortname;
+        $acccount->idnumber = $fromform->acccountidnumber;
         $acccount->timemodified = time();
         $DB->update_record('local_acccount', $acccount);
     } else {
@@ -75,6 +77,7 @@ if ($mform->is_cancelled()) {
         $newAcccount->name = $fromform->acccountname;
         $newAcccount->sitename = $fromform->acccountsitename;
         $newAcccount->siteshortname = $fromform->acccountsiteshortname;
+        $newAcccount->idnumber = $fromform->acccountidnumber;
         $newAcccount->timecreated = time();
         $newAcccount->timemodified = time();
         $DB->insert_record('local_acccount', $newAcccount);
