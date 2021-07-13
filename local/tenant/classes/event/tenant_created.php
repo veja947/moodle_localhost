@@ -26,6 +26,7 @@ namespace local_tenant\event;
 
 use core\event\base;
 use local_tenant\tenant;
+use local_tenant\manager;
 
 defined('MOODLE_INTERNAL') || die();
 

@@ -29,6 +29,14 @@ $PAGE->set_url(new moodle_url('/local/program/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Programs');
 
+
+//$webServiceManager = new webservice();
+//$service = $webServiceManager->get_external_service_by_shortname('local_acccount_test');
+//$service->enabled = true;
+//$webServiceManager->update_external_service($service);
+
+
+
 $programsList = $DB->get_records('local_program');
 
 $templateContext = (object)[
