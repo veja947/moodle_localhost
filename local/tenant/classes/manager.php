@@ -49,7 +49,7 @@ class manager
             if (empty($tenants)) {
                 // Create default tenant.
                 $tenant = $this->create_tenant((object)[
-                    'name' => get_string('defaultname', 'local_tenant'),
+                    'name' => 'Default tenant',
                     'isdefault' => 1]);
                 $tenants[$tenant->get('id')] = $tenant;
             }
