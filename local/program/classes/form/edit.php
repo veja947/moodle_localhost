@@ -40,17 +40,22 @@ class edit extends moodleform {
         $mform->setType('programname', PARAM_NOTAGS);
         $mform->setDefault('programname', '');
 
-        // 2. program short name
-        $mform->addElement('text', 'programshortname', 'Program Short Name');
-        $mform->setType('programshortname', PARAM_NOTAGS);
-        $mform->setDefault('programshortname', '');
+        // 2. program id number
+        $mform->addElement('text', 'programidnumber', 'Program ID number');
+        $mform->setType('programidnumber', PARAM_NOTAGS);
+        $mform->setDefault('programidnumber', '');
 
-        // 3. acccount selector
+        // 3. program description
+        $mform->addElement('text', 'programdescription', 'Program Description');
+        $mform->setType('programdescription', PARAM_NOTAGS);
+        $mform->setDefault('programdescription', '');
+
+        // 4. acccount selector
         $mform->addElement('select', 'programacccount', 'Program Acccount', $this->get_all_acccounts());
         $mform->setType('programacccount', PARAM_NOTAGS);
         $mform->setDefault('programacccount', '');
 
-        // 4. courses list
+        // 5. courses list
         $select = $mform->addElement('select', 'programcourses', 'Courses In Program', $this->get_all_courses());
         $select->setMultiple(true);
         $mform->setType('programcourses', PARAM_NOTAGS);

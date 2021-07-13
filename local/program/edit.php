@@ -53,7 +53,7 @@ if ($programId) {
     $formData = (object)array(
         'programid' => $programId,
         'programname' => $programWithAcccount->name,
-        'programshortname' => $programWithAcccount->shortname,
+        'programdescription' => $programWithAcccount->description,
         'programacccount' => $programWithAcccount->acccountid,
         'programcourses' => $courseIdArray,
     );
@@ -73,7 +73,7 @@ if ($mform->is_cancelled()) {
         // insert the data into the program table
         $newProgram = new stdClass();
         $newProgram->name = $fromform->programname;
-        $newProgram->shortname = $fromform->programshortname;
+        $newProgram->description = $fromform->programdescription;
         $newProgram->timecreated = time();
         $newProgram->timemodified = time();
         $programid = $DB->insert_record('local_program', $newProgram);

@@ -38,18 +38,24 @@ class edit extends moodleform {
         // 1. acccount name
         $mform->addElement('text', 'acccountname', 'Acccount Name');
         $mform->setType('acccountname', PARAM_NOTAGS);
-        $mform->setDefault('acccountname', 'Please enter the acccount name');
+        $mform->setDefault('acccountname', '');
 
         // 2. acccount site name
         $mform->addElement('text', 'acccountsitename', 'Site Name');
         $mform->setType('acccountsitename', PARAM_NOTAGS);
-        $mform->setDefault('acccountsitename', 'Please enter the site name');
+        $mform->setDefault('acccountsitename', '');
 
 
         // 3. acccount site short name
         $mform->addElement('text', 'acccountsiteshortname', 'Site Short Name');
         $mform->setType('acccountsiteshortname', PARAM_NOTAGS);
-        $mform->setDefault('acccountsiteshortname', 'Please enter the site short name');
+        $mform->setDefault('acccountsiteshortname', '');
+
+        // 4. acccount id number
+        $mform->addElement('text', 'acccountidnumber', 'ID Number');
+        $mform->setType('acccountidnumber', PARAM_NOTAGS);
+        $mform->setDefault('acccountidnumber', '');
+
 
         // add submit and cancel button
         $this->add_action_buttons();
