@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="local/acccount/db" VERSION="20191018" COMMENT="XMLDB file for Moodle local/acccount"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
     <TABLE NAME="local_acccount" COMMENT="Store info about all acccounts">
