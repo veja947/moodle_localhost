@@ -23,17 +23,14 @@
 
 require_once(__DIR__ . '/../../config.php'); // load config.php
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir . '/adminlib.php');
+require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
+require_once($CFG->dirroot . '/webservice/lib.php');
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/program/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Programs');
-
-
-//$webServiceManager = new webservice();
-//$service = $webServiceManager->get_external_service_by_shortname('local_acccount_test');
-//$service->enabled = true;
-//$webServiceManager->update_external_service($service);
 
 
 
