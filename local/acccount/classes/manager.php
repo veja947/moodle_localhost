@@ -58,12 +58,15 @@ class manager
         return $acccounts ?? [];
     }
 
-    public function get_acccounts_id_and_name(array $acccounts): array {
+    public function get_acccounts_display_array(array $acccounts): array {
         $result = [];
         foreach ($acccounts as $acccount) {
             $result[$acccount->get('id')] = [
                 'id' => $acccount->get('id'),
                 'name' => $acccount->get('name'),
+                'sitename' => $acccount->get('sitename'),
+                'idnumber' => $acccount->get('idnumber'),
+                'isdefault' => $acccount->get('isdefault') ? 'True': 'False',
             ];
         }
         return $result;

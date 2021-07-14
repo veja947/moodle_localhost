@@ -5,9 +5,21 @@
 </div>
 
 <div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Acccount Name</th>
+            <th>Site Name</th>
+            <th>Id Number</th>
+            <th>Default Acccount</th>
+        </tr>
     {{#acccount_list}}
-        <div class="list-inline-item">
-            <a href="{{edit_url}}?acccountid={{id}}">{{name}}</a>
-        </div>
+        <tr>
+            <td>{{name}}</td>
+            <td>{{sitename}}</td>
+            <td>{{idnumber}}</td>
+            <td>{{isdefault}}</td>
+            <td><a href="{{edit_url}}?acccountid={{id}}" id="edit_acccount_button">Edit</a> | <a href="#" id="delete_acccount_button">Delete</a></td>
+        </tr>
     {{/acccount_list}}
+    </table>
 </div>

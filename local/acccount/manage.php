@@ -33,7 +33,7 @@ $PAGE->set_title('Manage Acccounts');
 $manager = new \local_acccount\manager();
 $acccountsList = $manager->get_acccounts();
 
-$acccountsDisplay = $manager->get_acccounts_id_and_name($acccountsList);
+$acccountsDisplay = $manager->get_acccounts_display_array($acccountsList);
 
 $templateContext = (object)[
     'acccount_list' => array_values($acccountsDisplay),
