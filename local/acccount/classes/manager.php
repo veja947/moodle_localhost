@@ -87,7 +87,7 @@ class manager
      */
     protected function reset_acccounts_cache() {
         \cache_helper::purge_by_event('acccountsmodified');
-        \cache::make('local_acccount', 'mytenant')->purge();
+        \cache::make('local_acccount', 'myacccount')->purge();
         \cache::make('local_acccount', 'acccounts')->purge();
     }
 

@@ -52,7 +52,7 @@ class acccount_created extends base
             'context' => \context_system::instance(),
             'objectid' => $acccount->get('id')
         ]);
-        $event->add_record_snapshot(acccount::TABLE, $tenant->to_record());
+        $event->add_record_snapshot(acccount::TABLE, $acccount->to_record());
         return $event;
     }
 }

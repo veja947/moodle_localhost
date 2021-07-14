@@ -35,10 +35,10 @@ $PAGE->set_title($pagetitle);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_pagetype('admin-local-acccount-edit');
 
-
 // display the edit form
 $mform = new edit();
 
+$manager = new \local_acccount\manager();
 $acccountId = $_GET['acccountid'] ?? null;
 
 if ($acccountId) {
@@ -73,14 +73,13 @@ if ($mform->is_cancelled()) {
         $DB->update_record('local_acccount', $acccount);
     } else {
         // insert the data into the db table
-        $newAcccount = new stdClass();
-        $newAcccount->name = $fromform->acccountname;
-        $newAcccount->sitename = $fromform->acccountsitename;
-        $newAcccount->siteshortname = $fromform->acccountsiteshortname;
-        $newAcccount->idnumber = $fromform->acccountidnumber;
-        $newAcccount->timecreated = time();
-        $newAcccount->timemodified = time();
-        $DB->insert_record('local_acccount', $newAcccount);
+        $newAcccount = $manager->create_acccount((object)[
+            'name' => $fromform->acccountname,
+            'sitename' => $fromform->acccountsitename,
+            'siteshortname' => $fromform->acccountsiteshortname,
+            'idnumber' => $fromform->acccountidnumber,
+        ]);
+        $acccounts[$newAcccount->get('id')] = $newAcccount;
     }
     // go back to manage.php page
     redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->acccountname);
