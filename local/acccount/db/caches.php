@@ -15,31 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Cache definitions.
  *
  * @package    local_acccount
+ * @category   cache
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php'); // load config.php
-require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('acccountslist');
-global $DB;
+defined('MOODLE_INTERNAL') || die();
 
-$PAGE->set_url(\local_acccount\manager::get_base_url());
-$PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Manage Acccounts');
-
-$manager = new \local_acccount\manager();
-$acccountsList = $manager->get_acccounts();
-
-$acccountsDisplay = $manager->get_acccounts_id_and_name($acccountsList);
-
-$templateContext = (object)[
-    'acccount_list' => array_values($acccountsDisplay),
-    'edit_url' => new moodle_url(\local_acccount\manager::get_editor_url()),
-];
-
-echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_acccount/manage', $templateContext);
-echo $OUTPUT->footer();
+$definitions = array(
+    'acccounts' => array(
+        'mode' => cache_store::MODE_APPLICATION,
+        'simplekeys' => true,
+        'simpledata' => true,
+        'staticacceleration' => true,
+        'staticaccelerationsize' => 3,
+        'invalidationevents' => array(
+            'acccountsmodified',
+        )
+    ),
+    'myacccount' => array(
+        'mode' => cache_store::MODE_REQUEST,
+        'simplekeys' => true,
+        'simpledata' => true,
+        'staticacceleration' => true,
+        'staticaccelerationsize' => 2,
+    ),
+);

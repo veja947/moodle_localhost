@@ -24,7 +24,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 function local_tenant_before_footer() {
-    \core\notification::add('the test 4 tenant', \core\output\notification::NOTIFY_SUCCESS);
+//    \core\notification::add('the test 4 tenant', \core\output\notification::NOTIFY_SUCCESS);
     global $SITE, $COURSE, $CFG;
     if (during_initial_install() || isset($CFG->upgraderunning)) {
         return;
