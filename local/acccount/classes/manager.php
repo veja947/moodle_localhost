@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Class manager and methods for managing the list of tenants
+ * Class manager and methods for managing the list of acccounts
  *
  * @package    local_acccount
  * @author     Joey Zhang
@@ -25,6 +25,7 @@
 namespace local_acccount;
 
 use local_acccount\event\acccount_created;
+use local_acccount\event\acccount_updated;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -80,6 +81,43 @@ class manager
         }
         $this->reset_acccounts_cache();
         return $acccount;
+    }
+
+    /**
+     * Updates an exsiting acccount
+     *
+     * @params acccount $acccount
+     * @param \stdClass $newData
+     *
+     */
+    public function update_acccount(acccount $acccount, \stdClass $newData): acccount {
+        $oldRecord = $acccount->to_record();
+        foreach ($newData as $key => $value) {
+            if (acccount::has_property($key) && $key !== 'id') {
+                $acccount->set($key, $value);
+            }
+        }
+        $acccount->save();
+        acccount_updated::create_from_object($acccount, $oldRecord)->trigger();
+        $this->reset_acccounts_cache();
+        return $acccount;
+    }
+
+    /**
+     * Retrieves an active acccount by id
+     *
+     * @param int $id
+     * @param \moodle_url $exceptionlink (optional) link to use in exception message
+     * @return acccount
+     * @throws \moodle_exception
+     */
+    public function get_acccount_by_id(int $id, \moodle_url $exceptionlink = null): acccount {
+        $acccounts = $this->get_acccounts();
+        if (array_key_exists($id, $acccounts)) {
+            return $acccounts[$id];
+        }
+        throw new \moodle_exception('acccountnotfound', 'local_acccount',
+            $exceptionlink ?: self::get_base_url());
     }
 
     /**

@@ -44,11 +44,11 @@ $acccountId = $_GET['acccountid'] ?? null;
 if ($acccountId) {
     $acccount = $DB->get_record('local_acccount',['id' => $acccountId]);
     $formData = (object)array(
-        'acccoundid' => $acccountId,
-        'acccountname' => $acccount->name,
-        'acccountsitename' => $acccount->sitename,
-        'acccountsiteshortname' => $acccount->siteshortname,
-        'acccountidnumber' => $acccount->idnumber,
+        'id' => $acccountId,
+        'name' => $acccount->name,
+        'sitename' => $acccount->sitename,
+        'siteshortname' => $acccount->siteshortname,
+        'idnumber' => $acccount->idnumber,
     );
 
     $mform->set_data($formData);
@@ -62,27 +62,29 @@ if ($mform->is_cancelled()) {
     redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You cancelled the acccount edit form');
 } else if ($fromform = $mform->get_data()) {
 
-    if ($acccoundid = $fromform->acccoundid) {
+    if ($acccoundid = $fromform->id) {
         // update current acccount
-        $acccount = $DB->get_record('local_acccount', ['id' => $acccoundid]);
-        $acccount->name = $fromform->acccountname;
-        $acccount->sitename = $fromform->acccountsitename;
-        $acccount->siteshortname = $fromform->acccountsiteshortname;
-        $acccount->idnumber = $fromform->acccountidnumber;
-        $acccount->timemodified = time();
-        $DB->update_record('local_acccount', $acccount);
+//        $acccount = $DB->get_record('local_acccount', ['id' => $acccoundid]);
+//        $acccount->name = $fromform->name;
+//        $acccount->sitename = $fromform->sitename;
+//        $acccount->siteshortname = $fromform->siteshortname;
+//        $acccount->idnumber = $fromform->idnumber;
+//        $acccount->timemodified = time();
+//        $DB->update_record('local_acccount', $acccount);
+        $acccountEntity = $manager->get_acccount_by_id($acccoundid);
+        $manager->update_acccount($acccountEntity, $fromform);
     } else {
         // insert the data into the db table
         $newAcccount = $manager->create_acccount((object)[
-            'name' => $fromform->acccountname,
-            'sitename' => $fromform->acccountsitename,
-            'siteshortname' => $fromform->acccountsiteshortname,
-            'idnumber' => $fromform->acccountidnumber,
+            'name' => $fromform->name,
+            'sitename' => $fromform->sitename,
+            'siteshortname' => $fromform->siteshortname,
+            'idnumber' => $fromform->idnumber,
         ]);
         $acccounts[$newAcccount->get('id')] = $newAcccount;
     }
     // go back to manage.php page
-    redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->acccountname);
+    redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->name);
 }
 
 

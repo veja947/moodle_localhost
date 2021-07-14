@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The acccount_created event class.
+ * The acccount_updated event class.
  *
  * @package    local_acccount
  * @author     Joey Zhang
@@ -30,27 +30,33 @@ use local_acccount\acccount;
 
 defined('MOODLE_INTERNAL') || die();
 
-class acccount_created extends base
+class acccount_updated extends base
 {
 
     protected function init()
     {
         $this->data['objecttable'] = 'local_acccount';
-        $this->data['crud'] = 'c';
+        $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
     /**
-     * Creates an instance of the event from an object
-     * @param acccount $acccount
-     * @return acccount_created
+     * Creates an instance of this event given the acccount object
+     *
+     * @param acccount $acccount the instance of acccount with updated properties
+     * @param \stdClass $oldrecord the copy of the record before update
+     * @return base
      */
-    public static function create_from_object(acccount $acccount): acccount_created
-    {
-        $event = static::create([
+    public static function create_from_object(acccount $acccount, \stdClass $oldrecord) {
+        $params = [
             'context' => \context_system::instance(),
-            'objectid' => $acccount->get('id')
-        ]);
+            'objectid' => $acccount->get('id'),
+            'other' => []
+        ];
+        if (!$oldrecord->archived && $acccount->get('archived')) {
+            $params['other']['isarchived'] = true;
+        }
+        $event = static::create($params);
         $event->add_record_snapshot(acccount::TABLE, $acccount->to_record());
         return $event;
     }

@@ -32,29 +32,29 @@ class edit extends moodleform {
         $mform = $this->_form;
 
         // 0. acccount id
-        $mform->addElement('hidden', 'acccoundid');
-        $mform->setType('acccoundid', PARAM_INT);
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
 
         // 1. acccount name
-        $mform->addElement('text', 'acccountname', 'Acccount Name');
-        $mform->setType('acccountname', PARAM_NOTAGS);
-        $mform->setDefault('acccountname', '');
+        $mform->addElement('text', 'name', 'Acccount Name');
+        $mform->setType('name', PARAM_NOTAGS);
+        $mform->setDefault('name', '');
 
         // 2. acccount site name
-        $mform->addElement('text', 'acccountsitename', 'Site Name');
-        $mform->setType('acccountsitename', PARAM_NOTAGS);
-        $mform->setDefault('acccountsitename', '');
+        $mform->addElement('text', 'sitename', 'Site Name');
+        $mform->setType('sitename', PARAM_NOTAGS);
+        $mform->setDefault('sitename', '');
 
 
         // 3. acccount site short name
-        $mform->addElement('text', 'acccountsiteshortname', 'Site Short Name');
-        $mform->setType('acccountsiteshortname', PARAM_NOTAGS);
-        $mform->setDefault('acccountsiteshortname', '');
+        $mform->addElement('text', 'siteshortname', 'Site Short Name');
+        $mform->setType('siteshortname', PARAM_NOTAGS);
+        $mform->setDefault('siteshortname', '');
 
         // 4. acccount id number
-        $mform->addElement('text', 'acccountidnumber', 'ID Number');
-        $mform->setType('acccountidnumber', PARAM_NOTAGS);
-        $mform->setDefault('acccountidnumber', '');
+        $mform->addElement('text', 'idnumber', 'ID Number');
+        $mform->setType('idnumber', PARAM_NOTAGS);
+        $mform->setDefault('idnumber', '');
 
 
         // add submit and cancel button
