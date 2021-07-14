@@ -110,6 +110,8 @@ class acccount extends \core\persistent {
             'siteshortname' => $this->get_formatted_property('siteshortname'),
             'idnumber' => $this->get_formatted_property('idnumber'),
             'isdefault' => $this->get('isdefault') ? 'True' : 'False',
+            'archived' => $this->get('archived') ? 'True' : 'False',
+            'cssconfig' => $this->get('cssconfig'),
         ];
     }
 }

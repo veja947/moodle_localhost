@@ -31,12 +31,15 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Acccounts');
 
 $manager = new \local_acccount\manager();
-$acccountsList = $manager->get_acccounts();
+$activeAcccountsList = $manager->get_acccounts();
+$archivedAcccountsList = $manager->get_archived_acccounts();
 
-$acccountsDisplay = $manager->get_acccounts_display_array($acccountsList);
+$activeAcccountsDisplay = $manager->get_acccounts_display_array($activeAcccountsList);
+$archivedAcccountsDisplay = $manager->get_acccounts_display_array($archivedAcccountsList);
 
 $templateContext = (object)[
-    'acccount_list' => array_values($acccountsDisplay),
+    'active_acccount_list' => array_values($activeAcccountsDisplay),
+    'archived_acccount_list' => array_values($archivedAcccountsDisplay),
     'edit_url' => new moodle_url(\local_acccount\manager::get_editor_url()),
 ];
 

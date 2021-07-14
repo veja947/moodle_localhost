@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 class manager
 {
     /**
-     * Returns list of acccounts in the system
+     * Returns list of active acccounts in the system
      *
      * @return acccount[]
      */
@@ -57,6 +57,25 @@ class manager
             $cache->set('active', $acccounts);
         }
         return $acccounts ?? [];
+    }
+
+    /**
+     * Returns list of archived acccounts in the system
+     *
+     * @return acccount[]
+     */
+    public function get_archived_acccounts(): array {
+        global $DB;
+        $cache = \cache::make('local_acccount', 'acccounts');
+        if (($archievedAcccounts = $cache->get('archived')) == false) {
+            $records = $DB->get_records(acccount::TABLE, ['archived' => 1], 'timearchived DESC');
+            $archievedAcccounts = [];
+            foreach ($records as $record) {
+                $archievedAcccounts[$record->id] = new acccount(0, $record);
+            }
+            $cache->set('archived', $archievedAcccounts);
+        }
+        return $archievedAcccounts ?? [];
     }
 
     public function get_acccounts_display_array(array $acccounts): array {
@@ -102,6 +121,8 @@ class manager
         $this->reset_acccounts_cache();
         return $acccount;
     }
+
+
 
     /**
      * Retrieves an active acccount by id
