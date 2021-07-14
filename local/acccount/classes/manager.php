@@ -61,13 +61,7 @@ class manager
     public function get_acccounts_display_array(array $acccounts): array {
         $result = [];
         foreach ($acccounts as $acccount) {
-            $result[$acccount->get('id')] = [
-                'id' => $acccount->get('id'),
-                'name' => $acccount->get('name'),
-                'sitename' => $acccount->get('sitename'),
-                'idnumber' => $acccount->get('idnumber'),
-                'isdefault' => $acccount->get('isdefault') ? 'True': 'False',
-            ];
+            $result[$acccount->get('id')] = $acccount->get_properties_display();
         }
         return $result;
     }

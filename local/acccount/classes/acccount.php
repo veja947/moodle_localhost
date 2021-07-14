@@ -97,12 +97,18 @@ class acccount extends \core\persistent {
         ];
     }
 
-    /**
-     * Tenant name ready for display
-     * @return string
-     */
-    public function get_formatted_name() : string {
-        return format_string($this->get('name'), true,
-            ['context' => \context_system::instance(), 'escape' => false]);
+    public function get_formatted_property($name) : string {
+        return format_string($this->get($name), true,
+            ['context' => \context_system::instance(), 'escape' => false]) ?? '';
+    }
+
+    public function get_properties_display(): array {
+        return [
+            'id' => $this->get('id'),
+            'name' => $this->get_formatted_property('name'),
+            'sitename' => $this->get_formatted_property('sitename'),
+            'idnumber' => $this->get_formatted_property('idnumber'),
+            'isdefault' => $this->get('isdefault') ? 'True' : 'False',
+        ];
     }
 }
