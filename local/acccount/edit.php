@@ -25,33 +25,26 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/acccount/classes/form/edit.php');
 require_once($CFG->libdir . '/adminlib.php');
 
-$pagetitle = 'Edit Acccount Form';
-
 global $DB;
 
-$PAGE->set_url(new moodle_url('/local/acccount/edit.php'));
+$pagetitle = 'Edit Acccount';
+
+
+$PAGE->set_url(\local_acccount\manager::get_editor_url());
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_pagetype('admin-local-acccount-edit');
 
-// display the edit form
-$mform = new edit();
 
+$mform = new edit();
 $manager = new \local_acccount\manager();
 $acccountId = $_GET['acccountid'] ?? null;
 
 if ($acccountId) {
-    $acccount = $DB->get_record('local_acccount',['id' => $acccountId]);
-    $formData = (object)array(
-        'id' => $acccountId,
-        'name' => $acccount->name,
-        'sitename' => $acccount->sitename,
-        'siteshortname' => $acccount->siteshortname,
-        'idnumber' => $acccount->idnumber,
-    );
-
-    $mform->set_data($formData);
+    // set data to form
+    $acccount = $manager->get_acccount_by_id($acccountId);
+    $mform->set_data($acccount->get_properties_display());
 }
 
 
@@ -59,22 +52,23 @@ if ($acccountId) {
 
 if ($mform->is_cancelled()) {
     // go back to manage.php page
-    redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You cancelled the acccount edit form');
+    redirect(
+        $CFG->wwwroot . '/local/acccount/manage.php',
+        'You cancelled the acccount edit form',
+    );
 } else if ($fromform = $mform->get_data()) {
-
     if ($acccoundid = $fromform->id) {
         // update current acccount
-//        $acccount = $DB->get_record('local_acccount', ['id' => $acccoundid]);
-//        $acccount->name = $fromform->name;
-//        $acccount->sitename = $fromform->sitename;
-//        $acccount->siteshortname = $fromform->siteshortname;
-//        $acccount->idnumber = $fromform->idnumber;
-//        $acccount->timemodified = time();
-//        $DB->update_record('local_acccount', $acccount);
         $acccountEntity = $manager->get_acccount_by_id($acccoundid);
         $manager->update_acccount($acccountEntity, $fromform);
+        // go back to manage.php page
+        redirect($CFG->wwwroot . '/local/acccount/manage.php',
+            'You updated the Acccount: ' . $fromform->name,
+            null,
+            \core\output\notification::NOTIFY_SUCCESS
+        );
     } else {
-        // insert the data into the db table
+        // create new acccount
         $newAcccount = $manager->create_acccount((object)[
             'name' => $fromform->name,
             'sitename' => $fromform->sitename,
@@ -82,9 +76,10 @@ if ($mform->is_cancelled()) {
             'idnumber' => $fromform->idnumber,
         ]);
         $acccounts[$newAcccount->get('id')] = $newAcccount;
+        // go back to manage.php page
+        redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->name);
     }
-    // go back to manage.php page
-    redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->name);
+
 }
 
 

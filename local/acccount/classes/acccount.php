@@ -107,6 +107,7 @@ class acccount extends \core\persistent {
             'id' => $this->get('id'),
             'name' => $this->get_formatted_property('name'),
             'sitename' => $this->get_formatted_property('sitename'),
+            'siteshortname' => $this->get_formatted_property('siteshortname'),
             'idnumber' => $this->get_formatted_property('idnumber'),
             'isdefault' => $this->get('isdefault') ? 'True' : 'False',
         ];
