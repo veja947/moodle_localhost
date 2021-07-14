@@ -97,4 +97,8 @@ class manager
     public static function get_base_url() : \moodle_url {
         return new \moodle_url('/local/tenant/index.php');
     }
+
+    public static function get_editor_url(): \moodle_url {
+        return new \moodle_url('/local/tenant/editor.php');
+    }
 }

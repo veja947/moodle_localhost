@@ -1,0 +1,13 @@
+<h1>Tenants</h1>
+
+<div>
+    <input type="button" class="btn btn-primary" value="Add New Tenant" onclick="location.href='{{edit_url}}'"
+</div>
+
+<div>
+    {{#tenants_list}}
+        <div class="list-inline-item">
+            <a href="{{edit_url}}?tenanttid={{id}}">{{name}}</a>
+        </div>
+    {{/tenants_list}}
+</div>

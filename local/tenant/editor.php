@@ -15,31 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
  *
  * @package    local_tenant
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php');
+require_once('../config.php');
+require_once($CFG->libdir.'/gdlib.php');
+require_once($CFG->dirroot.'/local/acccount/classes/form/tenant_edit_form.php');
 
-//$action = optional_param('action', null, PARAM_ALPHA) ?? 'no action';
-//$id = optional_param('id', null, PARAM_INT) ?? null;
+global $DB;
+$pagetitle = 'Edit Tenant Form';
 
-//require_login(0, false);
-//require_capability('tool/tenant:manage', context_system::instance());
-$PAGE->set_context(context_system::instance());
-$PAGE->set_url(\local_tenant\manager::get_base_url());
+$PAGE->set_url(\local_tenant\manager::get_editor_url());
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title($pagetitle);
+//$PAGE->set_pagelayout('admin');
+//$PAGE->set_pagetype('admin-local-tenant-edit');
 
-$PAGE->set_heading('Manage Tenants');
+$mform = new \local_tenant\tenant_edit_form();
 
-$tenantsList = \local_tenant\tenancy::get_tenants();
-
-$templateContext = (object)[
-    'tenants_list' => array_values($tenantsList),
-    'edit_url' => \local_tenant\manager::get_editor_url(),
-];
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_tenant/index', $templateContext);
+echo $OUTPUT->heading($pagetitle);
+// TODO: fix $PAGE navbar missing
+$mform->display();
 echo $OUTPUT->footer();
+
