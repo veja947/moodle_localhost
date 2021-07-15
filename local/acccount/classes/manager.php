@@ -25,6 +25,7 @@
 namespace local_acccount;
 
 use local_acccount\event\acccount_created;
+use local_acccount\event\acccount_deleted;
 use local_acccount\event\acccount_updated;
 
 defined('MOODLE_INTERNAL') || die();
@@ -166,8 +167,24 @@ class manager
      * @return acccount
      * @throws \moodle_exception
      */
-    public function delete_acccount(int $id): acccount {
+    public function delete_acccount(int $id): ?acccount {
+        global $DB;
+        if (!$DB->get_record('local_acccount', ['id' => $id])) {
+            return null;
+        }
 
+        $acccount = $this->get_archived_acccount_by_id($id);
+
+        // delete acccount users relationship
+        $DB->delete_records('local_acccount_user', ['acccountid' => $id]);
+
+        // delete acccount record, trigger event
+        $event = acccount_deleted::create_from_object($acccount);
+        $acccount->delete();
+        $event->trigger();
+
+        $this->reset_acccounts_cache();
+        return $acccount;
     }
 
     /**
