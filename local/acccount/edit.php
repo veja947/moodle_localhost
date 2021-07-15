@@ -43,7 +43,7 @@ $acccountId = $_GET['acccountid'] ?? null;
 
 if ($acccountId) {
     // set data to form
-    $acccount = $manager->get_acccount_by_id($acccountId);
+    $acccount = $manager->get_active_acccount_by_id($acccountId);
     $mform->set_data($acccount->get_properties_display());
 }
 
@@ -59,7 +59,7 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
     if ($acccoundid = $fromform->id) {
         // update current acccount
-        $acccountEntity = $manager->get_acccount_by_id($acccoundid);
+        $acccountEntity = $manager->get_active_acccount_by_id($acccoundid);
         $manager->update_acccount($acccountEntity, $fromform);
         // go back to manage.php page
         redirect($CFG->wwwroot . '/local/acccount/manage.php',
