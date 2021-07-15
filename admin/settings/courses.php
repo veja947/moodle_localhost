@@ -32,6 +32,22 @@ $capabilities = array(
     'moodle/restore:restorecourse'
 );
 if ($hassiteconfig or has_any_capability($capabilities, $systemcontext)) {
+
+    // add local_program settings link
+    $programManageUrl = new moodle_url('/local/program/manage.php');
+    $ADMIN->add('courses',
+        new admin_externalpage('programslist',
+            'Manage Programs',
+            $programManageUrl->__toString()));
+
+    // add local_program editing link
+    $programEditUrl = new moodle_url('/local/program/edit.php');
+    $ADMIN->add('courses',
+        new admin_externalpage('programedit',
+            'Add new Program',
+            $programEditUrl->__toString()));
+
+
     // Speedup for non-admins, add all caps used on this page.
     $ADMIN->add('courses',
         new admin_externalpage('coursemgmt', new lang_string('coursemgmt', 'admin'),

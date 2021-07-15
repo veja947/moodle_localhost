@@ -24,6 +24,7 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/acccount/classes/form/edit.php');
 require_once($CFG->libdir . '/adminlib.php');
+admin_externalpage_setup('acccountedit');
 
 global $DB;
 
@@ -85,7 +86,6 @@ if ($mform->is_cancelled()) {
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($pagetitle);
-// TODO: fix $PAGE navbar missing
 $mform->display();
 echo $OUTPUT->footer();
 

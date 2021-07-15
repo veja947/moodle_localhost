@@ -23,10 +23,14 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/program/classes/form/edit.php');
+require_once($CFG->libdir . '/adminlib.php');
+admin_externalpage_setup('programedit');
+
+$pagetitle = 'Edit Program';
 
 $PAGE->set_url(new moodle_url('/local/program/edit.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Edit Program Form');
+$PAGE->set_title($pagetitle);
 
 $mform = new edit();
 
@@ -105,6 +109,7 @@ if ($mform->is_cancelled()) {
 
 
 echo $OUTPUT->header();
+echo $OUTPUT->heading($pagetitle);
 $mform->display();
 echo $OUTPUT->footer();
 
