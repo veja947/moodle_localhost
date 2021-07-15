@@ -31,7 +31,24 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Acccounts');
 
 $manager = new \local_acccount\manager();
-$activeAcccountsList = $manager->get_acccounts();
+
+$acccountId = $_GET['acccountid'] ?? null;
+$action = $_GET['action'] ?? null;
+switch ($action) {
+    case \local_acccount\manager::ACCCOUNT_ACTION_ARCHIVE:
+        $manager->archive_acccount((int)$acccountId);
+        break;
+
+    case \local_acccount\manager::ACCCOUNT_ACTION_RESTORE:
+        $manager->restore_acccount((int)$acccountId);
+        break;
+
+    case \local_acccount\manager::ACCCOUNT_ACTION_DELETE:
+        $manager->delete_acccount((int)$acccountId);
+        break;
+}
+
+$activeAcccountsList = $manager->get_active_acccounts();
 $archivedAcccountsList = $manager->get_archived_acccounts();
 
 $activeAcccountsDisplay = $manager->get_acccounts_display_array($activeAcccountsList);
@@ -40,7 +57,8 @@ $archivedAcccountsDisplay = $manager->get_acccounts_display_array($archivedAccco
 $templateContext = (object)[
     'active_acccount_list' => array_values($activeAcccountsDisplay),
     'archived_acccount_list' => array_values($archivedAcccountsDisplay),
-    'edit_url' => new moodle_url(\local_acccount\manager::get_editor_url()),
+    'edit_url' => \local_acccount\manager::get_editor_url(),
+    'action_url' => \local_acccount\manager::get_base_url(),
 ];
 
 echo $OUTPUT->header();

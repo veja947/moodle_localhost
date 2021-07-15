@@ -31,12 +31,16 @@ defined('MOODLE_INTERNAL') || die();
 
 class manager
 {
+    const ACCCOUNT_ACTION_ARCHIVE = 'archive';
+    const ACCCOUNT_ACTION_RESTORE = 'restore';
+    const ACCCOUNT_ACTION_DELETE = 'delete';
+
     /**
      * Returns list of active acccounts in the system
      *
      * @return acccount[]
      */
-    public function get_acccounts(): array {
+    public function get_active_acccounts(): array {
         global $DB;
         $cache = \cache::make('local_acccount', 'acccounts');
         if (!($acccounts = $cache->get('active'))) {
@@ -122,7 +126,49 @@ class manager
         return $acccount;
     }
 
+    /**
+     * Archives an acccount
+     *
+     * @param int $id
+     * @return acccount
+     */
+    public function archive_acccount(int $id): acccount {
+        if ($acccount = $this->get_archived_acccount_by_id($id, null, false)) {
+            return $acccount;
+        }
+        $acccount = $this->get_active_acccount_by_id($id);
+        return $this->update_acccount($acccount, (object)[
+            'archived' => 1,
+            'timearchived' => time(),
+        ]);
+    }
+    /**
+     * Restore an acccount
+     *
+     * @param int $id
+     * @return acccount
+     */
+    public function restore_acccount(int $id): acccount {
+        if ($acccount = $this->get_active_acccount_by_id($id, null, false)) {
+            return $acccount;
+        }
+        $acccount = $this->get_archived_acccount_by_id($id);
+        return $this->update_acccount($acccount, (object)[
+            'archived' => 0,
+            'timearchived' => null,
+        ]);
+    }
 
+    /**
+     * Deletes archived acccount
+     *
+     * @param int $id
+     * @return acccount
+     * @throws \moodle_exception
+     */
+    public function delete_acccount(int $id): acccount {
+
+    }
 
     /**
      * Retrieves an active acccount by id
@@ -132,13 +178,36 @@ class manager
      * @return acccount
      * @throws \moodle_exception
      */
-    public function get_acccount_by_id(int $id, \moodle_url $exceptionlink = null): acccount {
-        $acccounts = $this->get_acccounts();
+    public function get_active_acccount_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?acccount {
+        $acccounts = $this->get_active_acccounts();
         if (array_key_exists($id, $acccounts)) {
             return $acccounts[$id];
         }
-        throw new \moodle_exception('acccountnotfound', 'local_acccount',
-            $exceptionlink ?: self::get_base_url());
+        if ($showexception) {
+            throw new \moodle_exception('acccountnotfound', 'local_acccount',
+                $exceptionlink ?: self::get_base_url());
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves an archived acccount by id
+     *
+     * @param int $id
+     * @param \moodle_url $exceptionlink (optional) link to use in exception message
+     * @return acccount
+     * @throws \moodle_exception
+     */
+    public function get_archived_acccount_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?acccount {
+        $acccounts = $this->get_archived_acccounts();
+        if (array_key_exists($id, $acccounts)) {
+            return $acccounts[$id];
+        }
+        if ($showexception) {
+            throw new \moodle_exception('acccountnotfound', 'local_acccount',
+                $exceptionlink ?: self::get_base_url());
+        }
+        return null;
     }
 
     /**

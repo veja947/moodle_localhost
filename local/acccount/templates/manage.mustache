@@ -24,7 +24,7 @@
             <td>
                 <a href="{{edit_url}}?acccountid={{id}}" id="edit_acccount_button">Edit</a>
                 |
-                <a href="#" id="archive_acccount_button">Archive</a>
+                <a href="{{action_url}}?acccountid={{id}}&action=archive" id="archive_acccount_button">Archive</a>
             </td>
         </tr>
     {{/active_acccount_list}}
@@ -47,7 +47,7 @@
                 <td>{{isdefault}}</td>
                 <td>{{archived}}</td>
                 <td>
-                    <a href="#" id="restore_acccount_button">Restore</a>
+                    <a href="{{action_url}}?acccountid={{id}}&action=restore" id="restore_acccount_button">Restore</a>
                     |
                     <a href="#" id="delete_acccount_button">Delete</a>
                 </td>
