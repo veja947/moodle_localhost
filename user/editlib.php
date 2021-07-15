@@ -499,7 +499,7 @@ function useredit_get_disabled_name_fields($enabledadditionalusernames = null) {
 function useredit_get_acccount_fields($mform, $user) {
     global $DB;
 
-    $acccountsList = $DB->get_records('local_acccount');
+    $acccountsList = $DB->get_records('local_acccount', ['archived' => 0]);
     $choices = [];
     foreach ($acccountsList as $a) {
         $choices[$a->id] = $a->name;
@@ -509,6 +509,7 @@ function useredit_get_acccount_fields($mform, $user) {
 
 function useredit_set_acccount_fields($user) {
     global $DB;
-    $acccountid = $DB->get_record('local_acccount_user', ['userid' => $user->id])->acccountid;
+    $defaultAcccountId = $DB->get_record('local_acccount', ['isdefault' => 1])->id;
+    $acccountid = $DB->get_record('local_acccount_user', ['userid' => $user->id])->acccountid ?? $defaultAcccountId;
     $user->acccount = $acccountid;
 }

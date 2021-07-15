@@ -220,8 +220,8 @@ function core_myprofile_navigation(core_user\output\myprofile\tree $tree, $user,
     }
 
     // new: add acccount in node
-    $acccountId = $DB->get_record('local_acccount_user', ['userid' => $user->id])->acccountid;
-    $acccountName = $DB->get_record('local_acccount', ['id' => $acccountId])->name;
+    $acccountId = $DB->get_record('local_acccount_user', ['userid' => $user->id])->acccountid ?? null;
+    $acccountName = $DB->get_record('local_acccount', ['id' => $acccountId])->name ?? null;
 
     // TODO: add condition
     if ($acccountName) {

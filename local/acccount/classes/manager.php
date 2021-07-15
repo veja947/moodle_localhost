@@ -27,6 +27,8 @@ namespace local_acccount;
 use local_acccount\event\acccount_created;
 use local_acccount\event\acccount_deleted;
 use local_acccount\event\acccount_updated;
+use local_acccount\event\user_acccount_created;
+use local_acccount\event\user_acccount_updated;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -185,6 +187,35 @@ class manager
 
         $this->reset_acccounts_cache();
         return $acccount;
+    }
+
+    /**
+     * Update user's acccount value
+     *
+     * @param int $userid
+     * @param int $acccountid
+     */
+    public function update_user_acccount(int $userid, int $acccountid): ?acccount_user {
+        if (isguestuser($userid)) {
+            return null;
+        }
+
+        $userAcccount = acccount_user::create_for_user($userid);
+        $oldRecord = $userAcccount->to_record();
+
+        $userAcccount->set('acccountid', $acccountid);
+        $userAcccount->save();
+        $oldRecord->id ?
+            user_acccount_updated::create_from_object($userAcccount, $oldRecord)->trigger()
+            : user_acccount_created::create_from_object($userAcccount)->trigger();
+
+        // TODO: user roles update
+
+        $cache = \cache::make('local_acccount', 'myacccount');
+        $cacheIdx = 'acccountid-' . $userid;
+        $cache->delete($cacheIdx);
+
+        return $userAcccount;
     }
 
     /**

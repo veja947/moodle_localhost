@@ -1384,21 +1384,7 @@ function user_update_acccount($user) {
         $user = (object) $user;
     }
 
-    // check update or create
-    $acccount = $DB->get_record('local_acccount_user', ['userid' => $user->id]);
-    if ($acccount) {
-        // update current data
-        $acccount->acccountid = $user->acccount;
-        $DB->update_record('local_acccount_user', $acccount);
-        return;
-    }
-
-    // insert new data into the db table
-    $newUserAcccount = new stdClass();
-    $newUserAcccount->acccountid = $user->acccount;
-    $newUserAcccount->userid = $user->id;
-    $newUserAcccount->timecreated = time();
-    $newUserAcccount->timemodified = time();
-    $DB->insert_record('local_acccount_user', $newUserAcccount);
+    $manager = new \local_acccount\manager();
+    $record = $manager->update_user_acccount($user->id, $user->acccount);
 }
 
