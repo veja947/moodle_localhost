@@ -24,6 +24,8 @@
 
 namespace local_program;
 
+use local_program\event\program_created;
+
 defined('MOODLE_INTERNAL') || die();
 class manager
 {
@@ -48,6 +50,18 @@ class manager
             $cache->set('active', $programs);
         }
         return $programs ?? [];
+    }
+
+    public function get_active_program_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?program {
+        $programs = $this->get_active_programs();
+        if (array_key_exists($id, $programs)) {
+            return $programs[$id];
+        }
+        if ($showexception) {
+            throw new \moodle_exception('programnotfound', 'local_program',
+                $exceptionlink ?: self::get_base_url());
+        }
+        return null;
     }
 
     /**
@@ -77,6 +91,20 @@ class manager
         return $result;
     }
 
+    /**
+     * Creates a new program
+     *
+     * @param \stdClass $data
+     */
+    public function create_program(\stdClass $data): program {
+        global $DB;
+        $program = new program(0, $data);
+        $program->create();
+        program_created::create_from_object($program)->trigger();
+        $this->reset_programs_cache();
+        return $program;
+    }
+
 
     /**
      * Base URL to view programs list
@@ -92,5 +120,14 @@ class manager
      */
     public static function get_editor_url() : \moodle_url {
         return new \moodle_url('/local/program/edit.php');
+    }
+
+    /**
+     * Resets programs list cache
+     */
+    protected function reset_programs_cache() {
+        \cache_helper::purge_by_event('programsmodified');
+        \cache::make('local_program', 'myprogram')->purge();
+        \cache::make('local_program', 'programs')->purge();
     }
 }

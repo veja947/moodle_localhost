@@ -44,7 +44,7 @@ class program extends persistent
                 'description' => 'The program name.',
             ),
             'idnumber' => array(
-                'type' => PARAM_RAW,
+                'type' => PARAM_TEXT,
                 'description' => 'An id number used for external services.',
                 'default' => null,
                 'null' => NULL_ALLOWED,
@@ -52,6 +52,12 @@ class program extends persistent
             'description' => array(
                 'type' => PARAM_TEXT,
                 'description' => '',
+                'default' => null,
+                'null' => NULL_ALLOWED,
+            ),
+            'acccountid' => array(
+                'type' => PARAM_INT,
+                'description' => 'Acccount id',
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
@@ -79,6 +85,7 @@ class program extends persistent
             'name' => $this->get_formatted_property('name'),
             'idnumber' => $this->get_formatted_property('idnumber'),
             'description' => $this->get_formatted_property('description'),
+            'acccountid' => $this->get_formatted_property('acccountid'),
             'archived' => $this->get('archived') ? 'True' : 'False',
         ];
     }

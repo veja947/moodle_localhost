@@ -32,28 +32,28 @@ class edit extends moodleform {
         $mform = $this->_form;
 
         // 0. acccount id
-        $mform->addElement('hidden', 'programid');
-        $mform->setType('programid', PARAM_INT);
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
 
         // 1. program name
-        $mform->addElement('text', 'programname', 'Program Name');
-        $mform->setType('programname', PARAM_NOTAGS);
-        $mform->setDefault('programname', '');
+        $mform->addElement('text', 'name', 'Program Name');
+        $mform->setType('name', PARAM_NOTAGS);
+        $mform->setDefault('name', '');
 
         // 2. program id number
-        $mform->addElement('text', 'programidnumber', 'Program ID number');
-        $mform->setType('programidnumber', PARAM_NOTAGS);
-        $mform->setDefault('programidnumber', '');
+        $mform->addElement('text', 'idnumber', 'Program ID number');
+        $mform->setType('idnumber', PARAM_NOTAGS);
+        $mform->setDefault('idnumber', '');
 
         // 3. program description
-        $mform->addElement('textarea', 'programdescription', 'Program Description');
-        $mform->setType('programdescription', PARAM_NOTAGS);
-        $mform->setDefault('programdescription', '');
+        $mform->addElement('textarea', 'description', 'Program Description');
+        $mform->setType('description', PARAM_NOTAGS);
+        $mform->setDefault('description', '');
 
         // 4. acccount selector
-        $mform->addElement('select', 'programacccount', 'Program Acccount', $this->get_all_acccounts());
-        $mform->setType('programacccount', PARAM_NOTAGS);
-        $mform->setDefault('programacccount', '');
+        $mform->addElement('select', 'acccountid', 'Program Acccount', $this->get_all_acccounts());
+        $mform->setType('acccountid', PARAM_NOTAGS);
+        $mform->setDefault('acccountid', '');
 
         // 5. courses list
         $areaNames = [];
@@ -64,7 +64,7 @@ class edit extends moodleform {
             'multiple' => true,
             'noselectionstring' => 'Please select courses',
         ];
-        $mform->addElement('autocomplete', 'programcourse', 'Courses In the Program', $areaNames, $options);
+        $mform->addElement('autocomplete', 'courses', 'Courses In the Program', $areaNames, $options);
 
         // add submit and cancel button
         $this->add_action_buttons();

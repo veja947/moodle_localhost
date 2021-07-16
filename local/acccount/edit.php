@@ -62,6 +62,7 @@ if ($mform->is_cancelled()) {
         // update current acccount
         $acccountEntity = $manager->get_active_acccount_by_id($acccoundid);
         $manager->update_acccount($acccountEntity, $fromform);
+
         // go back to manage.php page
         redirect($CFG->wwwroot . '/local/acccount/manage.php',
             'You updated the Acccount: ' . $fromform->name,
@@ -77,6 +78,7 @@ if ($mform->is_cancelled()) {
             'idnumber' => $fromform->idnumber,
         ]);
         $acccounts[$newAcccount->get('id')] = $newAcccount;
+
         // go back to manage.php page
         redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->name);
     }
