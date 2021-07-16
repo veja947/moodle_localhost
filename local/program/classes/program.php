@@ -62,7 +62,7 @@ class program extends persistent
             ),
             'timearchived' => array(
                 'type' => PARAM_INT,
-                'description' => 'Time the acccount was archived.',
+                'description' => 'Time the program was archived.',
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
