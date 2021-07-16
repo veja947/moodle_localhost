@@ -43,9 +43,10 @@ class manager
      *
      * @return acccount[]
      */
-    public function get_active_acccounts(): array {
+    public function get_active_acccounts(): array
+    {
         global $DB;
-        $cache = \cache::make('local_acccount', 'acccounts');
+        $cache = \cache::make(acccount::TABLE, 'acccounts');
         if (!($acccounts = $cache->get('active'))) {
             $acccountsRecords = $DB->get_records(acccount::TABLE, ['archived' => 0]);
             $acccounts = [];
@@ -71,11 +72,14 @@ class manager
      *
      * @return acccount[]
      */
-    public function get_archived_acccounts(): array {
+    public function get_archived_acccounts(): array
+    {
         global $DB;
-        $cache = \cache::make('local_acccount', 'acccounts');
+        $cache = \cache::make(acccount::TABLE, 'acccounts');
         if (($archievedAcccounts = $cache->get('archived')) == false) {
-            $records = $DB->get_records(acccount::TABLE, ['archived' => 1], 'timearchived DESC');
+            $records = $DB->get_records(acccount::TABLE,
+                ['archived' => 1],
+                'timearchived DESC');
             $archievedAcccounts = [];
             foreach ($records as $record) {
                 $archievedAcccounts[$record->id] = new acccount(0, $record);
@@ -85,7 +89,8 @@ class manager
         return $archievedAcccounts ?? [];
     }
 
-    public function get_acccounts_display_array(array $acccounts): array {
+    public function get_acccounts_display_array(array $acccounts): array
+    {
         $result = [];
         foreach ($acccounts as $acccount) {
             $result[$acccount->get('id')] = $acccount->get_properties_display();
@@ -98,7 +103,8 @@ class manager
      *
      * @param \stdClass $data
      */
-    public function create_acccount(\stdClass $data): acccount {
+    public function create_acccount(\stdClass $data): acccount
+    {
         global $DB;
         $acccount = new acccount(0, $data);
         $acccount->create();
@@ -116,7 +122,8 @@ class manager
      * @param \stdClass $newData
      *
      */
-    public function update_acccount(acccount $acccount, \stdClass $newData): acccount {
+    public function update_acccount(acccount $acccount, \stdClass $newData): acccount
+    {
         $oldRecord = $acccount->to_record();
         foreach ($newData as $key => $value) {
             if (acccount::has_property($key) && $key !== 'id') {
@@ -135,7 +142,8 @@ class manager
      * @param int $id
      * @return acccount
      */
-    public function archive_acccount(int $id): acccount {
+    public function archive_acccount(int $id): acccount
+    {
         if ($acccount = $this->get_archived_acccount_by_id($id, null, false)) {
             return $acccount;
         }
@@ -145,13 +153,15 @@ class manager
             'timearchived' => time(),
         ]);
     }
+
     /**
      * Restore an acccount
      *
      * @param int $id
      * @return acccount
      */
-    public function restore_acccount(int $id): acccount {
+    public function restore_acccount(int $id): acccount
+    {
         if ($acccount = $this->get_active_acccount_by_id($id, null, false)) {
             return $acccount;
         }
@@ -169,16 +179,17 @@ class manager
      * @return acccount
      * @throws \moodle_exception
      */
-    public function delete_acccount(int $id): ?acccount {
+    public function delete_acccount(int $id): ?acccount
+    {
         global $DB;
-        if (!$DB->get_record('local_acccount', ['id' => $id])) {
+        if (!$DB->get_record(acccount::TABLE, ['id' => $id])) {
             return null;
         }
 
         $acccount = $this->get_archived_acccount_by_id($id);
 
         // delete acccount users relationship
-        $DB->delete_records('local_acccount_user', ['acccountid' => $id]);
+        $DB->delete_records(acccount_user::TABLE, ['acccountid' => $id]);
 
         // delete acccount record, trigger event
         $event = acccount_deleted::create_from_object($acccount);
@@ -195,7 +206,8 @@ class manager
      * @param int $userid
      * @param int $acccountid
      */
-    public function update_user_acccount(int $userid, int $acccountid): ?acccount_user {
+    public function update_user_acccount(int $userid, int $acccountid): ?acccount_user
+    {
         if (isguestuser($userid)) {
             return null;
         }
@@ -211,7 +223,7 @@ class manager
 
         // TODO: user roles update
 
-        $cache = \cache::make('local_acccount', 'myacccount');
+        $cache = \cache::make(acccount::TABLE, 'myacccount');
         $cacheIdx = 'acccountid-' . $userid;
         $cache->delete($cacheIdx);
 
@@ -226,13 +238,14 @@ class manager
      * @return acccount
      * @throws \moodle_exception
      */
-    public function get_active_acccount_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?acccount {
+    public function get_active_acccount_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?acccount
+    {
         $acccounts = $this->get_active_acccounts();
         if (array_key_exists($id, $acccounts)) {
             return $acccounts[$id];
         }
         if ($showexception) {
-            throw new \moodle_exception('acccountnotfound', 'local_acccount',
+            throw new \moodle_exception('acccountnotfound', acccount::TABLE,
                 $exceptionlink ?: self::get_base_url());
         }
         return null;
@@ -246,13 +259,14 @@ class manager
      * @return acccount
      * @throws \moodle_exception
      */
-    public function get_archived_acccount_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?acccount {
+    public function get_archived_acccount_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?acccount
+    {
         $acccounts = $this->get_archived_acccounts();
         if (array_key_exists($id, $acccounts)) {
             return $acccounts[$id];
         }
         if ($showexception) {
-            throw new \moodle_exception('acccountnotfound', 'local_acccount',
+            throw new \moodle_exception('acccountnotfound', acccount::TABLE,
                 $exceptionlink ?: self::get_base_url());
         }
         return null;
@@ -261,17 +275,19 @@ class manager
     /**
      * Resets acccounts list cache
      */
-    protected function reset_acccounts_cache() {
+    protected function reset_acccounts_cache()
+    {
         \cache_helper::purge_by_event('acccountsmodified');
-        \cache::make('local_acccount', 'myacccount')->purge();
-        \cache::make('local_acccount', 'acccounts')->purge();
+        \cache::make(acccount::TABLE, 'myacccount')->purge();
+        \cache::make(acccount::TABLE, 'acccounts')->purge();
     }
 
     /**
      * Base URL to view acccounts list
      * @return \moodle_url
      */
-    public static function get_base_url() : \moodle_url {
+    public static function get_base_url(): \moodle_url
+    {
         return new \moodle_url('/local/acccount/manage.php');
     }
 
@@ -279,7 +295,8 @@ class manager
      * Editor URL to view acccount form
      * @return \moodle_url
      */
-    public static function get_editor_url() : \moodle_url {
+    public static function get_editor_url(): \moodle_url
+    {
         return new \moodle_url('/local/acccount/edit.php');
     }
 }
