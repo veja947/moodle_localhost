@@ -24,7 +24,9 @@
 
 namespace local_program;
 
+use local_acccount\acccount;
 use local_program\event\program_created;
+use local_program\event\program_updated;
 
 defined('MOODLE_INTERNAL') || die();
 class manager
@@ -101,6 +103,19 @@ class manager
         $program = new program(0, $data);
         $program->create();
         program_created::create_from_object($program)->trigger();
+        $this->reset_programs_cache();
+        return $program;
+    }
+
+    public function update_program(program $program, \stdClass $newData): program {
+        $oldRecord = $program->to_record();
+        foreach ($newData as $key => $value) {
+            if (program::has_property($key) && $key !== 'id') {
+                $program->set($key, $value);
+            }
+        }
+        $program->save();
+        program_updated::create_from_object($program, $oldRecord)->trigger();
         $this->reset_programs_cache();
         return $program;
     }

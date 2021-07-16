@@ -81,7 +81,16 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
 
     if ($pid = $fromform->id) {
-        // TODO: update current program
+        // update current acccount
+        $programEntity = $manager->get_active_program_by_id($pid);
+        $manager->update_program($programEntity, $fromform);
+
+        // go back to manage.php page
+        redirect($CFG->wwwroot . '/local/program/manage.php',
+            'You updated the Program: ' . $fromform->name,
+            null,
+            \core\output\notification::NOTIFY_SUCCESS
+        );
     } else {
 
         // create new program

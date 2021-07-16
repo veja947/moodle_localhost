@@ -80,7 +80,8 @@ if ($mform->is_cancelled()) {
         $acccounts[$newAcccount->get('id')] = $newAcccount;
 
         // go back to manage.php page
-        redirect($CFG->wwwroot . '/local/acccount/manage.php', 'You created a new Acccount: ' . $fromform->name);
+        redirect($CFG->wwwroot . '/local/acccount/manage.php',
+            'You created a new Acccount: ' . $fromform->name);
     }
 
 }
