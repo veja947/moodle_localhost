@@ -56,10 +56,15 @@ class edit extends moodleform {
         $mform->setDefault('programacccount', '');
 
         // 5. courses list
-        $select = $mform->addElement('select', 'programcourses', 'Courses In Program', $this->get_all_courses());
-        $select->setMultiple(true);
-        $mform->setType('programcourses', PARAM_NOTAGS);
-        $mform->setDefault('programcourses', '');
+        $areaNames = [];
+        foreach ($this->get_all_courses() as $id => $name) {
+            $areaNames[$id] = $name;
+        }
+        $options = [
+            'multiple' => true,
+            'noselectionstring' => 'Please select courses',
+        ];
+        $mform->addElement('autocomplete', 'programcourse', 'Courses In the Program', $areaNames, $options);
 
         // add submit and cancel button
         $this->add_action_buttons();
@@ -75,7 +80,7 @@ class edit extends moodleform {
     function get_all_acccounts(): array
     {
         global $DB;
-        return $DB->get_records_menu('local_acccount', null, '', 'id,name') ?? [];
+        return $DB->get_records_menu('local_acccount', ['archived' => 0], '', 'id,name') ?? [];
     }
 
     function get_all_courses(): array
