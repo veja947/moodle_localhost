@@ -34,6 +34,22 @@ $PAGE->set_title('Manage Programs');
 
 $manager = new \local_program\manager();
 
+$programId = $_GET['programid'] ?? null;
+$action = $_GET['action'] ?? null;
+switch ($action) {
+    case \local_program\manager::PROGRAM_ACTION_ARCHIVE:
+        $manager->archive_program((int)$programId);
+        break;
+
+    case \local_program\manager::PROGRAM_ACTION_RESTORE:
+        $manager->restore_program((int)$programId);
+        break;
+
+    case \local_program\manager::PROGRAM_ACTION_DELETE:
+        $manager->delete_program((int)$programId);
+        break;
+}
+
 $activePrograms = $manager->get_active_programs();
 $archivedPrograms = $manager->get_archived_programs();
 

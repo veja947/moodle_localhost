@@ -24,7 +24,6 @@
 
 namespace local_program;
 
-use local_acccount\acccount;
 use local_program\event\program_created;
 use local_program\event\program_updated;
 
@@ -85,6 +84,18 @@ class manager
         return $archievedPrograms ?? [];
     }
 
+    public function get_archived_program_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?program {
+        $programs = $this->get_archived_programs();
+        if (array_key_exists($id, $programs)) {
+            return $programs[$id];
+        }
+        if ($showexception) {
+            throw new \moodle_exception('programnotfound', 'local_program',
+                $exceptionlink ?: self::get_base_url());
+        }
+        return null;
+    }
+
     public function get_programs_display_array(array $programs): array {
         $result = [];
         foreach ($programs as $program) {
@@ -118,6 +129,39 @@ class manager
         program_updated::create_from_object($program, $oldRecord)->trigger();
         $this->reset_programs_cache();
         return $program;
+    }
+
+    /**
+     * Archives an program
+     *
+     * @param int $id
+     * @return program
+     */
+    public function archive_program(int $id): program {
+        if ($program = $this->get_archived_program_by_id($id, null, false)) {
+            return $program;
+        }
+        $program = $this->get_active_program_by_id($id);
+        return $this->update_program($program, (object)[
+            'archived' => 1,
+            'timearchived' => time(),
+        ]);
+    }
+    /**
+     * Restore an program
+     *
+     * @param int $id
+     * @return program
+     */
+    public function restore_program(int $id): program {
+        if ($program = $this->get_active_program_by_id($id, null, false)) {
+            return $program;
+        }
+        $program = $this->get_archived_program_by_id($id);
+        return $this->update_program($program, (object)[
+            'archived' => 0,
+            'timearchived' => null,
+        ]);
     }
 
 
