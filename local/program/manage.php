@@ -32,13 +32,19 @@ $PAGE->set_url(new moodle_url('/local/program/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Programs');
 
+$manager = new \local_program\manager();
 
+$activePrograms = $manager->get_active_programs();
+$archivedPrograms = $manager->get_archived_programs();
 
-$programsList = $DB->get_records('local_program');
+$activeProgramsDisplay = $manager->get_programs_display_array($activePrograms);
+$archivedProgramsDisplay = $manager->get_programs_display_array($archivedPrograms);
 
 $templateContext = (object)[
-    'programs_list' => array_values($programsList),
-    'edit_url' => new moodle_url('/local/program/edit.php'),
+    'active_program_list' => array_values($activeProgramsDisplay),
+    'archived_program_list' => array_values($archivedProgramsDisplay),
+    'edit_url' => \local_program\manager::get_editor_url(),
+    'action_url' => \local_program\manager::get_base_url(),
 ];
 
 echo $OUTPUT->header();

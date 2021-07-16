@@ -16,23 +16,21 @@
 
 /**
  *
- * @package    local_acccount
+ * @package    local_program
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_acccount;
+namespace local_program;
 
 use core\persistent;
 
 defined('MOODLE_INTERNAL') || die();
 
-
-
-class acccount extends persistent {
-
+class program extends persistent
+{
     /** The table name. */
-    const TABLE = 'local_acccount';
+    const TABLE = 'local_program';
 
     /**
      * Return the definition of the properties of this model.
@@ -43,19 +41,7 @@ class acccount extends persistent {
         return [
             'name' => array(
                 'type' => PARAM_TEXT,
-                'description' => 'The acccount name.',
-            ),
-            'sitename' => array(
-                'type' => PARAM_TEXT,
-                'description' => 'The acccount site name.',
-                'default' => null,
-                'null' => NULL_ALLOWED,
-            ),
-            'siteshortname' => array(
-                'type' => PARAM_TEXT,
-                'description' => 'The acccount site short name.',
-                'default' => null,
-                'null' => NULL_ALLOWED,
+                'description' => 'The program name.',
             ),
             'idnumber' => array(
                 'type' => PARAM_RAW,
@@ -63,9 +49,9 @@ class acccount extends persistent {
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
-            'loginurl' => array(
+            'description' => array(
                 'type' => PARAM_TEXT,
-                'description' => 'The alternative acccount login url.',
+                'description' => '',
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
@@ -80,41 +66,20 @@ class acccount extends persistent {
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
-            'isdefault' => array(
-                'type' => PARAM_INT,
-                'description' => 'Is default acccount',
-                'default' => 0,
-            ),
-            'categoryid' => array(
-                'type' => PARAM_INT,
-                'description' => 'Category ID this acccount is linked to',
-                'default' => null,
-                'null' => NULL_ALLOWED,
-            ),
-            'cssconfig' => array(
-                'type' => PARAM_RAW,
-                'description' => 'The CSS config for this acccount.',
-                'default' => null,
-                'null' => NULL_ALLOWED,
-            ),
         ];
     }
-
     public function get_formatted_property($name) : string {
         return format_string($this->get($name), true,
-            ['context' => \context_system::instance(), 'escape' => false]) ?? '';
+                ['context' => \context_system::instance(), 'escape' => false]) ?? '';
     }
 
     public function get_properties_display(): array {
         return [
             'id' => $this->get('id'),
             'name' => $this->get_formatted_property('name'),
-            'sitename' => $this->get_formatted_property('sitename'),
-            'siteshortname' => $this->get_formatted_property('siteshortname'),
             'idnumber' => $this->get_formatted_property('idnumber'),
-            'isdefault' => $this->get('isdefault') ? 'True' : 'False',
+            'description' => $this->get_formatted_property('description'),
             'archived' => $this->get('archived') ? 'True' : 'False',
-            'cssconfig' => $this->get('cssconfig'),
         ];
     }
 }

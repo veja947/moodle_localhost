@@ -1,14 +1,54 @@
 <h1>Manage Programs</h1>
 
 
-<div>
-    <input type="button" class="btn btn-primary" value="Create" onclick="location.href='{{edit_url}}'" />
+<div class="form-group">
+    <input type="button" class="btn btn-primary" value="Create" onclick="location.href='{{edit_url}}'">
 </div>
 
-<div>
-    {{#programs_list}}
-        <div class="list-inline-item">
-            <a href="{{edit_url}}?programid={{id}}">{{name}}</a>
-        </div>
-    {{/programs_list}}
+<div class="form-group">
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Program Name</th>
+            <th>Id Number</th>
+            <th>Description</th>
+            <th>Archived</th>
+            <th>Actions</th>
+        </tr>
+        {{#active_program_list}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{idnumber}}</td>
+                <td>{{description}}</td>
+                <td>{{archived}}</td>
+                <td>
+                    <a href="{{edit_url}}?programid={{id}}" id="edit_program_button">Edit</a>
+                    |
+                    <a href="{{action_url}}?programid={{id}}&action=archive" id="archive_program_button">Archive</a>
+                </td>
+            </tr>
+        {{/active_program_list}}
+    </table>
+
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Program Name</th>
+            <th>Id Number</th>
+            <th>Description</th>
+            <th>Archived</th>
+            <th>Actions</th>
+        </tr>
+        {{#archived_program_list}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{idnumber}}</td>
+                <td>{{description}}</td>
+                <td>{{archived}}</td>
+                <td>
+                    <a href="{{action_url}}?programid={{id}}&action=restore" id="restore_program_button">Restore</a>
+                    |
+                    <a href="{{action_url}}?programid={{id}}&action=delete" id="delete_program_button">Delete</a>
+                </td>
+            </tr>
+        {{/archived_program_list}}
+    </table>
 </div>
