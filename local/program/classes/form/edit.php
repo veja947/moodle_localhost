@@ -46,7 +46,7 @@ class edit extends moodleform {
         $mform->setDefault('programidnumber', '');
 
         // 3. program description
-        $mform->addElement('text', 'programdescription', 'Program Description');
+        $mform->addElement('textarea', 'programdescription', 'Program Description');
         $mform->setType('programdescription', PARAM_NOTAGS);
         $mform->setDefault('programdescription', '');
 
