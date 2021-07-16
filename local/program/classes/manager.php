@@ -25,6 +25,7 @@
 namespace local_program;
 
 use local_program\event\program_created;
+use local_program\event\program_deleted;
 use local_program\event\program_updated;
 
 defined('MOODLE_INTERNAL') || die();
@@ -162,6 +163,26 @@ class manager
             'archived' => 0,
             'timearchived' => null,
         ]);
+    }
+
+    public function delete_program(int $id): ?program {
+        global $DB;
+        if (!$DB->get_record('local_program', ['id' => $id])) {
+            return null;
+        }
+
+        $program = $this->get_archived_program_by_id($id);
+
+        // delete program_courses relationship
+        $DB->delete_records('local_program_course', ['programid' => $id]);
+
+        // delete program record, trigger event
+        $event = program_deleted::create_from_object($program);
+        $program->delete();
+        $event->trigger();
+
+        $this->reset_programs_cache();
+        return $program;
     }
 
 
