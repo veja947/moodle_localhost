@@ -272,7 +272,7 @@ class manager
         return new \moodle_url('/local/program/edit.php');
     }
 
-    protected function getCourseIDsForProgram(int $programid): array {
+    public function getCourseIDsForProgram(int $programid): array {
         global $DB;
         $results = [];
         $objects = $DB->get_records_sql('
