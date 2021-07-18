@@ -32,7 +32,7 @@ class user_acccount_updated extends base {
 
     protected function init()
     {
-        $this->data['objecttable'] = 'local_acccount_user';
+        $this->data['objecttable'] = acccount_user::TABLE;
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }

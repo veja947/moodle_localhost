@@ -52,18 +52,26 @@ class program_course extends persistent
     }
 
     /**
-     * Creates an instance for a given course
+     * Creates an instance for a given course & program match
      *
      * @param int $courseid
      * @return program_course
      */
-    public static function create_for_course(int $courseid) : self {
+    public static function create_for_program_course(int $programid, int $courseid) : self {
         global $DB;
-        $record = $DB->get_record(self::TABLE, ['courseid' => $courseid]);
+        $record = $DB->get_record(self::TABLE,
+            [
+                'courseid' => $courseid,
+                'programid' => $programid,
+            ]);
         if ($record) {
             return new self(0, $record);
         } else {
-            return new self(0, (object)['userid' => $courseid]);
+            return new self(0,
+                (object)[
+                    'courseid' => $courseid,
+                    'programid' => $programid,
+                ]);
         }
     }
 }

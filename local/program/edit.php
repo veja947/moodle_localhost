@@ -81,9 +81,10 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
 
     if ($pid = $fromform->id) {
-        // update current acccount
+        // update current program
         $programEntity = $manager->get_active_program_by_id($pid);
         $manager->update_program($programEntity, $fromform);
+        $manager->update_program_courses($pid, $fromform->courses);
 
         // go back to manage.php page
         redirect($CFG->wwwroot . '/local/program/manage.php',

@@ -24,6 +24,9 @@
 
 namespace local_program;
 
+use local_program\event\course_program_created;
+use local_program\event\course_program_deleted;
+use local_program\event\course_program_updated;
 use local_program\event\program_created;
 use local_program\event\program_deleted;
 use local_program\event\program_updated;
@@ -197,6 +200,59 @@ class manager
         return $program;
     }
 
+    protected function update_one_program_courses(int $programId, int $courseId): program_course
+    {
+        $programCourse = program_course::create_for_program_course($programId, $courseId);
+        $oldRecord = $programCourse->to_record();
+
+        $programCourse->set('programid', $programId);
+        $programCourse->set('courseid', $courseId);
+        $programCourse->save();
+
+        $oldRecord->id ?
+            course_program_updated::create_from_object($programCourse, $oldRecord)->trigger()
+            : course_program_created::create_from_object($programCourse)->trigger();
+
+        $cache = \cache::make(program::TABLE, 'myprogram');
+
+
+        return $programCourse;
+    }
+
+    protected function delete_one_program_course(int $programid, int $courseid): void {
+        global $DB;
+        if (!$programCourse = $this->getProgramCourseByIds($programid, $courseid)) {
+            return;
+        }
+
+        $DB->delete_records(program_course::TABLE, [
+            'programid' => $programid,
+            'courseid' => $courseid,
+        ]);
+        $event = course_program_deleted::create_from_object($programCourse);
+        $programCourse->delete();
+        $event->trigger();
+        $this->reset_programs_cache();
+    }
+
+    public function update_program_courses(int $programId, array $courseIdArray): array
+    {
+        $results = [];
+        $oldCourseIdArray = array_values($this->getCourseIDsForProgram($programId));
+        foreach ($courseIdArray as $courseId) {
+            $programCourse = $this->update_one_program_courses($programId, $courseId);
+            array_push($results, $programCourse);
+            $oldCourseIdArray = array_diff($oldCourseIdArray, [$courseId]);
+        }
+
+        // delete useless course_program record
+        foreach ($oldCourseIdArray as $item) {
+            $this->delete_one_program_course($programId, $item);
+        }
+
+        return $results;
+    }
+
 
     /**
      * Base URL to view programs list
@@ -214,6 +270,31 @@ class manager
     public static function get_editor_url(): \moodle_url
     {
         return new \moodle_url('/local/program/edit.php');
+    }
+
+    protected function getCourseIDsForProgram(int $programid): array {
+        global $DB;
+        $results = [];
+        $objects = $DB->get_records_sql('
+            SELECT lpc.courseid FROM {local_program_course} lpc
+            WHERE lpc.programid=:programid
+        ', ['programid' => $programid]);
+        foreach ($objects as $object) {
+            array_push($results, $object->courseid);
+        }
+        return $results;
+    }
+
+    protected function getProgramCourseByIds(int $programId, int $courseId): ?program_course
+    {
+        global $DB;
+        $record = $DB->get_record(program_course::TABLE,
+            [
+                'programid' => $programId,
+                'courseid' => $courseId,
+            ]);
+
+        return $record ? new program_course(0, $record) : null;
     }
 
     /**

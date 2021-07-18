@@ -16,35 +16,39 @@
 
 /**
  *
- * @package    local_acccount
+ * @package    local_program
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_acccount\event;
+namespace local_program\event;
+
 
 use core\event\base;
-use local_acccount\acccount_user;
+use local_program\program_course;
 
-defined('MOODLE_INTERNAL') || die();
-
-class user_acccount_created extends base {
-
+class course_program_deleted extends base
+{
     protected function init()
     {
-        $this->data['objecttable'] = acccount_user::TABLE;
-        $this->data['crud'] = 'c';
+        $this->data['objecttable'] = program_course::TABLE;
+        $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
-    public static function create_from_object(acccount_user $acccountUser): user_acccount_created {
+    public static function create_from_object(program_course $programCourse): course_program_deleted
+    {
+        global $USER;
         $event = static::create([
             'context' => \context_system::instance(),
-            'objectid' => $acccountUser->get('id'),
-            'relateduserid' => $acccountUser->get('userid'),
-            'other' => ['acccountid' => $acccountUser->get('acccountid')]
+            'objectid' => $programCourse->get('id'),
+            'relateduserid' => $USER->id,
+            'other' => [
+                'programid' => $programCourse->get('programid'),
+                'courseid' => $programCourse->get('courseid'),
+            ]
         ]);
-        $event->add_record_snapshot(acccount_user::TABLE, $acccountUser->to_record());
+        $event->add_record_snapshot(program_course::TABLE, $programCourse->to_record());
         return $event;
     }
 }
