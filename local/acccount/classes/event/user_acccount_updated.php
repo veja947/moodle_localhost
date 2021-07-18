@@ -46,7 +46,7 @@ class user_acccount_updated extends base {
         ];
 
         $event = static::create($params);
-        $event->add_record_snapshot('local_acccount_user', $acccountUser->to_record());
+        $event->add_record_snapshot(acccount_user::TABLE, $acccountUser->to_record());
         return $event;
     }
 }

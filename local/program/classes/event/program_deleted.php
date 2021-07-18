@@ -34,7 +34,7 @@ class program_deleted extends base
 
     protected function init()
     {
-        $this->data['objecttable'] = 'local_program';
+        $this->data['objecttable'] = program::TABLE;
         $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }

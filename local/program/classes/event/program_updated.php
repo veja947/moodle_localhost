@@ -32,7 +32,7 @@ class program_updated extends base
 
     protected function init()
     {
-        $this->data['objecttable'] = 'local_program';
+        $this->data['objecttable'] = program::TABLE;
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }

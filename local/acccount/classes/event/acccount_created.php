@@ -35,7 +35,7 @@ class acccount_created extends base
 
     protected function init()
     {
-        $this->data['objecttable'] = 'local_acccount';
+        $this->data['objecttable'] = acccount::TABLE;
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
