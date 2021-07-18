@@ -283,7 +283,7 @@ class manager
     }
 
     /**
-     * Base URL to view acccounts list
+     * Acccount URL to view acccounts list
      * @return \moodle_url
      */
     public static function get_base_url(): \moodle_url
@@ -292,11 +292,20 @@ class manager
     }
 
     /**
-     * Editor URL to view acccount form
+     * Acccount URL to edit acccount form
      * @return \moodle_url
      */
     public static function get_editor_url(): \moodle_url
     {
         return new \moodle_url('/local/acccount/edit.php');
+    }
+
+    /**
+     * Acccount URL to view learners list
+     * @return \moodle_url
+     */
+    public static function get_learners_url(): \moodle_url
+    {
+        return new \moodle_url('/local/acccount/learners.php');
     }
 }

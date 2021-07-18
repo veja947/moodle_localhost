@@ -1,0 +1,28 @@
+<h1>List of Learners</h1>
+
+<div class="form-group">
+    <input type="button" class="btn btn-primary" value="New User" onclick="location.href='{{edit_url}}'">
+</div>
+
+<div class="form-group">
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+<!--            <th>Acccount ID</th>-->
+            <th>Actions</th>
+        </tr>
+    {{#acccount_learners_list}}
+        <tr>
+            <td>{{firstname}} {{lastname}}</td>
+            <td>{{email}}</td>
+<!--            <td>{{acccountid}}</td>-->
+            <td>
+                <a href="#" id="edit_learner_button">Edit</a>
+                |
+                <a href="#" id="delete_learner_button">Delete</a>
+            </td>
+        </tr>
+    {{/acccount_learners_list}}
+    </table>
+</div>

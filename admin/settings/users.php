@@ -23,6 +23,10 @@ if ($hassiteconfig
     $acccountEditUrl = new moodle_url('/local/acccount/edit.php');
     $ADMIN->add('accounts', new admin_externalpage('acccountedit', 'Add new Acccount', $acccountEditUrl->__toString()));
 
+    // add local_acccount learners link
+    $acccountLearnersUrl = new moodle_url('/local/acccount/learners.php');
+    $ADMIN->add('accounts', new admin_externalpage('acccountlearners', 'Learner Management', $acccountLearnersUrl->__toString()));
+
 
     // Stuff under the "accounts" subcategory.
     $ADMIN->add('accounts', new admin_externalpage('editusers', new lang_string('userlist','admin'), "$CFG->wwwroot/$CFG->admin/user.php", array('moodle/user:update', 'moodle/user:delete')));
