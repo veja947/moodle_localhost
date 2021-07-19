@@ -26,13 +26,17 @@ require_once($CFG->libdir.'/adminlib.php');
 admin_externalpage_setup('acccountlearners');
 global $DB;
 
+$manager = new \local_acccount\manager();
+
 $PAGE->set_url(\local_acccount\manager::get_learners_url());
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Learners');
 
 $templateContext = (object)[
-    'acccount_learners_list' => [],
+    'acccount_learners_list' => $manager->getLearnersDisplayArray(),
 ];
+
+$test = $manager->getLearnersDisplayArray();
 
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_acccount/learner', $templateContext);

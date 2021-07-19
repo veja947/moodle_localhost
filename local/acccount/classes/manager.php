@@ -272,6 +272,20 @@ class manager
         return null;
     }
 
+    public function getLearnersDisplayArray(int $acccountid=null): array
+    {
+        global $DB;
+
+        $results = $DB->get_records_sql('
+            SELECT u.email, u.firstname, u.lastname, lau.id as acccountid FROM {user} u
+            LEFT JOIN {local_acccount_user} lau ON lau.userid = u.id
+            WHERE :addcondition
+        ', [
+            'addcondition' => isset($acccountid) ? 'lau.id=' . $acccountid : true,
+        ]);
+        return array_values($results);
+    }
+
     /**
      * Resets acccounts list cache
      */
