@@ -62,9 +62,9 @@
 
     //TODO: new -- check $USER has the permission to access the course or not
     $user_acccount_id = $DB->get_record('local_acccount_user', ['userid' => $USER->id], 'acccountid')->acccountid;
-    $sql = 'select courseid from {local_program_course} lpc
-            where lpc.programid in (select programid from {local_program_acccount} lpa
-            where acccountid = :acccountid) and courseid = :courseid limit 1';
+    $sql = 'SELECT courseid FROM {local_program_course} lpc
+            WHERE lpc.programid IN (SELECT programid FROM {local_program} lp
+            WHERE lp.acccountid = :acccountid) AND courseid = :courseid limit 1';
     $eligble_course = $DB->get_records_sql($sql,
         [
             'acccountid' => $user_acccount_id,
