@@ -74,9 +74,10 @@ if ($mform->is_cancelled()) {
             'name' => $fromform->name,
             'idnumber' => $fromform->idnumber,
             'description' => $fromform->description,
-            'acccountid' => $fromform->acccountid,
+            'acccountid' => $fromform->acccountid ?? null,
 
         ]);
+        $manager->update_program_courses($newProgram->get('id'), $fromform->courses);
     }
 
     // go back to manage.php page

@@ -80,7 +80,9 @@ class edit extends moodleform {
     function get_all_acccounts(): array
     {
         global $DB;
-        return $DB->get_records_menu('local_acccount', ['archived' => 0], '', 'id,name') ?? [];
+        $allAcccounts = $DB->get_records_menu('local_acccount', ['archived' => 0], '', 'id,name');
+        $allAcccounts[0] = 'Shared Space';
+        return $allAcccounts ?? [];
     }
 
     function get_all_courses(): array
