@@ -331,4 +331,13 @@ class manager
     {
         return new \moodle_url('/local/acccount/roles.php');
     }
+
+    /**
+     * Acccount URL to assign learners roles
+     * @return \moodle_url
+     */
+    public static function get_assign_roles_url(): \moodle_url
+    {
+        return new \moodle_url('/local/acccount/assign.php');
+    }
 }

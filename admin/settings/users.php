@@ -31,6 +31,10 @@ if ($hassiteconfig
     $acccountRolersUrl = new moodle_url('/local/acccount/roles.php');
     $ADMIN->add('accounts', new admin_externalpage('acccountroles', 'Acccount Roles', $acccountRolersUrl->__toString()));
 
+    // add local_acccount assign roles link
+    $acccountAssignRolersUrl = new moodle_url('/local/acccount/assign.php');
+    $ADMIN->add('accounts', new admin_externalpage('acccountassignroles', 'Acccount Roles', $acccountAssignRolersUrl->__toString()));
+
 
     // Stuff under the "accounts" subcategory.
     $ADMIN->add('accounts', new admin_externalpage('editusers', new lang_string('userlist','admin'), "$CFG->wwwroot/$CFG->admin/user.php", array('moodle/user:update', 'moodle/user:delete')));
