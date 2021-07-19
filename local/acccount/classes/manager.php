@@ -322,4 +322,13 @@ class manager
     {
         return new \moodle_url('/local/acccount/learners.php');
     }
+
+    /**
+     * Acccount URL to view learners roles
+     * @return \moodle_url
+     */
+    public static function get_roles_url(): \moodle_url
+    {
+        return new \moodle_url('/local/acccount/roles.php');
+    }
 }

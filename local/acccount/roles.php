@@ -23,22 +23,33 @@
 
 require_once(__DIR__ . '/../../config.php'); // load config.php
 require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('acccountlearners');
+admin_externalpage_setup('acccountroles');
 global $DB;
 
 $manager = new \local_acccount\manager();
 
-$PAGE->set_url(\local_acccount\manager::get_learners_url());
+$PAGE->set_url(\local_acccount\manager::get_roles_url());
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Manage Learners');
+$PAGE->set_title('Roles');
+
+// These are needed early because of tabs.php.
+$context = $PAGE->context;
+list($assignableroles, $assigncounts, $nameswithcounts) = get_assignable_roles($context, ROLENAME_BOTH, true);
+$overridableroles = get_overridable_roles($context, ROLENAME_BOTH);
+
+$list = [];
+foreach ($assignableroles as $key => $role) {
+    array_push($list, [
+        'name' => $role,
+        'count' => $assigncounts[$key],
+    ]);
+}
 
 $templateContext = (object)[
-    'acccount_learners_list' => $manager->getLearnersDisplayArray(),
-    'roles_url' => \local_acccount\manager::get_roles_url(),
+    'acccount_roles_list' => $list,
 ];
 
-$test = $manager->getLearnersDisplayArray();
-
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_acccount/learner', $templateContext);
+echo $OUTPUT->render_from_template('local_acccount/role', $templateContext);
 echo $OUTPUT->footer();
+
