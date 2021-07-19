@@ -40,6 +40,7 @@ $overridableroles = get_overridable_roles($context, ROLENAME_BOTH);
 $list = [];
 foreach ($assignableroles as $key => $role) {
     array_push($list, [
+        'roleid' => $key,
         'name' => $role,
         'count' => $assigncounts[$key],
     ]);
@@ -47,6 +48,7 @@ foreach ($assignableroles as $key => $role) {
 
 $templateContext = (object)[
     'acccount_roles_list' => $list,
+    'assign_url' => \local_acccount\manager::get_assign_roles_url(['contextid' => $context->id]),
 ];
 
 echo $OUTPUT->header();
