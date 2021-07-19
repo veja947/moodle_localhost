@@ -327,17 +327,17 @@ class manager
      * Acccount URL to view learners roles
      * @return \moodle_url
      */
-    public static function get_roles_url(): \moodle_url
+    public static function get_roles_url(array $params=null): \moodle_url
     {
-        return new \moodle_url('/local/acccount/roles.php');
+        return new \moodle_url('/local/acccount/roles.php', $params);
     }
 
     /**
      * Acccount URL to assign learners roles
      * @return \moodle_url
      */
-    public static function get_assign_roles_url(): \moodle_url
+    public static function get_assign_roles_url(array $params=null): \moodle_url
     {
-        return new \moodle_url('/local/acccount/assign.php');
+        return new \moodle_url('/local/acccount/assign.php', $params);
     }
 }

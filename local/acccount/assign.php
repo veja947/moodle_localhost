@@ -32,12 +32,18 @@ $PAGE->set_url(\local_acccount\manager::get_assign_roles_url());
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Assign Roles');
 
+//$context = $PAGE->context;
+$contextid = required_param('contextid', PARAM_INT);
 $roleid    = optional_param('roleid', 0, PARAM_INT);
 
+list($context, $course, $cm) = get_context_info_array($contextid);
+
+// These are needed early because of tabs.php.
+list($assignableroles, $assigncounts, $nameswithcounts) = get_assignable_roles($context, ROLENAME_BOTH, true);
+$overridableroles = get_overridable_roles($context, ROLENAME_BOTH);
 
 // Process any incoming role assignments before printing the header.
 if ($roleid) {
-    $context = $PAGE->context;
 
     // Create the user selector objects.
     $options = array('context' => $context, 'roleid' => $roleid);
@@ -88,6 +94,22 @@ if ($roleid) {
 
 echo $OUTPUT->header();
 
+
+
+
+if ($roleid) {
+    // Show UI for assigning a particular role to users.
+    // Print a warning if we are assigning system roles.
+    if ($context->contextlevel == CONTEXT_SYSTEM) {
+        echo $OUTPUT->notification(get_string('globalroleswarning', 'core_role'));
+    }
+
+    // Print the form.
+    $assignurl = new moodle_url($PAGE->url, [
+            'contextid' => $contextid,
+            'roleid' => $roleid,
+    ]);
+
 ?>
     <form id="assignform" method="post" action="<?php echo $assignurl ?>"><div>
             <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />
@@ -118,5 +140,31 @@ echo $OUTPUT->header();
         </div></form>
 
 <?php
+    $PAGE->requires->js_init_call('M.core_role.init_add_assign_page');
+
+    if (!empty($errors)) {
+        $msg = '<p>';
+        foreach ($errors as $e) {
+            $msg .= $e.'<br />';
+        }
+        $msg .= '</p>';
+        echo $OUTPUT->box_start();
+        echo $OUTPUT->notification($msg);
+        echo $OUTPUT->box_end();
+    }
+
+    // Print a form to swap roles, and a link back to the all roles list.
+    echo '<div class="backlink">';
+
+    $select = new single_select($PAGE->url, 'roleid', $nameswithcounts, $roleid, null);
+    $select->label = get_string('assignanotherrole', 'core_role');
+    echo $OUTPUT->render($select);
+    echo '<p><a href="' . \local_acccount\manager::get_roles_url(['contextid' => $contextid]) . '">' . get_string('backtoallroles', 'core_role') . '</a></p>';
+    echo '</div>';
+
+}
+
+
+
 
 echo $OUTPUT->footer();
