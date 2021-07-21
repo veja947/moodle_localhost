@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ *
  *
  * @package    block_custom_dashboard
  * @author     Joey Zhang
@@ -24,6 +24,28 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021051701;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2021051100;        // Requires this Moodle version.
-$plugin->component = 'block_custom_dashboard';      // Full name of the plugin (used for diagnostics)
+$capabilities = array(
+
+    'block/custom_dashboard:myaddinstance' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/my:manageblocks'
+    ),
+
+    'block/custom_dashboard:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+);

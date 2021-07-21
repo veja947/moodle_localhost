@@ -38,6 +38,8 @@ class block_custom_dashboard extends block_base
     }
 
     function get_content() {
+        $this->content = new stdClass;
+        $this->content->text = 'hello dashboard';
         return $this->content;
     }
 
