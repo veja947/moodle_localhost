@@ -32,8 +32,8 @@ if ($hassiteconfig
     $ADMIN->add('accounts', new admin_externalpage('acccountroles', 'Acccount Roles', $acccountRolersUrl->__toString()));
 
     // add local_acccount assign roles link
-    $acccountAssignRolersUrl = new moodle_url('/local/acccount/assign.php');
-    $ADMIN->add('accounts', new admin_externalpage('acccountassignroles', 'Acccount Roles', $acccountAssignRolersUrl->__toString()));
+    $acccountAssignRolersUrl = new moodle_url('/local/acccount/assign.php', ['contextid' => $systemcontext->id]);
+    $ADMIN->add('accounts', new admin_externalpage('acccountassignroles', 'Assign Roles', $acccountAssignRolersUrl->__toString()));
 
 
     // Stuff under the "accounts" subcategory.

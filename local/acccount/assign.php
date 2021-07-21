@@ -27,14 +27,15 @@ admin_externalpage_setup('acccountassignroles');
 global $DB;
 
 $manager = new \local_acccount\manager();
+$contextid = required_param('contextid', PARAM_INT);
+$roleid    = optional_param('roleid', 0, PARAM_INT);
 
 $PAGE->set_url(\local_acccount\manager::get_assign_roles_url());
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Assign Roles');
 
 //$context = $PAGE->context;
-$contextid = required_param('contextid', PARAM_INT);
-$roleid    = optional_param('roleid', 0, PARAM_INT);
+
 
 list($context, $course, $cm) = get_context_info_array($contextid);
 
