@@ -15,39 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Custom Dashboard Block
+ * This file defines constants and classes used by block_custom_dashboard.
  *
  * @package    block_custom_dashboard
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->dirroot . '/course/lib.php');
-require_once(dirname(__FILE__) . '/locallib.php');
+defined('MOODLE_INTERNAL') || die();
 
-class block_custom_dashboard extends block_base
+function get_all_programs(): array
 {
-    function init() {
-        $this->title = get_string('pluginname', 'block_custom_dashboard');
-    }
+    global $DB;
 
-    function has_config() {
-        return true;
-    }
-
-    public function hide_header()
-    {
-        return true;
-    }
-
-    function get_content() {
-        $this->content = new stdClass;
-        $this->content->text = 'hello dashboard';
-        return $this->content;
-    }
-
-    public function instance_allow_multiple()
-    {
-        return false;
-    }
 }
