@@ -28,15 +28,84 @@ defined('MOODLE_INTERNAL') || die();
 
 class manager
 {
+    const MODULE_STATE_IN_PROGRESS = 'inprogress';
+    const MODULE_STATE_COMPLETED = 'finished';
+
     public static function get_students(int $programid=null, int $courseid=null): array
     {
         $users = search_users($courseid, null, '');
         return $users;
     }
 
-    public static function get_students_in_progress(int $programid=null, int $courseid=null): array
+    public static function get_all_modules(): int
     {
+        // moodle base course completion table
+        if (self::check_table_exist('quiz')) {
+            $sql = "SELECT COUNT(DISTINCT id) FROM
+                    {quiz} q
+                   ";
+            $result = self::count_records_by_sql('quiz', $sql);
+        } else {
+            // TODO: moodle workplace program / course completion
+        }
 
-        return [];
+
+        return $result ?? 0;
+    }
+
+    public static function get_modules_in_progress(int $programid=null, int $courseid=null): int
+    {
+        // moodle base course completion table
+        if (self::check_table_exist('quiz_attempts')) {
+            $sql = "SELECT COUNT(DISTINCT id) FROM
+                    {quiz_attempts} qa
+                    WHERE qa.state ='" . self::MODULE_STATE_IN_PROGRESS . "'";
+            $result = self::count_records_by_sql('quiz_attempts', $sql);
+        } else {
+            // TODO: moodle workplace program / course completion
+        }
+
+        return $result ?? 0;
+    }
+
+    public static function get_modules_completed(int $programid=null, int $courseid=null): int
+    {
+        // moodle base course completion table
+        if (self::check_table_exist('quiz_attempts')) {
+            $sql = "SELECT COUNT(DISTINCT id) FROM
+                    {quiz_attempts} qa
+                    WHERE qa.state ='" . self::MODULE_STATE_COMPLETED . "'";
+            $result = self::count_records_by_sql('quiz_attempts', $sql);
+        } else {
+            // TODO: moodle workplace program / course completion
+        }
+
+        return $result ?? 0;
+    }
+
+    public static function count_records_by_sql(string $table, string $sql): int
+    {
+        global $DB;
+        $result = 0;
+
+        if (self::check_table_exist($table)) {
+            $result = $DB->count_records_sql($sql);
+        }
+        return $result;
+    }
+
+    private static function get_course_by_id(int $id): ?\stdClass
+    {
+        global $DB;
+        if (!self::check_table_exist('course')) {
+            return null;
+        }
+        return $DB->get_record('course', ['id' => $id]);
+    }
+
+    private static function check_table_exist(string $name): bool
+    {
+        global $DB;
+        return $DB->get_manager()->table_exists($name);
     }
 }
