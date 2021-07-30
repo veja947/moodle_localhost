@@ -23,7 +23,6 @@
  */
 
 require_once($CFG->dirroot . '/course/lib.php');
-require_once(dirname(__FILE__) . '/locallib.php');
 
 class block_custom_dashboard extends block_base
 {
@@ -41,7 +40,17 @@ class block_custom_dashboard extends block_base
     }
 
     function get_content() {
-        $this->content = new stdClass;
+
+//        $renderable = new \block_custom_dashboard\output\customdashboard($this->config);
+//        $renderer = $this->page->get_renderer('main');
+
+        $this->content = new stdClass();
+//        $this->content->text = $renderer->render($renderable);
+
+        $students = \block_custom_dashboard\manager::get_students();
+        $studentsinprogress = \block_custom_dashboard\manager::get_students_in_progress();
+        $this->content->total_students = count($students);
+
         $this->content->text = 'hello dashboard';
         return $this->content;
     }
