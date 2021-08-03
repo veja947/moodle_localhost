@@ -48,9 +48,8 @@ class block_custom_dashboard extends block_base
 //        $this->content->text = $renderer->render($renderable);
 
         $students = \block_custom_dashboard\manager::get_students();
-        $modulesinprogress = \block_custom_dashboard\manager::get_modules_in_progress();
-        $modulesinprogress = \block_custom_dashboard\manager::get_modules_completed();
-        $allmodules = \block_custom_dashboard\manager::get_all_modules();
+        $progam_records = \block_custom_dashboard\manager::get_program_statics(15);
+
         $this->content->total_students = count($students);
 
         $this->content->text = 'hello dashboard';
