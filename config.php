@@ -4,6 +4,9 @@ unset($CFG);
 global $CFG;
 $CFG = new stdClass();
 
+// Prevent JS caching
+$CFG->cachejs = false;
+
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
 $CFG->dbhost    = 'localhost';
