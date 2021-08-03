@@ -32,24 +32,33 @@ require_once("{$CFG->libdir}/completionlib.php");
 class manager
 {
 
-    public static function get_program_statics(int $programid=null): array
+    public static function get_program_ids(): array
     {
-        $students_number = self::get_students_count_in_program($programid);
-        $unstarted_records_number = self::get_unstarted_records_count_in_program($programid);
-        $in_progress_records_number = self::get_in_progress_records_count_in_program($programid);
-        $completed_records_number = self::get_completed_records_count_in_program($programid);
+        global $DB;
+        if (!self::check_table_exist('course')) {
+            return [];
+        }
+        return $DB->get_records('local_program', null, '', 'id');
+    }
 
-        $result = [
+    public static function get_program_statics(int $program_id = null): array
+    {
+        $students_number = self::get_students_count_in_program($program_id);
+        $unstarted_records_number = self::get_unstarted_records_count_in_program($program_id);
+        $in_progress_records_number = self::get_in_progress_records_count_in_program($program_id);
+        $completed_records_number = self::get_completed_records_count_in_program($program_id);
+        $total_records_number = $unstarted_records_number + $in_progress_records_number + $completed_records_number;
+
+        return [
             'total_students_number' => $students_number,
             'unstarted_number' => $unstarted_records_number,
             'in_progress_number' => $in_progress_records_number,
             'completed_number' => $completed_records_number,
+            'total_records_number' => $total_records_number,
         ];
-
-        return $result;
     }
 
-    private static function get_students_count_in_program(int $program_id=null, int $course_id=null): int
+    private static function get_students_count_in_program(int $program_id = null, int $course_id = null): int
     {
         global $DB;
         $select_discinct_students = 'SELECT COUNT(DISTINCT u.id) AS student_count';
@@ -62,7 +71,7 @@ class manager
         return array_pop($result)->student_count;
     }
 
-    private static function get_unstarted_records_count_in_program(int $program_id=null, int $course_id=null): int
+    private static function get_unstarted_records_count_in_program(int $program_id = null, int $course_id = null): int
     {
         global $DB;
         $count_select_sql = 'SELECT COUNT(DISTINCT ccom.id) ';
@@ -75,7 +84,7 @@ class manager
         return $DB->count_records_sql($sql, $params);
     }
 
-    private static function get_in_progress_records_count_in_program(int $program_id=null, int $course_id=null): int
+    private static function get_in_progress_records_count_in_program(int $program_id = null, int $course_id = null): int
     {
         global $DB;
         $count_select_sql = 'SELECT COUNT(DISTINCT ccom.id) ';
@@ -88,7 +97,7 @@ class manager
         return $DB->count_records_sql($sql, $params);
     }
 
-    private static function get_completed_records_count_in_program(int $program_id=null, int $course_id=null): int
+    private static function get_completed_records_count_in_program(int $program_id = null, int $course_id = null): int
     {
         global $DB;
         $count_select_sql = 'SELECT COUNT(DISTINCT ccom.id) ';
@@ -107,10 +116,10 @@ class manager
      * @param int|null $course_id
      * @param string $filter_condition
      * @param string $select_data
-     * @throws \moodle_exception
      * @return string
+     * @throws \moodle_exception
      */
-    private static function get_filter_program_records_sql(int $program_id=null, int $course_id=null, string $filter_condition='', string $select_data=''): string
+    private static function get_filter_program_records_sql(int $program_id = null, int $course_id = null, string $filter_condition = '', string $select_data = ''): string
     {
         try {
             $records_sql = $select_data ?: "
@@ -127,11 +136,11 @@ class manager
                 ";
 
             $records_sql .= "
-                    FROM mdl_user AS u 
-                      JOIN mdl_course_completions AS ccom ON u.id = ccom.userid
-                      JOIN mdl_course AS c ON c.id = ccom.course
-                      JOIN mdl_course_categories AS ccat ON c.category = ccat.id
-                      JOIN mdl_local_program_course AS lpc ON c.id = lpc.courseid
+                    FROM {user} AS u 
+                      JOIN {course_completions} AS ccom ON u.id = ccom.userid
+                      JOIN {course} AS c ON c.id = ccom.course
+                      JOIN {course_categories} AS ccat ON c.category = ccat.id
+                      JOIN {local_program_course} AS lpc ON c.id = lpc.courseid
                     WHERE lpc.programid=:programid 
                 ";
 
@@ -151,12 +160,11 @@ class manager
     public static function count_records_by_sql(string $table, string $sql): int
     {
         global $DB;
-        $result = 0;
 
         if (self::check_table_exist($table)) {
             $result = $DB->count_records_sql($sql);
         }
-        return $result;
+        return $result ?? 0;
     }
 
     private static function check_table_exist(string $name): bool

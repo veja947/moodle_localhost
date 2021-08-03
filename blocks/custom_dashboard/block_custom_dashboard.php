@@ -40,17 +40,16 @@ class block_custom_dashboard extends block_base
     }
 
     function get_content() {
-
-//        $renderable = new \block_custom_dashboard\output\customdashboard($this->config);
-//        $renderer = $this->page->get_renderer('main');
-
+        $program_records = [];
         $this->content = new stdClass();
-//        $this->content->text = $renderer->render($renderable);
 
-        $students = \block_custom_dashboard\manager::get_students();
-        $progam_records = \block_custom_dashboard\manager::get_program_statics(15);
+        foreach (\block_custom_dashboard\manager::get_program_ids() as $id_obj)
+        {
+            $program_id = $id_obj->id;
+            $program_records[$program_id] = \block_custom_dashboard\manager::get_program_statics($program_id);
+        }
 
-        $this->content->total_students = count($students);
+        $this->content->data = $program_records;
 
         $this->content->text = 'hello dashboard';
         return $this->content;
