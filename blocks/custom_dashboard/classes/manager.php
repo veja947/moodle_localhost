@@ -32,12 +32,6 @@ require_once("{$CFG->libdir}/completionlib.php");
 class manager
 {
 
-    public static function get_students(int $programid=null, int $courseid=null): array
-    {
-        $users = search_users($courseid, null, '');
-        return $users;
-    }
-
     public static function get_program_statics(int $programid=null): array
     {
         $students_number = self::get_students_count_in_program($programid);
@@ -154,69 +148,6 @@ class manager
         }
     }
 
-    private static function filter_completion_records(int $programid=null, int $courseid=null, string $order_by='lpc.programid', string $select_data='', string $filter_condition=''): array
-    {
-        global $DB;
-
-        $records_sql = $select_data ? $select_data : "
-            select distinct ccom.id as 'record_id', 
-            u.id as 'user_id',
-            ccat.id as 'category_id', 
-            c.id as 'course_id',
-        ";
-
-        $records_sql .= "
-             
-            case 
-                 when ccom.timestarted = 0 and ccom.timeenrolled <> 0 then 0
-                when ccom.timecompleted is null and ccom.timestarted <> 0 then 1
-                when ccom.timecompleted is not null then 2
-            end as 'completion_status'
-            from {user} as u 
-            join {course_completions} as ccom on u.id = ccom.userid
-            join {course} as c on c.id = ccom.course
-            join {course_categories} as ccat on c.category = ccat.id
-            where TRUE
-        ";
-
-        if ($programid) {
-            $records_sql = $select_data ? $select_data : "
-                select distinct ccom.id as 'record_id', 
-                u.id as 'user_id',
-                ccat.id as 'category_id', 
-                c.id as 'course_id',
-            ";
-
-            $records_sql .= "
-                
-                from mdl_user as u 
-                  join mdl_course_completions as ccom on u.id = ccom.userid
-                  join mdl_course as c on c.id = ccom.course
-                  join mdl_course_categories as ccat on c.category = ccat.id
-                  left join mdl_local_program_course as lpc on c.id = lpc.courseid
-                where lpc.programid=:programid 
-            ";
-
-            if ($courseid) {
-                $records_sql .= " and c.id = :courseid ";
-            }
-
-            if ($filter_condition) {
-                $records_sql .= $filter_condition;
-            }
-
-        }
-
-        $records_sql .= " order by :order_by ";
-        $params = [
-            'programid' => $programid,
-            'courseid' => $courseid,
-            'order_by' => $order_by,
-        ];
-        return $DB->get_records_sql($records_sql, $params) ?? [];
-
-    }
-
     public static function count_records_by_sql(string $table, string $sql): int
     {
         global $DB;
@@ -241,51 +172,5 @@ class manager
             return null;
         }
         return $DB->get_record('course', ['id' => $id]);
-    }
-
-    public static function get_all_modules(): int
-    {
-        // moodle base course completion table
-        if (self::check_table_exist('quiz')) {
-            $sql = "SELECT COUNT(DISTINCT id) FROM
-                    {quiz} q
-                   ";
-            $result = self::count_records_by_sql('quiz', $sql);
-        } else {
-            // TODO: moodle workplace program / course completion
-        }
-
-
-        return $result ?? 0;
-    }
-
-    public static function get_modules_in_progress(int $programid=null, int $courseid=null): int
-    {
-        // moodle base course completion table
-        if (self::check_table_exist('quiz_attempts')) {
-            $sql = "SELECT COUNT(DISTINCT id) FROM
-                    {quiz_attempts} qa
-                    WHERE qa.state ='" . self::MODULE_STATE_IN_PROGRESS . "'";
-            $result = self::count_records_by_sql('quiz_attempts', $sql);
-        } else {
-            // TODO: moodle workplace program / course completion
-        }
-
-        return $result ?? 0;
-    }
-
-    public static function get_modules_completed(int $programid=null, int $courseid=null): int
-    {
-        // moodle base course completion table
-        if (self::check_table_exist('quiz_attempts')) {
-            $sql = "SELECT COUNT(DISTINCT id) FROM
-                    {quiz_attempts} qa
-                    WHERE qa.state ='" . self::MODULE_STATE_COMPLETED . "'";
-            $result = self::count_records_by_sql('quiz_attempts', $sql);
-        } else {
-            // TODO: moodle workplace program / course completion
-        }
-
-        return $result ?? 0;
     }
 }
