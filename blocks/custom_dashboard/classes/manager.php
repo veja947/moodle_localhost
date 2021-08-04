@@ -31,6 +31,9 @@ require_once("{$CFG->libdir}/completionlib.php");
 
 class manager
 {
+    const COMPLETION_STATUS_UNSTARTED = 0;
+    const COMPLETION_STATUS_IN_PROGRESS = 1;
+    const COMPLETION_STATUS_COMPLETED = 2;
 
     public static function get_program_ids(): array
     {
@@ -43,19 +46,18 @@ class manager
 
     public static function get_program_statics(int $program_id = null): array
     {
-        $students_number = self::get_students_count_in_program($program_id);
-        $unstarted_records_number = self::get_unstarted_records_count_in_program($program_id);
-        $in_progress_records_number = self::get_in_progress_records_count_in_program($program_id);
-        $completed_records_number = self::get_completed_records_count_in_program($program_id);
-        $total_records_number = $unstarted_records_number + $in_progress_records_number + $completed_records_number;
+//        $students_number = self::get_students_count_in_program($program_id);
+//        $unstarted_records_number = self::get_unstarted_records_count_in_program($program_id);
+//        $in_progress_records_number = self::get_in_progress_records_count_in_program($program_id);
+//        $completed_records_number = self::get_completed_records_count_in_program($program_id);
+//        $total_records_number = $unstarted_records_number + $in_progress_records_number + $completed_records_number;
 
-        return [
-            'total_students_number' => $students_number,
-            'unstarted_number' => $unstarted_records_number,
-            'in_progress_number' => $in_progress_records_number,
-            'completed_number' => $completed_records_number,
-            'total_records_number' => $total_records_number,
-        ];
+        $records = self::get_records_in_program($program_id);
+        $results = self::filter_records($records);
+        $results['total_students_number'] = self::get_students_count_in_program($program_id);
+
+
+        return $results;
     }
 
     private static function get_students_count_in_program(int $program_id = null, int $course_id = null): int
@@ -69,6 +71,68 @@ class manager
         ];
         $result = $DB->get_records_sql($sql, $params);
         return array_pop($result)->student_count;
+    }
+
+    private static function get_records_in_program(int $program_id = null, int $course_id = null): array
+    {
+        $results = [];
+
+        global $DB;
+
+        $sql = "SELECT DISTINCT ccom.id AS 'record_id', 
+                    u.id AS 'user_id',
+                    ccat.id AS 'category_id', 
+                    c.id AS 'course_id',
+                    lpc.programid as 'program_id',
+                    CASE 
+                        WHEN ccom.timestarted = 0 AND ccom.timeenrolled <> 0 then 0
+                        WHEN ccom.timecompleted IS NULL AND ccom.timestarted <> 0 THEN 1
+                        WHEN ccom.timecompleted IS NOT NULL THEN 2
+                        END AS 'completion_status' 
+                    FROM {user} AS u 
+                      JOIN {course_completions} AS ccom ON u.id = ccom.userid
+                      JOIN {course} AS c ON c.id = ccom.course
+                      JOIN {course_categories} AS ccat ON c.category = ccat.id
+                      JOIN {local_program_course} AS lpc ON c.id = lpc.courseid
+                    WHERE lpc.programid=:programid 
+                ";
+        if ($course_id) {
+            $sql .= " AND c.id = :courseid ";
+        }
+
+        $params = [
+            'programid' => $program_id,
+            'courseid' => $course_id,
+        ];
+
+        return $DB->get_records_sql($sql, $params);
+    }
+
+    private static function filter_records(array $records): array
+    {
+        $unstart_records_number = $in_progress_records_number = $completed_records_number = 0;
+        foreach ($records as $record) {
+            switch ($record->completion_status) {
+                case self::COMPLETION_STATUS_UNSTARTED:
+                    $unstart_records_number++;
+                    break;
+                case self::COMPLETION_STATUS_IN_PROGRESS:
+                    $in_progress_records_number++;
+                    break;
+                case self::COMPLETION_STATUS_COMPLETED:
+                    $completed_records_number++;
+                    break;
+                default:
+
+            }
+        }
+
+        return [
+            'unstarted_number' => $unstart_records_number,
+            'in_progress_number' => $in_progress_records_number,
+            'completed_number' => $completed_records_number,
+            'total_records_number' => count($records),
+        ];
     }
 
     private static function get_unstarted_records_count_in_program(int $program_id = null, int $course_id = null): int

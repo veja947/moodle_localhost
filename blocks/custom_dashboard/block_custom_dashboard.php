@@ -51,7 +51,15 @@ class block_custom_dashboard extends block_base
 
         $this->content->data = $program_records;
 
-        $this->content->text = 'hello dashboard';
+        $this->content->text = '<div id="app">hello dashboard</div>';
+
+        global $PAGE, $CFG;
+
+        $PAGE->requires->jquery();
+//        $PAGE->requires->js_call_amd('block_custom_dashboard/module','init');
+        $PAGE->requires->js(new moodle_url(
+            $CFG->wwwroot . '/blocks/custom_dashboard/module.js'));
+
         return $this->content;
     }
 
