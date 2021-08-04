@@ -58,7 +58,7 @@ class block_custom_dashboard extends block_base
         $PAGE->requires->jquery();
 //        $PAGE->requires->js_call_amd('block_custom_dashboard/module','init');
         $PAGE->requires->js(new moodle_url(
-            $CFG->wwwroot . '/blocks/custom_dashboard/module.js'));
+            $CFG->wwwroot . '/blocks/custom_dashboard/index.js'));
 
         return $this->content;
     }
