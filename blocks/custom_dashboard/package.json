@@ -41,5 +41,11 @@
     "registry": "http://registry.yarnpkg.com/"
   },
   "name": "block_custom_dashboard_yarn",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "material-table": "^1.69.3",
+    "react-select": "^4.3.1"
+  }
 }
