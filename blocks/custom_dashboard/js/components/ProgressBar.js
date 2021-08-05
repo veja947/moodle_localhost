@@ -61,9 +61,11 @@ export default class ProgressBar extends React.Component {
                 <div className="bars">
                     {bars == ''?'':bars}
                 </div>
-                <div className="legends">
-                    {legends == ''?'':legends}
-                </div>
+
+
+                {/*<div className="legends">*/}
+                {/*    {legends == ''?'':legends}*/}
+                {/*</div>*/}
             </div>
         );
     }

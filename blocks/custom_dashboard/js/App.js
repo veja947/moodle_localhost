@@ -29,19 +29,15 @@ import ProgressBar from './components/ProgressBar';
 const column =[
     { title: 'Campaigns in progress', field: 'campaigns' },
     { title: 'Total students', field: 'total_students', type: 'numeric' },
-    { title: 'Progress', field: 'progress' },
+    {
+        title: 'Progress',
+        field: 'progress',
+        render: rowData => <ProgressBar readings={ rowData.progress } />
+    },
     { title: 'Completion rate', field: 'completion_rate' }
 ];
 
-let data = [
-    { campaigns: "program1", total_students: 123, progress: '', completion_rate: "54%" },
-    { campaigns: "program2", total_students: 456, progress: '', completion_rate: "12%" },
-    { campaigns: "program3", total_students: 321, progress: '', completion_rate: "44%" },
-    { campaigns: "program4", total_students: 436, progress: '', completion_rate: "78%" },
-    { campaigns: "program5", total_students: 856, progress: '', completion_rate: "99%" },
-];
-
-let readings = [
+let readings_data = [
     {
         name: 'Apples',
         value: 60,
@@ -62,6 +58,14 @@ let readings = [
         value: 10,
         color: '#e056fd'
     }
+];
+
+let data = [
+    { campaigns: "program1", total_students: 123, progress: readings_data, completion_rate: "54%" },
+    { campaigns: "program2", total_students: 456, progress: readings_data, completion_rate: "12%" },
+    { campaigns: "program3", total_students: 321, progress: readings_data, completion_rate: "44%" },
+    { campaigns: "program4", total_students: 436, progress: readings_data, completion_rate: "78%" },
+    { campaigns: "program5", total_students: 856, progress: readings_data, completion_rate: "99%" },
 ];
 
 const options = [
@@ -88,7 +92,7 @@ class App extends Component {
                     </div>
                 </header>
                 <main>
-                    <ProgressBar readings={readings} />
+                    <ProgressBar readings={ readings_data } />
                     <MaterialTable
                         columns={column}
                         data={data}
