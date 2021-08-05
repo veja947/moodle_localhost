@@ -4,6 +4,7 @@ import {Route, Switch} from "react-router";
 import Select from 'react-select';
 import { AddBox, ArrowDownward } from "@material-ui/icons";
 import MaterialTable from 'material-table';
+import ProgressBar from './components/ProgressBar';
 
 // const tableIcons = {
 //     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -32,12 +33,35 @@ const column =[
     { title: 'Completion rate', field: 'completion_rate' }
 ];
 
-const data = [
+let data = [
     { campaigns: "program1", total_students: 123, progress: '', completion_rate: "54%" },
     { campaigns: "program2", total_students: 456, progress: '', completion_rate: "12%" },
     { campaigns: "program3", total_students: 321, progress: '', completion_rate: "44%" },
     { campaigns: "program4", total_students: 436, progress: '', completion_rate: "78%" },
     { campaigns: "program5", total_students: 856, progress: '', completion_rate: "99%" },
+];
+
+let readings = [
+    {
+        name: 'Apples',
+        value: 60,
+        color: '#eb4d4b'
+    },
+    {
+        name: 'Blueberries',
+        value: 7,
+        color: '#22a6b3'
+    },
+    {
+        name: 'Guavas',
+        value: 23,
+        color: '#6ab04c'
+    },
+    {
+        name: 'Grapes',
+        value: 10,
+        color: '#e056fd'
+    }
 ];
 
 const options = [
@@ -64,10 +88,10 @@ class App extends Component {
                     </div>
                 </header>
                 <main>
+                    <ProgressBar readings={readings} />
                     <MaterialTable
                         columns={column}
                         data={data}
-                        title="Demo Title"
                     />
                     <Switch>
                         <Route path="/">
