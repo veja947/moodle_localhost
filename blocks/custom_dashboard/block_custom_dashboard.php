@@ -40,6 +40,8 @@ class block_custom_dashboard extends block_base
     }
 
     function get_content() {
+        global $PAGE, $CFG;
+
         $program_records = [];
         $this->content = new stdClass();
 
@@ -50,15 +52,14 @@ class block_custom_dashboard extends block_base
         }
 
         $this->content->data = $program_records;
+        $this->content->data = $program_records;
+
 
         $this->content->text = '<div id="app">hello dashboard</div>';
-
-        global $PAGE, $CFG;
-
         $PAGE->requires->jquery();
-//        $PAGE->requires->js_call_amd('block_custom_dashboard/module','init');
         $PAGE->requires->js(new moodle_url(
-            $CFG->wwwroot . '/blocks/custom_dashboard/index.js'));
+            $CFG->wwwroot . '/blocks/custom_dashboard/dist/js/app.js'));
+        $PAGE->requires->css('/blocks/custom_dashboard/dist/css/style.css');
 
         return $this->content;
     }
