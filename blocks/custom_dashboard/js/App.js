@@ -16,6 +16,7 @@ let table_columns = [
         title: 'Total students',
         dataIndex: 'students',
         key: 'students',
+        sorter: (a, b) => a.students - b.students,
     },
     {
         title: 'Progress',
@@ -27,6 +28,7 @@ let table_columns = [
         title: 'Completion rate',
         dataIndex: 'rate',
         key: 'rate',
+        sorter: (a, b) => parseFloat(a.rate) - parseFloat(b.rate),
     }
 ];
 
