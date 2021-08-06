@@ -1,3 +1,4 @@
+import { Table } from 'antd';
 import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -43,15 +44,39 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const column =[
-    { title: 'Campaigns in progress', field: 'campaigns' },
-    { title: 'Total students', field: 'total_students', type: 'numeric' },
+// const column =[
+//     { title: 'Campaigns in progress', field: 'campaigns' },
+//     { title: 'Total students', field: 'total_students', type: 'numeric' },
+//     {
+//         title: 'Progress',
+//         field: 'progress',
+//         render: rowData => <ProgressBar readings={ rowData.progress } />
+//     },
+//     { title: 'Completion rate', field: 'completion_rate' }
+// ];
+let table_columns = [
+    {
+        title: 'Campaigns in progress',
+        dataIndex: 'campaign',
+        key: 'campaign',
+        render: text => <a class='campaign-name-link'>{text}</a>,
+    },
+    {
+        title: 'Total students',
+        dataIndex: 'students',
+        key: 'students',
+    },
     {
         title: 'Progress',
-        field: 'progress',
-        render: rowData => <ProgressBar readings={ rowData.progress } />
+        key: 'progress',
+        dataIndex: 'progress',
+        render: ( cell, row ) => { return (<ProgressBar readings={ row.progress } />) },
     },
-    { title: 'Completion rate', field: 'completion_rate' }
+    {
+        title: 'Completion rate',
+        dataIndex: 'rate',
+        key: 'rate',
+    }
 ];
 
 let readings_data = [
@@ -76,14 +101,37 @@ let readings_data = [
         color: '#e056fd'
     }
 ];
-
-let data = [
-    { campaigns: "program1", total_students: 123, progress: readings_data, completion_rate: "54%" },
-    { campaigns: "program2", total_students: 456, progress: readings_data, completion_rate: "12%" },
-    { campaigns: "program3", total_students: 321, progress: readings_data, completion_rate: "44%" },
-    { campaigns: "program4", total_students: 436, progress: readings_data, completion_rate: "78%" },
-    { campaigns: "program5", total_students: 856, progress: readings_data, completion_rate: "99%" },
+let table_data = [
+    {
+        key: '1',
+        campaign: 'John Brown',
+        students: 32,
+        rate: '54%',
+        progress: readings_data
+    },
+    {
+        key: '2',
+        campaign: 'Jim Green',
+        students: 42,
+        rate: '98%',
+        progress: readings_data
+    },
+    {
+        key: '3',
+        campaign: 'Joe Black',
+        students: 32,
+        rate: '12%',
+        progress: readings_data
+    },
 ];
+
+// let data = [
+//     { campaigns: "program1", total_students: 123, progress: readings_data, completion_rate: "54%" },
+//     { campaigns: "program2", total_students: 456, progress: readings_data, completion_rate: "12%" },
+//     { campaigns: "program3", total_students: 321, progress: readings_data, completion_rate: "44%" },
+//     { campaigns: "program4", total_students: 436, progress: readings_data, completion_rate: "78%" },
+//     { campaigns: "program5", total_students: 856, progress: readings_data, completion_rate: "99%" },
+// ];
 
 const options = [
     { value: 'program111', label: 'program111' },
@@ -113,14 +161,18 @@ class App extends Component {
                 </header>
                 <main>
                     <ProgressBar readings={ readings_data } />
-                    <MaterialTable
-                        icons={tableIcons}
-                        columns={column}
-                        data={data}
-                        options={{
-                            search: true
-                        }}
+                    <Table
+                        columns={table_columns}
+                        dataSource={table_data}
                     />
+                    {/*<MaterialTable*/}
+                    {/*    icons={tableIcons}*/}
+                    {/*    columns={column}*/}
+                    {/*    data={data}*/}
+                    {/*    options={{*/}
+                    {/*        search: true*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                     <Switch>
                         <Route path="/">
                             <h5>new Dashboard</h5>
