@@ -52,7 +52,6 @@ class block_custom_dashboard extends block_base
         }
 
         $this->content->data = $program_records;
-        $this->content->data = $program_records;
 
 
         $this->content->text = '<div id="app">hello dashboard</div>';
@@ -60,6 +59,14 @@ class block_custom_dashboard extends block_base
         $PAGE->requires->js(new moodle_url(
             $CFG->wwwroot . '/blocks/custom_dashboard/dist/js/app.js'));
         $PAGE->requires->css('/blocks/custom_dashboard/dist/css/style.css');
+
+
+
+        $this->content->text .= html_writer::tag(
+            'script',
+            json_encode($program_records),
+            ['id' => 'test_test', 'type' => 'application/json']
+        );
 
         return $this->content;
     }

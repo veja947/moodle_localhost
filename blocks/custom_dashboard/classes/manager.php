@@ -31,7 +31,7 @@ require_once("{$CFG->libdir}/completionlib.php");
 
 class manager
 {
-    const COMPLETION_STATUS_UNSTARTED = 'unstarted';
+    const COMPLETION_STATUS_NOT_STARTED = 'not_started';
     const COMPLETION_STATUS_IN_PROGRESS = 'in_progress';
     const COMPLETION_STATUS_COMPLETED = 'completed';
 
@@ -78,8 +78,9 @@ class manager
                     ccat.id AS 'category_id', 
                     c.id AS 'course_id',
                     lpc.programid as 'program_id',
+                    lp.name AS 'program_name',
                     CASE 
-                        WHEN ccom.timestarted = 0 AND ccom.timeenrolled <> 0 then 'unstarted'
+                        WHEN ccom.timestarted = 0 AND ccom.timeenrolled <> 0 then 'not_started'
                         WHEN ccom.timecompleted IS NULL AND ccom.timestarted <> 0 THEN 'in_progress'
                         WHEN ccom.timecompleted IS NOT NULL THEN 'completed'
                         END AS 'completion_status' 
@@ -88,6 +89,7 @@ class manager
                       JOIN {course} AS c ON c.id = ccom.course
                       JOIN {course_categories} AS ccat ON c.category = ccat.id
                       JOIN {local_program_course} AS lpc ON c.id = lpc.courseid
+                      JOIN {local_program} AS lp ON lp.id = lpc.programid
                     WHERE lpc.programid=:programid 
                 ";
         if ($course_id) {
@@ -104,11 +106,13 @@ class manager
 
     private static function filter_records(array $records): array
     {
-        $unstart_records_number = $in_progress_records_number = $completed_records_number = 0;
+        $program_name = '';
+        $not_started_records_number = $in_progress_records_number = $completed_records_number = 0;
         foreach ($records as $record) {
+            $program_name = $record->program_name;
             switch ($record->completion_status) {
-                case self::COMPLETION_STATUS_UNSTARTED:
-                    $unstart_records_number++;
+                case self::COMPLETION_STATUS_NOT_STARTED:
+                    $not_started_records_number++;
                     break;
                 case self::COMPLETION_STATUS_IN_PROGRESS:
                     $in_progress_records_number++;
@@ -116,25 +120,26 @@ class manager
                 case self::COMPLETION_STATUS_COMPLETED:
                     $completed_records_number++;
                     break;
-                default:
-
             }
         }
 
         return [
-            'unstarted_number' => $unstart_records_number,
+            'campaign_name' => $program_name,
+            'not_started_number' => $not_started_records_number,
             'in_progress_number' => $in_progress_records_number,
             'completed_number' => $completed_records_number,
             'total_records_number' => count($records),
         ];
     }
 
-    private static function get_unstarted_records_count_in_program(int $program_id = null, int $course_id = null): int
+
+
+    private static function get_not_started_records_count_in_program(int $program_id = null, int $course_id = null): int
     {
         global $DB;
         $count_select_sql = 'SELECT COUNT(DISTINCT ccom.id) ';
-        $unstarted_condition_sql = ' AND ccom.timestarted = 0 AND ccom.timeenrolled <> 0 ';
-        $sql = self::get_filter_program_records_sql($program_id, $course_id, $unstarted_condition_sql, $count_select_sql);
+        $not_started_condition_sql = ' AND ccom.timestarted = 0 AND ccom.timeenrolled <> 0 ';
+        $sql = self::get_filter_program_records_sql($program_id, $course_id, $not_started_condition_sql, $count_select_sql);
         $params = [
             'programid' => $program_id,
             'courseid' => $course_id,
