@@ -48,7 +48,7 @@ class block_custom_dashboard extends block_base
         foreach (\block_custom_dashboard\manager::get_program_ids() as $id_obj)
         {
             $program_id = $id_obj->id;
-            $program_records[$program_id] = \block_custom_dashboard\manager::get_program_statics($program_id);
+            array_push($program_records, \block_custom_dashboard\manager::get_program_statics($program_id));
         }
 
         $this->content->data = $program_records;

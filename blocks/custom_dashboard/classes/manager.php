@@ -35,6 +35,10 @@ class manager
     const COMPLETION_STATUS_IN_PROGRESS = 'in_progress';
     const COMPLETION_STATUS_COMPLETED = 'completed';
 
+    const PROGRESS_BAR_COLOR_COMPLETED = '#1890FF';
+    const PROGRESS_BAR_COLOR_IN_PROGRESS = '#48D597';
+    const PROGRESS_BAR_COLOR_NOT_STARTED = '#DA291C';
+
     public static function get_program_ids(): array
     {
         global $DB;
@@ -47,8 +51,8 @@ class manager
     public static function get_program_statics(int $program_id = null, int $course_id = null): array
     {
         $records = self::get_records_in_program($program_id, $course_id);
-        $results = self::filter_records($records);
-        $results['total_students_number'] = self::get_students_count_in_program($program_id);
+        $results = self::filter_records($program_id, $records);
+        $results['students'] = self::get_students_count_in_program($program_id);
 
 
         return $results;
@@ -104,11 +108,16 @@ class manager
         return $DB->get_records_sql($sql, $params);
     }
 
-    private static function filter_records(array $records): array
+    private static function filter_records(int $program_id, array $records): array
     {
         $program_name = '';
-        $not_started_records_number = $in_progress_records_number = $completed_records_number = 0;
+        $not_started_records_number =
+        $in_progress_records_number =
+        $completed_records_number = 0;
+        $records_length = count($records);
+
         foreach ($records as $record) {
+            $program_id = $record->program_id;
             $program_name = $record->program_name;
             switch ($record->completion_status) {
                 case self::COMPLETION_STATUS_NOT_STARTED:
@@ -123,12 +132,35 @@ class manager
             }
         }
 
+        if (!count($records)) {
+            $rate = '0%';
+            $program_name = self::get_program_name_by_id($program_id) ?? '';
+        } else {
+            $rate = self::convert_float_to_percentage($completed_records_number, $records_length) . '%';
+        }
+
+
         return [
-            'campaign_name' => $program_name,
-            'not_started_number' => $not_started_records_number,
-            'in_progress_number' => $in_progress_records_number,
-            'completed_number' => $completed_records_number,
-            'total_records_number' => count($records),
+            'key' => (int)$program_id,
+            'campaign' => $program_name,
+            'rate' => $rate,
+            'progress' => [
+                [
+                    'name' => 'Completed',
+                    'value' => self::convert_float_to_percentage($completed_records_number, $records_length),
+                    'color' => self::PROGRESS_BAR_COLOR_COMPLETED,
+                ],
+                [
+                    'name' => 'In progress',
+                    'value' => self::convert_float_to_percentage($in_progress_records_number, $records_length),
+                    'color' => self::PROGRESS_BAR_COLOR_IN_PROGRESS,
+                ],
+                [
+                    'name' => 'Not started',
+                    'value' => self::convert_float_to_percentage($not_started_records_number, $records_length),
+                    'color' => self::PROGRESS_BAR_COLOR_NOT_STARTED,
+                ]
+            ]
         ];
     }
 
@@ -243,5 +275,19 @@ class manager
             return null;
         }
         return $DB->get_record('course', ['id' => $id]);
+    }
+
+    private static function get_program_name_by_id(int $id): string
+    {
+        global $DB;
+        if (!self::check_table_exist('local_program')) {
+            return '';
+        }
+        return $DB->get_record('local_program', ['id' => $id], 'name')->name;
+    }
+
+    private static function convert_float_to_percentage(int $numerator, int $denominator): int
+    {
+        return $denominator ? (int)round(($numerator / $denominator) * 100 ) : 0;
     }
 }
