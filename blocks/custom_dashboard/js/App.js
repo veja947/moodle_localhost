@@ -1,8 +1,8 @@
-import { Table } from 'antd';
+import { Table, Select } from 'antd';
+import { Option } from 'rc-select';
 import React, {Component} from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Route, Switch} from "react-router";
-import Select from 'react-select';
 import ProgressBar from './components/ProgressBar';
 
 let table_columns = [
@@ -22,6 +22,7 @@ let table_columns = [
         title: 'Progress',
         key: 'progress',
         dataIndex: 'progress',
+        width: '40%',
         render: ( cell, row ) => { return (<ProgressBar readings={ row.progress } />) },
     },
     {
@@ -32,57 +33,25 @@ let table_columns = [
     }
 ];
 
-let progress_data_fake = [
-    {
-        name: 'Apples',
-        value: 60,
-        color: '#eb4d4b'
-    },
-    {
-        name: 'Blueberries',
-        value: 17,
-        color: '#22a6b3'
-    },
-    {
-        name: 'Guavas',
-        value: 23,
-        color: '#6ab04c'
-    }
-];
-let table_data_fake = [
-    {
-        key: '1',
-        campaign: 'John Brown',
-        students: 32,
-        rate: '54%',
-        progress: progress_data_fake
-    },
-    {
-        key: '2',
-        campaign: 'Jim Green',
-        students: 42,
-        rate: '98%',
-        progress: progress_data_fake
-    },
-    {
-        key: '3',
-        campaign: 'Joe Black',
-        students: 32,
-        rate: '12%',
-        progress: progress_data_fake
-    },
-];
-
-const options = [
-    { value: 'program111', label: 'program111' },
-    { value: 'program222', label: 'program222' },
-    { value: 'program333', label: 'program333' }
-];
-
 let table_data = JSON.parse($('#test_test').html());
 console.log(table_data);
-console.log(table_data_fake);
 
+
+function onChange(value) {
+    console.log(`selected ${value}`);
+}
+
+function onBlur() {
+    console.log('blur');
+}
+
+function onFocus() {
+    console.log('focus');
+}
+
+function onSearch(val) {
+    console.log('search:', val);
+}
 
 class App extends Component {
 
@@ -91,13 +60,28 @@ class App extends Component {
         return (
             <Router>
                 <header>
-                    <div>
-                        <p>Student Activity</p>
-                    </div>
-                    <div>
-                        <p>Updated on xxxx-xx-xx</p>
-                        <div>
-                            <Select options={options} />
+                    <span>Student Activity</span>
+                    <div style={{float: "right"}}>
+                        <span>Updated on xxxx-xx-xx</span>
+                        <div style={{display: "inline-block"}}>
+                            <Select
+                                showSearch
+                                allowClear
+                                style={{ width: 200 }}
+                                placeholder="Select a person"
+                                optionFilterProp="children"
+                                onChange={onChange}
+                                onFocus={onFocus}
+                                onBlur={onBlur}
+                                onSearch={onSearch}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            >
+                                <Option value="jack">Jack</Option>
+                                <Option value="lucy">Lucy</Option>
+                                <Option value="tom">Tom</Option>
+                            </Select>
                         </div>
                     </div>
                 </header>

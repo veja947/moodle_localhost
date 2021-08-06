@@ -12,7 +12,7 @@ export default class ProgressBar extends React.Component {
         let values = parent.readings && parent.readings.length && parent.readings.map(function(item, i) {
             if(item.value > 0) {
                 return (
-                    <div className="value" style={{'color': item.color, 'width': item.value + '%'}}  key={i}>
+                    <div className="value" style={{'color': '#65708D', 'width': item.value + '%'}}  key={i}>
                         <span>{item.value}%</span>
                     </div>
                 )
@@ -23,7 +23,6 @@ export default class ProgressBar extends React.Component {
             if(item.value > 0) {
                 return (
                     <div className="graduation" style={{'color': item.color, 'width': item.value + '%'}}  key={i}>
-                        <span>|</span>
                     </div>
                 )
             }
@@ -33,7 +32,6 @@ export default class ProgressBar extends React.Component {
             if(item.value > 0) {
                 return (
                     <div className="bar" style={{'backgroundColor': item.color, 'width': item.value + '%'}}  key={i}>
-
                     </div>
                 )
             }
