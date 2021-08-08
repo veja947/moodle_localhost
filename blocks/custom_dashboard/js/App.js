@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Route, Switch} from "react-router";
 import ProgressBar from './components/ProgressBar';
+import CampaignSelectorOption from "./components/CampaignSelectOption";
 
 let table_columns = [
     {
@@ -34,7 +35,7 @@ let table_columns = [
 ];
 
 let table_data = JSON.parse($('#test_test').html());
-console.log(table_data);
+console.log(table_data.selector_records);
 
 
 function onChange(value) {
@@ -53,8 +54,17 @@ function onSearch(val) {
     console.log('search:', val);
 }
 
-class App extends Component {
+const getAllOptions = () => {
+    const options = table_data.selector_records;
+    let results = [];
+    for (const [key, value] of Object.entries(options)) {
+        results.push(<Option value={key}>{value}</Option>);
+    }
 
+    return results;
+}
+
+class App extends Component {
 
     render() {
         return (
@@ -62,13 +72,13 @@ class App extends Component {
                 <header>
                     <span>Student Activity</span>
                     <div style={{float: "right"}}>
-                        <span>Updated on xxxx-xx-xx</span>
+                        <span style={{margin: "auto 10px"}}>Updated on xxxx-xx-xx</span>
                         <div style={{display: "inline-block"}}>
                             <Select
                                 showSearch
                                 allowClear
                                 style={{ width: 200 }}
-                                placeholder="Select a person"
+                                placeholder="All compaigns in progress"
                                 optionFilterProp="children"
                                 onChange={onChange}
                                 onFocus={onFocus}
@@ -78,9 +88,7 @@ class App extends Component {
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                             >
-                                <Option value="jack">Jack</Option>
-                                <Option value="lucy">Lucy</Option>
-                                <Option value="tom">Tom</Option>
+                                {getAllOptions()}
                             </Select>
                         </div>
                     </div>
@@ -88,7 +96,8 @@ class App extends Component {
                 <main>
                     <Table
                         columns={table_columns}
-                        dataSource={table_data}
+                        dataSource={table_data.table_records}
+                        pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '10', '20']}}
                     />
                     <Switch>
                         <Route path="/">
