@@ -1,4 +1,5 @@
 import { Table } from 'antd';
+import { QuestionCircleFilled } from '@ant-design/icons';
 import React, {Component} from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Route, Switch} from "react-router";
@@ -14,11 +15,13 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <header>
-                    <span>Student Activity</span>
-                    <div style={{float: "right"}}>
-                        <span style={{margin: "auto 10px"}}>Updated on xxxx-xx-xx</span>
-                        <div style={{display: "inline-block"}}>
+                <header id="campaign_table_header">
+                    <span className="table-title">Student Activity</span>
+                    <QuestionCircleFilled  className="title-question-icon" />
+                    <div className="table-selector-container">
+                        <span className="table-update-date-text">Updated on xxxx-xx-xx</span>
+                        <div className="table-selector" >
+                            <span className="table-selector-title">View:</span>
                             <CampaignSelector
                                 options={table_data.selector_records}
                             />

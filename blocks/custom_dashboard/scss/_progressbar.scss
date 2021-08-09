@@ -1,10 +1,12 @@
 .multicolor-bar {
-  margin: 20px 20%;
+  margin: 0;
+  font-size: 12px;
 }
 
 .multicolor-bar .values .value {
   float: left;
   text-align: center;
+  line-height: 14px;
 }
 
 .multicolor-bar .scale .graduation {
@@ -14,18 +16,18 @@
 
 .multicolor-bar .bars .bar {
   float: left;
-  height: 10px;
+  height: 8px;
 }
 
-.multicolor-bar .bars div.bar:first-of-type {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-}
-
-.multicolor-bar .bars div.bar:last-of-type {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
+//.multicolor-bar .bars div.bar:first-of-type {
+//  border-top-left-radius: 5px;
+//  border-bottom-left-radius: 5px;
+//}
+//
+//.multicolor-bar .bars div.bar:last-of-type {
+//  border-top-right-radius: 5px;
+//  border-bottom-right-radius: 5px;
+//}
 
 .multicolor-bar .legends {
   text-align: center;

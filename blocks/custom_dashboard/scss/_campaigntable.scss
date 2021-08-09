@@ -1,0 +1,52 @@
+#campaign_table_header {
+    height: 80px;
+    /* position: absolute; */
+
+    .table-title {
+        line-height: 80px;
+        font-size: 20px;
+        //font-family: "Roboto";
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.85);
+        margin-left: 24px;
+    }
+
+    .title-question-icon {
+        font-size: 23px;
+        color: rgb(203, 213, 225);
+        vertical-align: inherit;
+        margin-left: 11px;
+        cursor: pointer;
+        transition: 1s;
+
+        &:hover {
+            color: rgb(24, 144, 255);
+        }
+    }
+
+    .table-selector-container {
+        float: right;
+        line-height: 80px;
+        margin-right: 34px;
+
+        .table-update-date-text {
+            margin: auto 12px;
+            font-family: Inter;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 20px;
+            align-items: center;
+            letter-spacing: 0.02em;
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        .table-selector {
+            display: inline-block;
+
+            .table-selector-title {
+                margin-right: 12px;
+            }
+        }
+    }
+}
