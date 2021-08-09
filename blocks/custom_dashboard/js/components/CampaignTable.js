@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import ProgressBar from "./ProgressBar";
+import style from "../../scss/_campaigntable.scss";
 
 
 const table_columns = [
@@ -17,7 +18,27 @@ const table_columns = [
         sorter: (a, b) => a.students - b.students,
     },
     {
-        title: 'Progress',
+        title: () => {
+            return (
+                <div>
+                    Progress
+                    <div className="progress-icons-container">
+                        <div className="progress-icon">
+                            <span className="icon-dot completed-icon-dot"> </span>
+                            <span className="completed-icon-label">Completed</span>
+                        </div>
+                        <div className="progress-icon">
+                            <span className="icon-dot in-progress-icon-icon-dot"> </span>
+                            <span className="in-progress-icon-icon-label">In progress</span>
+                        </div>
+                        <div className="progress-icon">
+                            <span className="icon-dot not-started-icon-icon-dot"> </span>
+                            <span className="not-started-icon-icon-label">Not started</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        },
         key: 'progress',
         dataIndex: 'progress',
         width: '40%',
@@ -40,12 +61,16 @@ export default class CampaignTable extends React.Component {
 
     }
 
+    componentDidMount() {
+
+    }
+
     render() {
         return (
             <Table
                 columns={ table_columns }
                 dataSource={this.dataSource}
-                pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '10', '20']}}
+                pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '5', '10']}}
             />
         );
     }

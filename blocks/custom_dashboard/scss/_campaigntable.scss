@@ -50,3 +50,45 @@
         }
     }
 }
+
+.ant-table-wrapper {
+    .progress-icons-container {
+        display: inline-block;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 14px;
+        color: rgb(101, 112, 141);
+        margin-left: 10px;
+
+        .progress-icon {
+            display: inline-block;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 14px;
+            color: #65708D;
+            margin-left: 8px;
+
+            .icon-dot {
+                width: 12px;
+                height: 10px;
+                display: inline-block;
+                border-radius: 3px;
+                margin-right: 7px;
+
+                &.completed-icon-dot {
+                    background: #1890FF;
+                }
+
+                &.in-progress-icon-icon-dot {
+                    background: #48D597;
+                }
+
+                &.not-started-icon-icon-dot {
+                    background: #DA291C;
+                }
+            }
+        }
+    }
+}
