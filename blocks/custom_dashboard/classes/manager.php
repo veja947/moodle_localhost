@@ -42,7 +42,7 @@ class manager
     public static function get_program_ids_and_names(): array
     {
         global $DB;
-        if (!self::check_table_exist('course')) {
+        if (!self::check_table_exist('local_program')) {
             return [];
         }
         return $DB->get_records('local_program', null, '', 'id, name');
