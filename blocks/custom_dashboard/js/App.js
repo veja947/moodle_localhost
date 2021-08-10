@@ -6,7 +6,7 @@ import CampaignSelector from "./components/CampaignSelector";
 import CampaignTable from "./components/CampaignTable";
 
 let table_data = JSON.parse($('#test_test').html());
-console.log(table_data.selector_records);
+console.log(table_data.table_records);
 
 class App extends Component {
 

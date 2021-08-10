@@ -46,16 +46,10 @@ class block_custom_dashboard extends block_base
 
     function get_content() {
         global $PAGE, $CFG;
-
-        $program_records = $program_names = [];
         $this->content = new stdClass();
-        foreach (\block_custom_dashboard\manager::get_program_ids_and_names() as $obj)
-        {
-            $program_id = $obj->id;
-            $program_names[$obj->id] = $obj->fullname;
-            array_push($program_records, \block_custom_dashboard\manager::get_program_statics($program_id));
-        }
 
+        $manager = new \block_custom_dashboard\manager();
+        $program_records = $manager->get_campaign_statistics_for_dashboard();
         $this->content->data = $program_records;
 
 
@@ -66,10 +60,7 @@ class block_custom_dashboard extends block_base
         $this->content->text .= html_writer::tag(
             'script',
             json_encode(
-                [
-                    'table_records' => $program_records,
-                    'selector_records' => $program_names,
-                ]
+                $program_records
             ),
             ['id' => 'test_test', 'type' => 'application/json']
         );
