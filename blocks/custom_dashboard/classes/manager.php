@@ -42,6 +42,8 @@ class manager
     const PROGRESS_BAR_COLOR_IN_PROGRESS = '#48D597';
     const PROGRESS_BAR_COLOR_NOT_STARTED = '#DA291C';
 
+
+
     public static function get_program_ids_and_names(): array
     {
         global $DB;
@@ -76,8 +78,6 @@ class manager
 
     private static function get_records_in_program(int $program_id = null, int $course_id = null): array
     {
-        $results = [];
-
         global $DB;
 
         $sql = "SELECT DISTINCT ccom.id AS 'record_id', 
