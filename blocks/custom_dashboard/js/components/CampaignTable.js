@@ -1,7 +1,6 @@
 import React from "react";
 import { Table } from "antd";
 import ProgressBar from "./ProgressBar";
-import style from "../../scss/_campaigntable.scss";
 
 
 const table_columns = [

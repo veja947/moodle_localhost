@@ -25,3 +25,5 @@
 
 $string['pluginname']       =       'Custom Dashboard';
 $string['adminpageheading'] =       'Custom Dashbaord Settings';
+$string['custom_dashboard:myaddinstance'] = 'Add a new Custom Dashboard block to the My Moodle page';
+$string['custom_dashboard:addinstance'] = 'Add a new Custom Dashboard block';
