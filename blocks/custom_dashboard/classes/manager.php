@@ -31,6 +31,9 @@ require_once("{$CFG->libdir}/completionlib.php");
 
 class manager
 {
+    const PROGRAM_TABLE_NAME = 'local_program';
+    const PROGRAM_COURSES_TABLE_NAME = 'local_program_course';
+
     const COMPLETION_STATUS_NOT_STARTED = 'not_started';
     const COMPLETION_STATUS_IN_PROGRESS = 'in_progress';
     const COMPLETION_STATUS_COMPLETED = 'completed';
@@ -42,10 +45,10 @@ class manager
     public static function get_program_ids_and_names(): array
     {
         global $DB;
-        if (!self::check_table_exist('local_program')) {
+        if (!self::check_table_exist(self::PROGRAM_TABLE_NAME)) {
             return [];
         }
-        return $DB->get_records('local_program', null, '', 'id, name');
+        return $DB->get_records(self::PROGRAM_TABLE_NAME, null, '', 'id, fullname');
     }
 
     public static function get_program_statics(int $program_id = null, int $course_id = null): array
@@ -82,7 +85,7 @@ class manager
                     ccat.id AS 'category_id', 
                     c.id AS 'course_id',
                     lpc.programid as 'program_id',
-                    lp.name AS 'program_name',
+                    lp.fullname AS 'program_name',
                     CASE 
                         WHEN ccom.timestarted = 0 AND ccom.timeenrolled <> 0 then 'not_started'
                         WHEN ccom.timecompleted IS NULL AND ccom.timestarted <> 0 THEN 'in_progress'
@@ -92,8 +95,8 @@ class manager
                       JOIN {course_completions} AS ccom ON u.id = ccom.userid
                       JOIN {course} AS c ON c.id = ccom.course
                       JOIN {course_categories} AS ccat ON c.category = ccat.id
-                      JOIN {local_program_course} AS lpc ON c.id = lpc.courseid
-                      JOIN {local_program} AS lp ON lp.id = lpc.programid
+                      JOIN {" . self::PROGRAM_COURSES_TABLE_NAME . "} AS lpc ON c.id = lpc.courseid
+                      JOIN {" . self::PROGRAM_TABLE_NAME ."} AS lp ON lp.id = lpc.programid
                     WHERE lpc.programid=:programid 
                 ";
         if ($course_id) {
@@ -235,7 +238,7 @@ class manager
                       JOIN {course_completions} AS ccom ON u.id = ccom.userid
                       JOIN {course} AS c ON c.id = ccom.course
                       JOIN {course_categories} AS ccat ON c.category = ccat.id
-                      JOIN {local_program_course} AS lpc ON c.id = lpc.courseid
+                      JOIN {" . self::PROGRAM_COURSES_TABLE_NAME . "} AS lpc ON c.id = lpc.courseid
                     WHERE lpc.programid=:programid 
                 ";
 
@@ -280,10 +283,10 @@ class manager
     private static function get_program_name_by_id(int $id): string
     {
         global $DB;
-        if (!self::check_table_exist('local_program')) {
+        if (!self::check_table_exist(self::PROGRAM_TABLE_NAME)) {
             return '';
         }
-        return $DB->get_record('local_program', ['id' => $id], 'name')->name;
+        return $DB->get_record(self::PROGRAM_TABLE_NAME, ['id' => $id], 'fullname')->fullname;
     }
 
     private static function convert_float_to_percentage(int $numerator, int $denominator): int

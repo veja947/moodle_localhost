@@ -52,7 +52,7 @@ class block_custom_dashboard extends block_base
         foreach (\block_custom_dashboard\manager::get_program_ids_and_names() as $obj)
         {
             $program_id = $obj->id;
-            $program_names[$obj->id] = $obj->name;
+            $program_names[$obj->id] = $obj->fullname;
             array_push($program_records, \block_custom_dashboard\manager::get_program_statics($program_id));
         }
 
