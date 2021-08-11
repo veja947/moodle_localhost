@@ -2,25 +2,27 @@ import React from "react";
 import {Option} from "rc-select";
 import {Select} from "antd";
 
-const defaultOptions = [];
 
 export default class CampaignSelector extends React.Component {
     constructor(props) {
         super(props);
-
+        this.onChange = this.onChange.bind(this);
+        console.log('selector 12');
         this.options = props.options;
+        this.state = {
+            tableData: [],
+        };
     }
 
     onChange(value) {
         console.log(`CampaignSelector selected ${value}`);
+        this.props.rerenderParentCallback(value);
     }
 
     onBlur() {
-        console.log('CampaignSelector blur');
     }
 
     onFocus() {
-        console.log('CampaignSelector focus');
     }
 
     onSearch(val) {

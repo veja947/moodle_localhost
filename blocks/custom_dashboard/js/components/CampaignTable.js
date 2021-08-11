@@ -1,6 +1,8 @@
 import React from "react";
 import { Table } from "antd";
 import ProgressBar from "./ProgressBar";
+import {QuestionCircleFilled} from "@ant-design/icons";
+import CampaignSelector from "./CampaignSelector";
 
 
 const table_columns = [
@@ -59,9 +61,16 @@ export default class CampaignTable extends React.Component {
         this.dataSource = props.dataSource;
         this.state = {
             error: null,
-            isLoaded: false,
-            data: []
+            isLoading: false,
+            tableData: this.dataSource.table_records,
         };
+
+        this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
+    }
+
+    rerenderParentCallback(value) {
+        this.setState({ tableData: value ? this.dataSource.module_records[value] : this.dataSource.table_records });
+        this.forceUpdate();
     }
 
     componentDidMount() {
@@ -69,7 +78,7 @@ export default class CampaignTable extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log('75');
+                    console.log('80');
                     console.log(result);
                 },
                 // Note: it's important to handle errors here
@@ -85,12 +94,32 @@ export default class CampaignTable extends React.Component {
     }
 
     render() {
+        console.log(`Table rendered.`);
         return (
-            <Table
-                columns={ table_columns }
-                dataSource={this.dataSource}
-                pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '5', '10']}}
-            />
+            <div>
+                <header id="campaign_table_header">
+                    <span className="table-title">Student Activity</span>
+                    <QuestionCircleFilled  className="title-question-icon" />
+                    <div className="table-selector-container">
+                        <span className="table-update-date-text">Updated on xxxx-xx-xx</span>
+                        <div className="table-selector" >
+                            <span className="table-selector-title">View:</span>
+                            <CampaignSelector
+                                options={ this.dataSource.selector_records }
+                                rerenderParentCallback={ this.rerenderParentCallback }
+                            />
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <Table
+                        columns={ table_columns }
+                        dataSource={ this.state.tableData }
+                        pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '5', '10']}}
+                    />
+                </main>
+            </div>
+
         );
     }
 }
