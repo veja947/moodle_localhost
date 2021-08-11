@@ -7,7 +7,7 @@ import CampaignSelector from "./CampaignSelector";
 
 const table_columns = [
     {
-        title: 'Campaigns in progress',
+        title: 'All active campaigns',
         dataIndex: 'campaign',
         key: 'campaign',
         render: text => <a class='campaign-name-link'>{text}</a>,
@@ -57,7 +57,7 @@ export default class CampaignTable extends React.Component {
     constructor(props) {
         super(props);
 
-        this.columns = props.columns;
+        this.columns = table_columns;
         this.dataSource = props.dataSource;
         this.state = {
             error: null,
@@ -69,6 +69,7 @@ export default class CampaignTable extends React.Component {
     }
 
     rerenderParentCallback(value) {
+        this.columns[0]['title'] = value ? 'Modules' : 'All active campaigns';
         this.setState({ tableData: value ? this.dataSource.module_records[value] : this.dataSource.table_records });
         this.forceUpdate();
     }
@@ -78,8 +79,6 @@ export default class CampaignTable extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log('80');
-                    console.log(result);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -113,7 +112,7 @@ export default class CampaignTable extends React.Component {
                 </header>
                 <main>
                     <Table
-                        columns={ table_columns }
+                        columns={ this.columns }
                         dataSource={ this.state.tableData }
                         pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '5', '10']}}
                     />
