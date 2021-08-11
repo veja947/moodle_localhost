@@ -45,7 +45,7 @@ class mapper
     public function get_campaign_dashboard_statistics(int $program_id = null, int $course_id = null): array
     {
         global $DB;
-        $results = $table_records = $selector_records = array();
+        $results = $table_records = $selector_records = $campaign_modules_record = array();
 
         $sql = "SELECT DISTINCT ccom.id AS 'record_id', 
                     u.id AS 'user_id',
@@ -88,6 +88,7 @@ class mapper
 
         foreach ($rs as $record) {
             $program_id = (int)$record->program_id;
+            $course_id = (int)$record->course_id;
             if (!isset($selector_records[$program_id])) {
                 $selector_records[$program_id] = $record->program_name;
             }
@@ -105,11 +106,28 @@ class mapper
                 array_push($table_records[$program_id]['students'], $record->user_id);
                 $table_records[$program_id][$record->completion_status . '_number']++;
             }
+
+            if (!isset($campaign_modules_record[$program_id][$course_id])) {
+                $campaign_modules_record[$program_id][$course_id] = [
+                    'key' => $program_id,
+                    'campaign' => $record->program_name,
+                    'module_name' => $record->course_name,
+                    'module_id' => $record->course_id,
+                    'students' => [$record->user_id],
+                    'not_started_number' => $record->completion_status === self::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
+                    'in_progress_number' => $record->completion_status === self::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
+                    'completed_number' => $record->completion_status === self::COMPLETION_STATUS_COMPLETED ? 1: 0,
+                ];
+            } else {
+                array_push($campaign_modules_record[$program_id][$course_id]['students'], $record->user_id);
+                $campaign_modules_record[$program_id][$course_id][$record->completion_status . '_number']++;
+            }
         }
         $rs->close();
         return [
             'table_records' => $table_records,
             'selector_records' => $selector_records,
+            'module_records' => $campaign_modules_record,
         ];
     }
 

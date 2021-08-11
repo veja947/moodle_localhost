@@ -48,18 +48,61 @@ class manager
     public function get_campaign_statistics_for_dashboard(): array
     {
         $results = $this->mapper->get_campaign_dashboard_statistics();
-        $results['table_records'] = $this->reformat_data_for_table_display($results);
+        $table_records = $this->reformat_campaigns_data_for_table_display($results['table_records']);
+        $module_records = $this->reformat_modules_data_for_table_display($results['module_records']);
+
+        return [
+            'selector_records' => $results['selector_records'],
+            'table_records' => $table_records,
+            'module_records' => $module_records,
+        ];
+    }
+
+    private function reformat_modules_data_for_table_display(array $records): array
+    {
+        $results = [];
+        foreach ($records as $key => $modules) {
+            $campaign_results = [];
+            foreach ($modules as $course_id => $module) {
+                $rate = self::convert_float_to_percentage($module['completed_number'], count($module['students']));
+                array_push($campaign_results, [
+                    'campaign' => $module['module_name'],
+                    'key' => $course_id,
+                    'rate' => $rate,
+                    'students' => count(array_unique($module['students'])),
+                    'progress' => [
+                        [
+                            'name' => 'Completed',
+                            'value' => $rate,
+                            'color' => self::PROGRESS_BAR_COLOR_COMPLETED,
+                        ],
+                        [
+                            'name' => 'In progress',
+                            'value' => self::convert_float_to_percentage($module['in_progress_number'], count($module['students'])),
+                            'color' => self::PROGRESS_BAR_COLOR_IN_PROGRESS,
+                        ],
+                        [
+                            'name' => 'Not started',
+                            'value' => self::convert_float_to_percentage($module['not_started_number'], count($module['students'])),
+                            'color' => self::PROGRESS_BAR_COLOR_NOT_STARTED,
+                        ]
+                    ]
+                ]);
+            }
+            $results[$key] = $campaign_results;
+        }
         return $results;
     }
 
-    private function reformat_data_for_table_display(array $statistics): array
+    private function reformat_campaigns_data_for_table_display(array $records): array
     {
         $results = [];
-        foreach ($statistics['table_records'] as $record) {
+        foreach ($records as $record) {
+            $program_id = $record['key'];
             $rate = self::convert_float_to_percentage($record['completed_number'], count($record['students']));
             array_push($results, [
                 'campaign' => $record['campaign'],
-                'key' => $record['key'],
+                'key' => $program_id,
                 'rate' => $rate,
                 'students' => count(array_unique($record['students'])),
                 'progress' => [
