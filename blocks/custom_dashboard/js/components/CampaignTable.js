@@ -10,7 +10,9 @@ const table_columns = [
         title: 'All active campaigns',
         dataIndex: 'campaign',
         key: 'campaign',
-        render: text => <a class='campaign-name-link'>{text}</a>,
+        render: (text, record) => <a
+            href={'/admin/tool/program/edit.php?id=' + record.key}
+            className='campaign-name-link'>{text}</a>,
     },
     {
         title: 'Total students',
