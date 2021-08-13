@@ -66,6 +66,7 @@ export default class CampaignTable extends React.Component {
             error: null,
             isLoading: true,
             tableData: this.dataSource.table_records,
+            updateDate: new Date().toISOString().slice(0, 10),
         };
 
         this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
@@ -93,7 +94,7 @@ export default class CampaignTable extends React.Component {
                     <span className="table-title">Student Activity</span>
                     <QuestionCircleFilled  className="title-question-icon" />
                     <div className="table-selector-container">
-                        <span className="table-update-date-text">Updated on xxxx-xx-xx</span>
+                        <span className="table-update-date-text">Updated on {this.state.updateDate}</span>
                         <div className="table-selector" >
                             <span className="table-selector-title">View:</span>
                             <CampaignSelector
