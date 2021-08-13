@@ -24,6 +24,7 @@
 
 namespace block_custom_dashboard;
 
+use block_custom_dashboard\customize\setting;
 use block_custom_dashboard\mapper;
 
 defined('MOODLE_INTERNAL') || die();
@@ -33,10 +34,6 @@ require_once("{$CFG->libdir}/completionlib.php");
 
 class manager
 {
-    const PROGRESS_BAR_COLOR_COMPLETED = '#1890FF';
-    const PROGRESS_BAR_COLOR_IN_PROGRESS = '#48D597';
-    const PROGRESS_BAR_COLOR_NOT_STARTED = '#DA291C';
-
     private mapper $mapper;
 
 
@@ -74,17 +71,17 @@ class manager
                         [
                             'name' => 'Completed',
                             'value' => $rate,
-                            'color' => self::PROGRESS_BAR_COLOR_COMPLETED,
+                            'color' => setting::PROGRESS_BAR_COLOR_COMPLETED,
                         ],
                         [
                             'name' => 'In progress',
                             'value' => self::convert_float_to_percentage($module['in_progress_number'], count($module['students'])),
-                            'color' => self::PROGRESS_BAR_COLOR_IN_PROGRESS,
+                            'color' => setting::PROGRESS_BAR_COLOR_IN_PROGRESS,
                         ],
                         [
                             'name' => 'Not started',
                             'value' => self::convert_float_to_percentage($module['not_started_number'], count($module['students'])),
-                            'color' => self::PROGRESS_BAR_COLOR_NOT_STARTED,
+                            'color' => setting::PROGRESS_BAR_COLOR_NOT_STARTED,
                         ]
                     ]
                 ]);
@@ -109,17 +106,17 @@ class manager
                     [
                         'name' => 'Completed',
                         'value' => $rate,
-                        'color' => self::PROGRESS_BAR_COLOR_COMPLETED,
+                        'color' => setting::PROGRESS_BAR_COLOR_COMPLETED,
                     ],
                     [
                         'name' => 'In progress',
                         'value' => self::convert_float_to_percentage($record['in_progress_number'], count($record['students'])),
-                        'color' => self::PROGRESS_BAR_COLOR_IN_PROGRESS,
+                        'color' => setting::PROGRESS_BAR_COLOR_IN_PROGRESS,
                     ],
                     [
                         'name' => 'Not started',
                         'value' => self::convert_float_to_percentage($record['not_started_number'], count($record['students'])),
-                        'color' => self::PROGRESS_BAR_COLOR_NOT_STARTED,
+                        'color' => setting::PROGRESS_BAR_COLOR_NOT_STARTED,
                     ]
                 ]
             ]);

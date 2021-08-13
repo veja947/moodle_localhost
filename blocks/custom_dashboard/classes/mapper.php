@@ -24,6 +24,8 @@
 
 namespace block_custom_dashboard;
 
+use block_custom_dashboard\customize\setting;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once("{$CFG->libdir}/externallib.php");
@@ -31,13 +33,6 @@ require_once("{$CFG->libdir}/completionlib.php");
 
 class mapper
 {
-    const PROGRAM_TABLE_NAME = 'local_program';
-    const PROGRAM_COURSES_TABLE_NAME = 'local_program_course';
-
-    const COMPLETION_STATUS_NOT_STARTED = 'not_started';
-    const COMPLETION_STATUS_IN_PROGRESS = 'in_progress';
-    const COMPLETION_STATUS_COMPLETED = 'completed';
-
     function __construct()
     {
     }
@@ -63,8 +58,8 @@ class mapper
                       JOIN {course_completions} AS ccom ON u.id = ccom.userid
                       JOIN {course} AS c ON c.id = ccom.course
                       JOIN {course_categories} AS ccat ON c.category = ccat.id
-                      JOIN {" . self::PROGRAM_COURSES_TABLE_NAME . "} AS lpc ON c.id = lpc.courseid
-                      JOIN {" . self::PROGRAM_TABLE_NAME ."} AS lp ON lp.id = lpc.programid 
+                      JOIN {" . setting::PROGRAM_COURSES_TABLE_NAME . "} AS lpc ON c.id = lpc.courseid
+                      JOIN {" . setting::PROGRAM_TABLE_NAME ."} AS lp ON lp.id = lpc.programid 
                 ";
 
         if ($program_id) {
@@ -98,9 +93,9 @@ class mapper
                     'key' => $program_id,
                     'campaign' => $record->program_name,
                     'students' => [$record->user_id],
-                    'not_started_number' => $record->completion_status === self::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
-                    'in_progress_number' => $record->completion_status === self::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
-                    'completed_number' => $record->completion_status === self::COMPLETION_STATUS_COMPLETED ? 1: 0,
+                    'not_started_number' => $record->completion_status === setting::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
+                    'in_progress_number' => $record->completion_status === setting::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
+                    'completed_number' => $record->completion_status === setting::COMPLETION_STATUS_COMPLETED ? 1: 0,
                 ];
             } else {
                 array_push($table_records[$program_id]['students'], $record->user_id);
@@ -114,9 +109,9 @@ class mapper
                     'module_name' => $record->course_name,
                     'module_id' => $record->course_id,
                     'students' => [$record->user_id],
-                    'not_started_number' => $record->completion_status === self::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
-                    'in_progress_number' => $record->completion_status === self::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
-                    'completed_number' => $record->completion_status === self::COMPLETION_STATUS_COMPLETED ? 1: 0,
+                    'not_started_number' => $record->completion_status === setting::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
+                    'in_progress_number' => $record->completion_status === setting::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
+                    'completed_number' => $record->completion_status === setting::COMPLETION_STATUS_COMPLETED ? 1: 0,
                 ];
             } else {
                 array_push($campaign_modules_record[$program_id][$course_id]['students'], $record->user_id);
