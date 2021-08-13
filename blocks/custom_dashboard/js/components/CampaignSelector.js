@@ -44,7 +44,7 @@ export default class CampaignSelector extends React.Component {
                 showSearch
                 allowClear
                 style={{ width: 200 }}
-                placeholder="All compaigns in progress"
+                placeholder="All active campaigns"
                 optionFilterProp="children"
                 onChange={this.onChange}
                 onFocus={this.onFocus}

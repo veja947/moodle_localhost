@@ -74,7 +74,6 @@ export default class CampaignTable extends React.Component {
     rerenderParentCallback(value) {
         this.columns[0]['title'] = value ? 'Modules' : 'All active campaigns';
         this.setState({ tableData: value ? this.dataSource.module_records[value] : this.dataSource.table_records });
-        this.forceUpdate();
     }
 
     componentDidMount() {
