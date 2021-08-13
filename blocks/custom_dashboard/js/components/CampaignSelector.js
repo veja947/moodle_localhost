@@ -7,7 +7,6 @@ export default class CampaignSelector extends React.Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
-        console.log('selector 12');
         this.options = props.options;
         this.state = {
             tableData: [],

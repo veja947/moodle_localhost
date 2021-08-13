@@ -1,5 +1,6 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Spin, Switch } from "antd";
+import { LoadingOutlined} from "@ant-design/icons";
 import ProgressBar from "./ProgressBar";
 import {QuestionCircleFilled} from "@ant-design/icons";
 import CampaignSelector from "./CampaignSelector";
@@ -63,7 +64,7 @@ export default class CampaignTable extends React.Component {
         this.dataSource = props.dataSource;
         this.state = {
             error: null,
-            isLoading: false,
+            isLoading: true,
             tableData: this.dataSource.table_records,
         };
 
@@ -77,25 +78,16 @@ export default class CampaignTable extends React.Component {
     }
 
     componentDidMount() {
-        fetch("https://reqres.in/api/users/2")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            );
+        console.log('table componentDidMount');
+        this.setState({isLoading: false});
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('table componentDidUpdate');
     }
 
     render() {
-        console.log(`Table rendered.`);
+        console.log('Table rendered.');
         return (
             <div>
                 <header id="campaign_table_header">
@@ -117,6 +109,7 @@ export default class CampaignTable extends React.Component {
                         columns={ this.columns }
                         dataSource={ this.state.tableData }
                         pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '5', '10']}}
+                        loading={ this.state.isLoading }
                     />
                 </main>
             </div>
