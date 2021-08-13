@@ -1,6 +1,6 @@
 #campaign_table_header {
     height: 80px;
-    /* position: absolute; */
+    margin-top: -2rem; // remove the top margin and padding created by default block
 
     .table-title {
         line-height: 80px;

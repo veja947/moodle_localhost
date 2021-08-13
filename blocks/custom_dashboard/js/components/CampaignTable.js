@@ -89,8 +89,8 @@ export default class CampaignTable extends React.Component {
     render() {
         console.log('Table rendered.');
         return (
-            <div>
-                <header id="campaign_table_header">
+            <div id="campaign_table_container">
+                <div id="campaign_table_header">
                     <span className="table-title">Student Activity</span>
                     <QuestionCircleFilled  className="title-question-icon" />
                     <div className="table-selector-container">
@@ -103,15 +103,15 @@ export default class CampaignTable extends React.Component {
                             />
                         </div>
                     </div>
-                </header>
-                <main>
+                </div>
+                <div id="campaign_table_main">
                     <Table
                         columns={ this.columns }
                         dataSource={ this.state.tableData }
                         pagination={{ defaultPageSize: 5}}
                         loading={ this.state.isLoading }
                     />
-                </main>
+                </div>
             </div>
 
         );
