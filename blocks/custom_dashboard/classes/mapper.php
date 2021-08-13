@@ -50,9 +50,9 @@ class mapper
                     lpc.programid AS 'program_id',
                     lp.fullname AS 'program_name',
                     CASE 
-                        WHEN ccom.timestarted = 0 AND ccom.timeenrolled <> 0 then 'not_started'
-                        WHEN ccom.timecompleted IS NULL AND ccom.timestarted <> 0 THEN 'in_progress'
-                        WHEN ccom.timecompleted IS NOT NULL THEN 'completed'
+                        WHEN ccom.timestarted = 0 AND ccom.timeenrolled <> 0 then '" . setting::COMPLETION_STATUS_NOT_STARTED . "'
+                        WHEN ccom.timecompleted IS NULL AND ccom.timestarted <> 0 THEN '" . setting::COMPLETION_STATUS_IN_PROGRESS . "'
+                        WHEN ccom.timecompleted IS NOT NULL THEN '" . setting::COMPLETION_STATUS_COMPLETED . "'
                         END AS 'completion_status' 
                     FROM {user} AS u 
                       JOIN {course_completions} AS ccom ON u.id = ccom.userid
@@ -91,7 +91,7 @@ class mapper
             if (!isset($table_records[$program_id])) {
                 $table_records[$program_id] = [
                     'key' => $program_id,
-                    'campaign' => $record->program_name,
+                    'name' => $record->program_name,
                     'students' => [$record->user_id],
                     'not_started_number' => $record->completion_status === setting::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
                     'in_progress_number' => $record->completion_status === setting::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
@@ -104,10 +104,8 @@ class mapper
 
             if (!isset($campaign_modules_record[$program_id][$course_id])) {
                 $campaign_modules_record[$program_id][$course_id] = [
-                    'key' => $program_id,
-                    'campaign' => $record->program_name,
-                    'module_name' => $record->course_name,
-                    'module_id' => $record->course_id,
+                    'name' => $record->course_name,
+                    'key' => (int)$record->course_id,
                     'students' => [$record->user_id],
                     'not_started_number' => $record->completion_status === setting::COMPLETION_STATUS_NOT_STARTED ? 1: 0,
                     'in_progress_number' => $record->completion_status === setting::COMPLETION_STATUS_IN_PROGRESS ? 1: 0,
