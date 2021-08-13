@@ -107,7 +107,7 @@ export default class CampaignTable extends React.Component {
                     <Table
                         columns={ this.columns }
                         dataSource={ this.state.tableData }
-                        pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '5', '10']}}
+                        pagination={{ defaultPageSize: 5}}
                         loading={ this.state.isLoading }
                     />
                 </main>
