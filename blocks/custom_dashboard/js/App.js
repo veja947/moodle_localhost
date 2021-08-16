@@ -19,7 +19,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <WelcomeBanner />
+                <WelcomeBanner dataSource={ table_data } />
                 <CampaignTable
                     dataSource={ table_data }
                 />

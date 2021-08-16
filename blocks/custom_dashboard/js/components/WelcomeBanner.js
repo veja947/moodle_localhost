@@ -7,6 +7,9 @@ import WelcomeSvg from "../../img/welcome_icon.svg";
 export default class WelcomeBanner extends React.Component {
     constructor(props) {
         super(props);
+        this.dataSource = props.dataSource;
+        this.totalCampaignsNumebr = Object.keys(this.dataSource.selector_records).length;
+        this.totalStudentsNumebr = this.dataSource.users_count;
     }
 
     render() {
@@ -20,7 +23,7 @@ export default class WelcomeBanner extends React.Component {
                         {/*<Icon component={WelcomeSvg} />*/}
                     </div>
                     <div className="welcome-text">
-                        <div className="welcome-title">Good morning Sherry!</div>
+                        <div className="welcome-title">Good morning Joey!</div>
                         <div className="welcome-content">You can find the overview of program activities, module
                             activities, and Fortiphish campaigns here.
                         </div>
@@ -34,14 +37,14 @@ export default class WelcomeBanner extends React.Component {
                         <div className="total-campaigns-title">
                             Total Launched Campaigns
                         </div>
-                        <div className="total-campaigns-number">5</div>
+                        <div className="total-campaigns-number">{this.totalCampaignsNumebr}</div>
                     </div>
                     <Divider type="vertical" className="welcome-data-divider"/>
                     <div className="total-students-container">
                         <div className="total-students-title">
                             Total Students
                         </div>
-                        <div className="total-students-number">432</div>
+                        <div className="total-students-number">{this.totalStudentsNumebr}</div>
                     </div>
                 </Col>
             </Row>
