@@ -16,7 +16,7 @@
 
 /**
  *
- * @package    local_domain
+ * @package    local_domains
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/webservice/lib.php');
 //admin_externalpage_setup('programslist');
 global $DB;
 
-$PAGE->set_url(new moodle_url('/local/domain/list.php'));
+$PAGE->set_url(new moodle_url('/local/domains/index.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Domains');
 
@@ -64,5 +64,5 @@ $templateContext = (object)[
 ];
 
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_domain/list', $templateContext);
+echo $OUTPUT->render_from_template('local_domains/index', $templateContext);
 echo $OUTPUT->footer();
