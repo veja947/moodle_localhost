@@ -53,6 +53,7 @@ class manager
             'table_records' => $table_records,
             'module_records' => $module_records,
             'users_count' => get_users(false),
+            'user_firstname' => $this->mapper->get_user_firstname(),
         ];
     }
 

@@ -45,7 +45,7 @@ class block_custom_dashboard extends block_base
     }
 
     function get_content() {
-        global $PAGE, $CFG;
+        global $PAGE, $CFG, $USER;
         $this->content = new stdClass();
 
         $manager = new \block_custom_dashboard\manager();

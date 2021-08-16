@@ -124,6 +124,12 @@ class mapper
         ];
     }
 
+    public function get_user_firstname(): string
+    {
+        global $USER;
+        return $USER->firstname;
+    }
+
     private function check_table_exist(string $name): bool
     {
         global $DB;
