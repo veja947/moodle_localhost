@@ -3,13 +3,13 @@ $banner_to_top: calc(-90px - 24px); // 90px(banner height) + 24px(margin between
 
 #welcome_banner_container {
     //display: none; // TODO: REMOVE
-    border: 1px red solid;
     position: absolute;
     width: 100%;
     //margin-left: -$banner_to_edge;
     margin-top: $banner_to_top;
     padding: 15px;
     left: 0;
+    background: #fff;
 
     .welcome-text-container {
         .welcome-logo {
