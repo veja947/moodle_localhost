@@ -1,0 +1,128 @@
+$banner_to_edge: 32px;
+$banner_to_top: calc(-90px - 24px); // 90px(banner height) + 24px(margin between banner and block)
+
+#welcome_banner_container {
+    //display: none; // TODO: REMOVE
+    border: 1px red solid;
+    position: absolute;
+    width: 100%;
+    //margin-left: -$banner_to_edge;
+    margin-top: $banner_to_top;
+    padding: 15px;
+    left: 0;
+
+    .welcome-text-container {
+        .welcome-logo {
+            background-image: url("../../images/welcome_icon.png");
+            float: left;
+            display: inline-flex;
+            flex-direction: row;
+            align-items: flex-start;
+            padding: 0px;
+            position: static;
+            width: 72px;
+            height: 72px;
+            left: 0px;
+            top: 0px;
+
+        }
+
+        .welcome-text {
+            height: 72px;
+            padding-left: 24px;
+            display: table-cell;
+            vertical-align: middle;
+
+            .welcome-title {
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 28px;
+                color: rgba(0, 0, 0, 0.85);
+                position: static;
+            }
+
+            .welcome-content {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 22px;
+                color: rgba(0, 0, 0, 0.45);
+            }
+        }
+    }
+
+    .welcome-data {
+        display: table;
+
+        .total-campaigns-container {
+            width: 60%;
+            //display: inline-block;
+            display: table-cell;
+            vertical-align: middle;
+            height: 72px;
+            padding-right: 32px;
+
+            .total-campaigns-title {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 16px;
+                line-height: 22px;
+                display: flex;
+                align-items: center;
+                color: rgba(0, 0, 0, 0.45);
+                right: 0;
+                text-align: right;
+                flex-direction: row-reverse;
+            }
+
+            .total-campaigns-number {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 24px;
+                line-height: 28px;
+                display: flex;
+                align-items: center;
+                color: rgba(0, 0, 0, 0.85);
+                flex-direction: row-reverse;
+            }
+        }
+
+        .total-students-container {
+            width: calc(40% - 0px);
+            text-align: end;
+            display: table-cell;
+            vertical-align: middle;
+            height: 72px;
+            padding: 0 32px;
+
+            .total-students-title {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 16px;
+                line-height: 22px;
+                display: flex;
+                align-items: center;
+                color: rgba(0, 0, 0, 0.45);
+                flex-direction: row-reverse;
+            }
+
+            .total-students-number {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 24px;
+                line-height: 28px;
+                display: flex;
+                align-items: center;
+                color: rgba(0, 0, 0, 0.85);
+                flex-direction: row-reverse;
+            }
+        }
+
+        .welcome-data-divider {
+            height: 32px;
+            vertical-align: middle;
+            margin: auto;
+            top: 20px;
+        }
+    }
+}

@@ -1,6 +1,8 @@
 @import "~antd/dist/antd.css";
 @import "progressbar";
 @import "campaigntable";
+@import "welcomebanner";
+@import "boostnavigation";
 
 $summary_title_text: #718296;
 $summary_num_text: #32325d;
@@ -11,6 +13,12 @@ $ftnt_red: #DA291C;
 $ftnt_green: #48D597;
 $ftnt_blue: #307FE2;
 $ftnt_teal: #2CCCD3;
+
+$block_margin_top: 114px; // 90px(welcome banner height) + 24px(margin between banner and table)
+
+.block.block_custom_dashboard {
+    margin-top: $block_margin_top
+}
 
 #app {
     height: 100%;

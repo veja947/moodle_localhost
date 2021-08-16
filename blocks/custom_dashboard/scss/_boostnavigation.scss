@@ -1,0 +1,27 @@
+.workplace-drawer-list {
+    padding-top: 100px;
+}
+
+[data-region="drawer"] {
+    background-color: #007DB8;
+    padding: 0;
+
+    .workplace-drawer-list .drawer-item {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        .navname {
+            padding-left: 10px;
+        }
+    }
+
+    .workplace-drawer-list .drawer-item.active {
+        background: none;
+
+        .iconcontainer {
+            background-color: white;
+            color: #007DB8;
+            border-radius: 0px 13.5px 13.5px 0px;
+        }
+    }
+}
