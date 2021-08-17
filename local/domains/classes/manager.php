@@ -55,6 +55,19 @@ class manager
         return $result;
     }
 
+    private function get_domain_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?domain
+    {
+        $domains = $this->get_active_domains();
+        if (array_key_exists($id, $domains)) {
+            return $domains[$id];
+        }
+        if ($showexception) {
+            throw new \moodle_exception('domainnotfound', domain::TABLE,
+                $exceptionlink ?: self::get_base_url());
+        }
+        return null;
+    }
+
     /**
      * Create a new Domain
      *
@@ -65,6 +78,26 @@ class manager
         global $DB;
         $domain = new domain(0, $data);
         $domain->create();
+        return $domain;
+    }
+
+    /**
+     * Delete a Domain
+     *
+     * @param int $id
+     */
+    public function delete_domain(int $id): ?domain
+    {
+        global $DB;
+        if (!$DB->get_record(domain::TABLE, ['id' => $id])) {
+            return null;
+        }
+
+        $domain = $this->get_domain_by_id($id);
+
+        // delete domain record
+        $domain->delete();
+
         return $domain;
     }
 
