@@ -18,9 +18,9 @@
                 <td>{{token}}</td>
                 <td>{{status}}</td>
                 <td>
-                    <a href="{{delete_url}}?domainid={{id}}" id="delete_domain_button">Delete</a>
+                    <a href="{{action_url}}?domainid={{id}}&action=delete" id="delete_domain_button">Delete</a>
                     |
-                    <a href="{{verify_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
+                    <a href="{{action_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
                 </td>
             </tr>
         {{/active_domains_list}}

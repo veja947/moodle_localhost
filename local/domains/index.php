@@ -32,33 +32,25 @@ $PAGE->set_url(new moodle_url('/local/domains/index.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Domains');
 
-//$manager = new \local_domain\manager();
+$manager = new \local_domains\manager();
 
-$domainId = $_GET['domainid'] ?? null;
-//$action = $_GET['action'] ?? null;
-//switch ($action) {
-//    case \local_domain\manager::PROGRAM_ACTION_ARCHIVE:
-//        $manager->archive_domain((int)$domainId);
-//        break;
-//
-//    case \local_domain\manager::DOMAIN_ACTION_RESTORE:
-//        $manager->restore_domain((int)$domainId);
-//        break;
-//
-//    case \local_domain\manager::DOMAIN_ACTION_DELETE:
-//        $manager->delete_domain((int)$domainId);
-//        break;
-//}
+$domainid = $_GET['domainid'] ?? null;
+$action = $_GET['action'] ?? null;
+switch ($action) {
+    case \local_domains\manager::DOMAIN_ACTION_VERIFY:
+        $manager->verify_domain((int)$domainid);
+        break;
 
-//$activeDomains = $manager->get_active_domains();
-//$archivedPrograms = $manager->get_archived_programs();
+    case \local_domains\manager::DOMAIN_ACTION_DELETE:
+        $manager->delete_domain((int)$domainid);
+        break;
+}
 
-//$activeProgramsDisplay = $manager->get_domains_display_array($activeDomains);
-//$archivedProgramsDisplay = $manager->get_programs_display_array($archivedPrograms);
+$activedomains = $manager->get_active_domains();
+$activedomainsdisplay = $manager->get_domains_display_array($activedomains);
 
 $templateContext = (object)[
-//    'active_program_list' => array_values($activeProgramsDisplay),
-//    'archived_program_list' => array_values($archivedProgramsDisplay),
+    'active_domains_list' => array_values($activedomainsdisplay),
     'edit_url' => \local_domains\manager::get_editor_url(),
     'action_url' => \local_domains\manager::get_base_url(),
 ];

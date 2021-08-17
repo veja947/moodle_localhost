@@ -35,15 +35,24 @@ class manager
      *
      * @return domain[]
      */
-    public function get_active_programs(): array
+    public function get_active_domains(): array
     {
         global $DB;
         $active_domains = $DB->get_records(domain::TABLE);
         $domains = [];
         foreach ($active_domains as $record) {
-            $domains[$record->id] = new $domains(0, $record);
+            $domains[$record->id] = new domain(0, $record);
         }
         return $domains ?? [];
+    }
+
+    public function get_domains_display_array(array $domains): array
+    {
+        $result = [];
+        foreach ($domains as $domain) {
+            $result[$domain->get('id')] = $domain->get_properties_display();
+        }
+        return $result;
     }
 
     /**
@@ -60,7 +69,7 @@ class manager
     }
 
     /**
-     * Base URL to view programs list
+     * Base URL to view domains list
      * @return \moodle_url
      */
     public static function get_base_url(): \moodle_url
@@ -69,7 +78,7 @@ class manager
     }
 
     /**
-     * Editor URL to view program form
+     * Editor URL to view domains form
      * @return \moodle_url
      */
     public static function get_editor_url(): \moodle_url

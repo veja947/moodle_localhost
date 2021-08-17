@@ -77,7 +77,7 @@ class domain extends persistent
         return [
             'id' => $this->get('id'),
             'name' => $this->get_formatted_property('name'),
-            'status' => $this->get('archived') ? 'True' : 'False',
+            'status' => $this->get('status') ? 'True' : 'False',
             'token' => $this->get_formatted_property('token'),
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timeverified' => $this->get_formatted_property('timeverified'),
