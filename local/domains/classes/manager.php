@@ -101,10 +101,58 @@ class manager
         return $domain;
     }
 
+    private function update_domain(domain $domain, \stdClass $newData): ?domain
+    {
+        foreach ($newData as $key => $value) {
+            if (domain::has_property($key) && $key !== 'id') {
+                $domain->set($key, $value);
+            }
+        }
+        $domain->save();
+        return $domain;
+    }
+
+    /**
+     * verify a Domain
+     *
+     * @param int $id
+     */
+    public function verify_domain(int $id): ?domain
+    {
+        global $DB;
+        if (!$DB->get_record(domain::TABLE, ['id' => $id])) {
+            return null;
+        }
+
+        $domain = $this->get_domain_by_id($id);
+
+        // verify token
+        $name = $domain->get('name');
+        $token = $domain->get('token');
+        $status = $this->verify_token($name, $token);
+
+        // update domain
+        return $this->update_domain($domain, (object)[
+            'status' => (int)$status,
+            'timeverified' => $status? time() : null,
+        ]);
+    }
+
     public function generate_token(): string
     {
-        $token = random_bytes(10);
+        $token = random_bytes(15);
         return bin2hex($token);
+    }
+
+    private function verify_token(string $domain, string $token): bool
+    {
+        $records = dns_get_record($domain, DNS_TXT);
+        foreach ($records as $record) {
+            if ($record['txt'] === $token) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

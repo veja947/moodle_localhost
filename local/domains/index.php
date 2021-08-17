@@ -49,6 +49,7 @@ switch ($action) {
 $activedomains = $manager->get_active_domains();
 $activedomainsdisplay = $manager->get_domains_display_array($activedomains);
 
+$test = dns_get_record("ftnt.info", DNS_TXT);
 
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),

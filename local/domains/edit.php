@@ -41,8 +41,8 @@ if ($mform->is_cancelled()) {
     // create new domain
     $new_domain = $manager->create_domain((object)[
         'name' => $fromform->name,
-        'token' => $manager->generate_token(), // TODO: instead real token
-        'status' => 0, // TODO: instead real status
+        'token' => $manager->generate_token(),
+        'status' => 0,
         'tenantid' => 99, // TODO: instead real tenantid
         'timeverified' => null
     ]);
