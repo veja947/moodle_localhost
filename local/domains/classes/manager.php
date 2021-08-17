@@ -68,6 +68,12 @@ class manager
         return $domain;
     }
 
+    public function generate_token(): string
+    {
+        $token = random_bytes(10);
+        return bin2hex($token);
+    }
+
     /**
      * Base URL to view domains list
      * @return \moodle_url

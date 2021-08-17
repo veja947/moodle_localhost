@@ -49,6 +49,7 @@ switch ($action) {
 $activedomains = $manager->get_active_domains();
 $activedomainsdisplay = $manager->get_domains_display_array($activedomains);
 
+
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),
     'edit_url' => \local_domains\manager::get_editor_url(),
