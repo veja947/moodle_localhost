@@ -20,8 +20,8 @@
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 require_once("$CFG->libdir/formslib.php");
+
 
 
 class edit extends moodleform
@@ -37,12 +37,12 @@ class edit extends moodleform
         $mform->setType('id', PARAM_INT);
 
         // 1. domain name
-        $mform->addElement('text', 'name', 'Domain Name');
+        $mform->addElement('text', 'name', '');
         $mform->setType('name', PARAM_NOTAGS);
         $mform->setDefault('name', '');
 
         // add submit and cancel button
-        $this->add_action_buttons();
+        $this->add_action_buttons(false, 'Add Domain');
     }
 
     // custom validation should be added here

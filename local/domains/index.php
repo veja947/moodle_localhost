@@ -25,6 +25,7 @@ require_once(__DIR__ . '/../../config.php'); // load config.php
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
 require_once($CFG->dirroot . '/webservice/lib.php');
+require_once($CFG->dirroot . '/local/domains/classes/form/edit.php');
 //admin_externalpage_setup('programslist');
 global $DB;
 
@@ -33,6 +34,25 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Domains');
 
 $manager = new \local_domains\manager();
+$mform = new edit();
+
+if ($mform->is_cancelled()) {
+    // go back to index.php page
+    redirect($CFG->wwwroot . '/local/domains/index.php');
+} else if ($fromform = $mform->get_data()) {
+    // create new domain
+    $new_domain = $manager->create_domain((object)[
+        'name' => $fromform->name,
+        'token' => $manager->generate_token(),
+        'status' => 0,
+        'tenantid' => 99, // TODO: instead real tenantid
+        'timeverified' => null
+    ]);
+
+    // go back to index.php page
+    redirect($CFG->wwwroot . '/local/domains/index.php',
+        'You created a new Domain: ' . $fromform->name);
+}
 
 $domainid = $_GET['domainid'] ?? null;
 $action = $_GET['action'] ?? null;
@@ -49,8 +69,6 @@ switch ($action) {
 $activedomains = $manager->get_active_domains();
 $activedomainsdisplay = $manager->get_domains_display_array($activedomains);
 
-$test = dns_get_record("ftnt.info", DNS_TXT);
-
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),
     'edit_url' => \local_domains\manager::get_editor_url(),
@@ -58,5 +76,6 @@ $templateContext = (object)[
 ];
 
 echo $OUTPUT->header();
+$mform->display();
 echo $OUTPUT->render_from_template('local_domains/index', $templateContext);
 echo $OUTPUT->footer();
