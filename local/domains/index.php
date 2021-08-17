@@ -59,8 +59,8 @@ $domainId = $_GET['domainid'] ?? null;
 $templateContext = (object)[
 //    'active_program_list' => array_values($activeProgramsDisplay),
 //    'archived_program_list' => array_values($archivedProgramsDisplay),
-    'edit_url' => 'xxx',
-//    'action_url' => \local_program\manager::get_base_url(),
+    'edit_url' => \local_domains\manager::get_editor_url(),
+    'action_url' => \local_domains\manager::get_base_url(),
 ];
 
 echo $OUTPUT->header();

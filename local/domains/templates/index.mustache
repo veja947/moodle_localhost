@@ -1,6 +1,29 @@
 <h1>Manage Domains</h1>
 
-
 <div class="form-group">
     <input type="button" class="btn btn-primary" value="Add Domain" onclick="location.href='{{edit_url}}'">
-</div
+</div>
+
+<div class="container-fluid local-domains-list">
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Token</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {{#active_domains_list}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{token}}</td>
+                <td>{{status}}</td>
+                <td>
+                    <a href="{{delete_url}}?domainid={{id}}" id="delete_domain_button">Delete</a>
+                    |
+                    <a href="{{verify_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
+                </td>
+            </tr>
+        {{/active_domains_list}}
+    </table>
+</div>
+
