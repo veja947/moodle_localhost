@@ -65,11 +65,13 @@ export default class CampaignTable extends React.Component {
 
         this.columns = table_columns;
         this.dataSource = props.dataSource;
+        this.newDate = new Date();
+
         this.state = {
             error: null,
             isLoading: true,
             tableData: this.dataSource.table_records,
-            updateDate: new Date().toISOString().slice(0, 10),
+            updateDate: `${this.newDate.getFullYear()}-${this.newDate.getMonth() + 1}-${this.newDate.getDate()}`,
         };
 
         this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
