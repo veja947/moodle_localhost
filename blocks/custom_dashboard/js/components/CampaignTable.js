@@ -105,6 +105,7 @@ export default class CampaignTable extends React.Component {
                 </div>
                 <div id="campaign_table_main">
                     <Table
+                        // locale={{ emptyText: 'No student campaign has been set' }}
                         columns={ this.columns }
                         dataSource={ this.state.tableData }
                         pagination={{ defaultPageSize: 5}}

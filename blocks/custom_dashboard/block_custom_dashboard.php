@@ -53,7 +53,7 @@ class block_custom_dashboard extends block_base
         $this->content->data = $program_records;
 
 
-        $this->content->text = '<div id="app">hello dashboard</div>';
+        $this->content->text = '<div id="app">custom dashboard</div>';
 
 
         // TODO: finally, use web service api to instead of sending data via script tag
@@ -62,7 +62,7 @@ class block_custom_dashboard extends block_base
             json_encode(
                 $program_records
             ),
-            ['id' => 'test_test', 'type' => 'application/json']
+            ['id' => 'dashboard_source_data', 'type' => 'application/json']
         );
 
         return $this->content;

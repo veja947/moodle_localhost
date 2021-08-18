@@ -8,7 +8,7 @@ import CampaignTable from "./components/CampaignTable";
 import WelcomeBanner from "./components/WelcomeBanner";
 import TestCode from "./components/TestCode";
 
-let table_data = JSON.parse($('#test_test').html());
+let table_data = JSON.parse($('#dashboard_source_data').html());
 console.log(table_data);
 
 class App extends Component {

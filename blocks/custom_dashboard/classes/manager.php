@@ -49,11 +49,11 @@ class manager
         $module_records = $this->reformat_modules_data_for_table_display($results['module_records']);
 
         return [
-            'selector_records' => $results['selector_records'],
-            'table_records' => $table_records,
-            'module_records' => $module_records,
-            'users_count' => get_users(false),
-            'user_firstname' => $this->mapper->get_user_firstname(),
+            'selector_records' => $results['selector_records'] ?? [],
+            'table_records' => $table_records ?? [],
+            'module_records' => $module_records ?? [],
+            'users_count' => get_users(false) ?? 0,
+            'user_firstname' => $this->mapper->get_user_firstname() ?? 'N/A',
         ];
     }
 
