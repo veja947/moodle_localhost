@@ -5,15 +5,18 @@ import ProgressBar from "./ProgressBar";
 import {QuestionCircleFilled} from "@ant-design/icons";
 import CampaignSelector from "./CampaignSelector";
 
-
 const table_columns = [
     {
         title: 'All active campaigns',
         dataIndex: 'campaign',
         key: 'campaign',
-        render: (text, record) => <a
-            href={'/admin/tool/program/edit.php?id=' + record.key}
-            className='campaign-name-link'>{text}</a>,
+        render: (text, record) => {
+            return record.is_module
+                ? <a href={'/course/view.php?id=' + record.key}
+                                  className='module-name-link' data-id={record.key}>{text}</a>
+                : <a href={'/admin/tool/program/edit.php?id=' + record.key}
+                     className='campaign-name-link' data-id={record.key}>{text}</a>
+        },
     },
     {
         title: 'Total students',
@@ -78,16 +81,10 @@ export default class CampaignTable extends React.Component {
     }
 
     componentDidMount() {
-        console.log('table componentDidMount');
         this.setState({isLoading: false});
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('table componentDidUpdate');
-    }
-
     render() {
-        console.log('Table rendered.');
         return (
             <div id="campaign_table_container">
                 <div id="campaign_table_header">

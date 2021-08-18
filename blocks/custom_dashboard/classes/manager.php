@@ -61,12 +61,12 @@ class manager
     {
         $results = [];
         foreach ($records as $key => $modules) {
-            $results[$key] = $this->reformat_data_for_table_display($modules);
+            $results[$key] = $this->reformat_data_for_table_display($modules, true);
         }
         return $results;
     }
 
-    private function reformat_data_for_table_display(array $records): array
+    private function reformat_data_for_table_display(array $records, bool $isModule = false): array
     {
         $results = [];
         foreach ($records as $record) {
@@ -76,6 +76,7 @@ class manager
                 'campaign' => $record['name'],
                 'key' => $program_id,
                 'rate' => $rate,
+                'is_module' => $isModule,
                 'students' => count(array_unique($record['students'])),
                 'progress' => [
                     [
