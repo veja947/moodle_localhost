@@ -31,7 +31,6 @@
 
         .table-update-date-text {
             margin: auto 12px;
-            font-family: Inter;
             font-style: normal;
             font-weight: 500;
             font-size: 12px;
@@ -91,11 +90,35 @@
             }
         }
     }
-
-    //.ant-table {
-    //    table {
-    //        width: auto;
-    //        display: inline-block;
-    //    }
-    //}
 }
+
+@media screen and (max-width: 767px){
+    #campaign_table_container {
+
+        #campaign_table_header {
+              .table-title {
+                  margin-left: 0;
+              }
+
+            .table-selector-container {
+                line-height: 30px;
+                width: 100%;
+                margin: 0 0 30px 0;
+
+                .table-update-date-text {
+                    margin: auto 0;
+                }
+            }
+        }
+
+        .progress-icons-container {
+            margin: 0;
+
+            .progress-icon {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    }
+}
+

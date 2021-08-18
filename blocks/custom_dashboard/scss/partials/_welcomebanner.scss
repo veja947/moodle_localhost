@@ -1,11 +1,10 @@
 $banner_to_edge: 32px;
 $banner_to_top: calc(-90px - 24px); // 90px(banner height) + 24px(margin between banner and block)
+$banner_to_top_mobile: -198px;
 
 #welcome_banner_container {
-    //display: none; // TODO: REMOVE
     position: absolute;
     width: 100%;
-    //margin-left: -$banner_to_edge;
     margin-top: $banner_to_top;
     padding: 15px;
     left: 0;
@@ -18,12 +17,12 @@ $banner_to_top: calc(-90px - 24px); // 90px(banner height) + 24px(margin between
             display: inline-flex;
             flex-direction: row;
             align-items: flex-start;
-            padding: 0px;
+            padding: 0;
             position: static;
             width: 72px;
             height: 72px;
-            left: 0px;
-            top: 0px;
+            left: 0;
+            top: 0;
 
         }
 
@@ -123,6 +122,16 @@ $banner_to_top: calc(-90px - 24px); // 90px(banner height) + 24px(margin between
             vertical-align: middle;
             margin: auto;
             top: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 992px){
+    #welcome_banner_container {
+        margin-top: $banner_to_top_mobile;
+
+        .total-students-title, .total-campaigns-title {
+            font-size: 12px;
         }
     }
 }

@@ -15,6 +15,7 @@ $ftnt_blue: #307FE2;
 $ftnt_teal: #2CCCD3;
 
 $block_margin_top: 114px; // 90px(welcome banner height) + 24px(margin between banner and table)
+$block_margin_top_mobile: 198px;
 
 .block.block_custom_dashboard {
     margin-top: $block_margin_top
@@ -22,4 +23,10 @@ $block_margin_top: 114px; // 90px(welcome banner height) + 24px(margin between b
 
 #app {
     height: 100%;
+}
+
+@media screen and (max-width: 992px){
+    .block.block_custom_dashboard {
+        margin-top: $block_margin_top_mobile
+    }
 }

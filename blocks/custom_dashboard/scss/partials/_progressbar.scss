@@ -1,22 +1,22 @@
 .multicolor-bar {
-  margin: 0;
-  font-size: 12px;
+    margin: 0;
+    font-size: 12px;
 }
 
 .multicolor-bar .values .value {
-  float: left;
-  text-align: center;
-  line-height: 14px;
+    float: left;
+    text-align: center;
+    line-height: 14px;
 }
 
 .multicolor-bar .scale .graduation {
-  float: left;
-  text-align: center;
+    float: left;
+    text-align: center;
 }
 
 .multicolor-bar .bars .bar {
-  float: left;
-  height: 8px;
+    float: left;
+    height: 8px;
 }
 
 //.multicolor-bar .bars div.bar:first-of-type {
@@ -30,22 +30,28 @@
 //}
 
 .multicolor-bar .legends {
-  text-align: center;
+    text-align: center;
 }
 
 
 .multicolor-bar .legends .legend {
-  display: inline-block;
-  margin: 0 5px;
-  text-align: center;
+    display: inline-block;
+    margin: 0 5px;
+    text-align: center;
 }
 
 .multicolor-bar .legends .legend .dot {
-  font-size: 25px;
-  vertical-align: middle;
+    font-size: 25px;
+    vertical-align: middle;
 }
 
 .multicolor-bar .legends .legend .label {
-  margin-left: 2px;
-  vertical-align: middle;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+@media screen and (max-width: 767px) {
+    .multicolor-bar {
+        display: grid;
+    }
 }
