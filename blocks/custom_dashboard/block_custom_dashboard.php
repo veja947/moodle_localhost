@@ -29,10 +29,7 @@ class block_custom_dashboard extends block_base
     function init() {
         global $PAGE, $CFG;
         $this->title = get_string('pluginname', 'block_custom_dashboard');
-        $PAGE->requires->jquery();
-        $PAGE->requires->js(new moodle_url(
-            $CFG->wwwroot . '/blocks/custom_dashboard/dist/js/app.js'));
-        $PAGE->requires->css('/blocks/custom_dashboard/dist/css/style.css');
+
     }
 
     function has_config() {
@@ -46,6 +43,12 @@ class block_custom_dashboard extends block_base
 
     function get_content() {
         global $PAGE, $CFG, $USER;
+
+        $PAGE->requires->jquery();
+        $PAGE->requires->js(new moodle_url(
+            $CFG->wwwroot . '/blocks/custom_dashboard/dist/js/app.js'));
+        $PAGE->requires->css('/blocks/custom_dashboard/dist/css/style.css');
+
         $this->content = new stdClass();
 
         $manager = new \block_custom_dashboard\manager();
