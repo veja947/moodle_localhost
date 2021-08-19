@@ -37,12 +37,14 @@ class edit extends moodleform
         $mform->setType('id', PARAM_INT);
 
         // 1. domain name
-        $mform->addElement('text', 'name', '');
+        $mform->addElement('text', 'name', '', [
+            'placeholder' => 'example.com',
+        ]);
         $mform->setType('name', PARAM_NOTAGS);
         $mform->setDefault('name', '');
 
         // add submit and cancel button
-        $this->add_action_buttons(false, 'Add Domain');
+        $this->add_action_buttons(false, 'Add');
     }
 
     // custom validation should be added here

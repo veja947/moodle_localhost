@@ -26,6 +26,7 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
 require_once($CFG->dirroot . '/webservice/lib.php');
 require_once($CFG->dirroot . '/local/domains/classes/form/edit.php');
+$PAGE->requires->css('/local/domains/css/styles.css');
 //admin_externalpage_setup('programslist');
 global $DB;
 
@@ -35,6 +36,7 @@ $PAGE->set_title('Manage Domains');
 
 $manager = new \local_domains\manager();
 $mform = new edit();
+$formhtml = $mform->render();
 
 if ($mform->is_cancelled()) {
     // go back to index.php page
@@ -73,9 +75,10 @@ $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),
     'edit_url' => \local_domains\manager::get_editor_url(),
     'action_url' => \local_domains\manager::get_base_url(),
+    'mform' => $formhtml,
 ];
 
 echo $OUTPUT->header();
-$mform->display();
+//$mform->display();
 echo $OUTPUT->render_from_template('local_domains/index', $templateContext);
 echo $OUTPUT->footer();

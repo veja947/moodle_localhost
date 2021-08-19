@@ -1,0 +1,76 @@
+.table-container {
+    padding: 15px ;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    /* Light shadow */
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.06);
+
+    &.domain-table-container {
+        margin-bottom: 30px;
+    }
+
+    .table-title-container {
+        .table-title {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 28px;
+            color: rgba(0, 0, 0, 0.85);
+        }
+
+        .table-sub-title {
+            font-style: normal;
+            font-weight: 300;
+            font-size: 14px;
+            line-height: 120%;
+            color: rgba(0, 0, 0, 0.6);
+            margin: 12px 0;
+        }
+    }
+
+    form.mform {
+        .form-group.row {
+            margin: 0;
+            display: inline-block;
+
+            .col-form-label {
+                display: none !important;
+            }
+
+            .form-inline {
+                padding: 0;
+                //display: inline-block;
+                max-width: 100%;
+
+                input.form-control {
+                    background: url("../img/earth-icon.png") no-repeat no-repeat center;
+                    background-position-x: 12px;
+                    padding-left: 35px;
+                    width: 345px;
+                    height: 40px;
+                    border: 1px solid #D9D9D9;
+                    box-sizing: border-box;
+                    border-radius: 2px 0 0 2px;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 16px;
+                    line-height: 24px;
+                }
+
+                input.btn.btn-primary {
+                    padding: 0 16px;
+                    height: 40px;
+                    /* Daybreak Blue / 6 */
+                    background: #1890FF;
+                    /* Daybreak Blue / 6 */
+                    border: 1px solid #1890FF;
+                    box-sizing: border-box;
+                    /* drop-shadow / button-primary */
+                    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.043);
+                    border-radius: 0 2px 2px 0;
+
+                }
+            }
+        }
+    }
+}
