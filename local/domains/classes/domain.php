@@ -43,15 +43,20 @@ class domain extends persistent
                 'type' => PARAM_TEXT,
                 'description' => 'The domain name.',
             ),
+            'token' => array(
+                'type' => PARAM_TEXT,
+                'description' => 'Token for verify the domain',
+                'default' => null,
+            ),
             'status' => array(
                 'type' => PARAM_INT,
                 'description' => 'Is verified or not.',
                 'default' => 0,
             ),
-            'token' => array(
-                'type' => PARAM_TEXT,
-                'description' => 'Token for verify the domain',
-                'default' => null,
+            'primarydomain' => array(
+                'type' => PARAM_INT,
+                'description' => 'Is domain the primary one or not.',
+                'default' => 0,
             ),
             'tenantid' => array(
                 'type' => PARAM_INT,
@@ -59,9 +64,15 @@ class domain extends persistent
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
-            'timeverified' => array(
+            'timecreated' => array(
                 'type' => PARAM_INT,
                 'description' => 'Time the domain was verified.',
+                'default' => null,
+                'null' => NULL_ALLOWED,
+            ),
+            'provider' => array(
+                'type' => PARAM_TEXT,
+                'description' => 'Domain provider name',
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
@@ -77,10 +88,12 @@ class domain extends persistent
         return [
             'id' => $this->get('id'),
             'name' => $this->get_formatted_property('name'),
-            'status' => $this->get('status') ? 'True' : 'False',
             'token' => $this->get_formatted_property('token'),
+            'status' => $this->get('status') ? 'True' : 'False',
+            'primarydomain' => $this->get('primarydomain') ? 'True' : 'False',
             'tenantid' => $this->get_formatted_property('tenantid'),
-            'timeverified' => $this->get_formatted_property('timeverified'),
+            'timecreated' => $this->get_formatted_property('timecreated'),
+            'provider' => $this->get_formatted_property('provider'),
         ];
     }
 }

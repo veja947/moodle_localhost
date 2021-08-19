@@ -47,8 +47,10 @@ if ($mform->is_cancelled()) {
         'name' => $fromform->name,
         'token' => $manager->generate_token(),
         'status' => 0,
+        'primarydomain' => 0,
         'tenantid' => 99, // TODO: instead real tenantid
-        'timeverified' => null
+        'timecreated' => time(),
+        'provider' => null, // TODO: get provider name
     ]);
 
     // go back to index.php page
@@ -79,6 +81,5 @@ $templateContext = (object)[
 ];
 
 echo $OUTPUT->header();
-//$mform->display();
 echo $OUTPUT->render_from_template('local_domains/index', $templateContext);
 echo $OUTPUT->footer();

@@ -1,5 +1,5 @@
 .table-container {
-    padding: 15px ;
+    padding: 0;
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.15);
     /* Light shadow */
@@ -10,6 +10,8 @@
     }
 
     .table-title-container {
+        padding: 15px;
+
         .table-title {
             font-style: normal;
             font-weight: 500;
@@ -28,7 +30,9 @@
         }
     }
 
-    form.mform {
+    .create-domain-form-container form.mform {
+        padding: 15px;
+
         .form-group.row {
             margin: 0;
             display: inline-block;
@@ -43,7 +47,7 @@
                 max-width: 100%;
 
                 input.form-control {
-                    background: url("../img/earth-icon.png") no-repeat no-repeat center;
+                    background: url("../img/earth-icon.png") no-repeat no-repeat left;
                     background-position-x: 12px;
                     padding-left: 35px;
                     width: 345px;
@@ -70,6 +74,32 @@
                     border-radius: 0 2px 2px 0;
 
                 }
+            }
+        }
+    }
+
+    .domains-list-container {
+        margin-top: 18px;
+
+        .table.domains-list {
+            .list-title {
+                background: #FAFAFA;
+                box-shadow: -18px 0px 0px -17px rgba(0, 0, 0, 0.06);
+                border-radius: 0;
+                border-top: none;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 22px;
+                color: rgba(0, 0, 0, 0.85);
+
+                &.list-title-first {
+                    box-shadow: 0 0 0px -17px rgba(0, 0, 0, 0.06);
+                }
+            }
+
+            td {
+                border-top: 1px solid rgba(0, 0, 0, 0.06);
             }
         }
     }

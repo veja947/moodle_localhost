@@ -134,7 +134,6 @@ class manager
         // update domain
         return $this->update_domain($domain, (object)[
             'status' => (int)$status,
-            'timeverified' => $status? time() : null,
         ]);
     }
 
