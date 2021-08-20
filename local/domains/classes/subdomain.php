@@ -37,7 +37,8 @@ class subdomain extends persistent
      *
      * @return array
      */
-    protected static function define_properties() {
+    protected static function define_properties()
+    {
         return [
             'name' => array(
                 'type' => PARAM_TEXT,
@@ -74,20 +75,34 @@ class subdomain extends persistent
         ];
     }
 
-    public function get_formatted_property($name) : string {
+    public function get_formatted_property($name): string
+    {
         return format_string($this->get($name), true,
                 ['context' => \context_system::instance(), 'escape' => false]) ?? '';
     }
 
-    public function get_formatted_date_property($name) : string {
+    public function get_formatted_date_property($name): string
+    {
         $date = $this->get_formatted_property($name);
         return gmdate("M d, Y", (int)$date) ?? '';
     }
 
-    public function get_properties_display(): array {
+    public function get_formatted_subdomain_name_property(): string
+    {
+        global $DB;
+        $domainname = $DB->get_record(domain::TABLE,
+            ['id' => $this->get_formatted_property('domainid')],
+            'name')->name;
+
+        $name = $this->get_formatted_property('name');
+        return $name . '.' . $domainname;
+    }
+
+    public function get_properties_display(): array
+    {
         return [
             'id' => $this->get('id'),
-            'name' => $this->get_formatted_property('name'),
+            'name' => $this->get_formatted_subdomain_name_property(),
             'status' => $this->get('status') ? 'Verified' : 'Not verified',
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
