@@ -27,10 +27,10 @@ use core\persistent;
 
 defined('MOODLE_INTERNAL') || die();
 
-class domain extends persistent
+class subdomain extends persistent
 {
     /** The table name. */
-    const TABLE = 'local_domains';
+    const TABLE = 'local_domains_subdomains';
 
     /**
      * Return the definition of the properties of this model.
@@ -41,12 +41,7 @@ class domain extends persistent
         return [
             'name' => array(
                 'type' => PARAM_TEXT,
-                'description' => 'The domain name.',
-            ),
-            'token' => array(
-                'type' => PARAM_TEXT,
-                'description' => 'Token for verify the domain',
-                'default' => null,
+                'description' => 'The subdomain name.',
             ),
             'status' => array(
                 'type' => PARAM_INT,
@@ -55,7 +50,7 @@ class domain extends persistent
             ),
             'primarydomain' => array(
                 'type' => PARAM_INT,
-                'description' => 'Is domain the primary one or not.',
+                'description' => 'Is subdomain the primary one or not.',
                 'default' => 0,
             ),
             'tenantid' => array(
@@ -70,9 +65,9 @@ class domain extends persistent
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
-            'provider' => array(
-                'type' => PARAM_TEXT,
-                'description' => 'Domain provider name',
+            'domainid' => array(
+                'type' => PARAM_INT,
+                'description' => 'Domain id',
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
@@ -93,12 +88,11 @@ class domain extends persistent
         return [
             'id' => $this->get('id'),
             'name' => $this->get_formatted_property('name'),
-            'token' => $this->get_formatted_property('token'),
-            'status' => $this->get('status') ? 'Connected' : 'Not connected',
+            'status' => $this->get('status') ? 'Verified' : 'Not verified',
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),
-            'provider' => $this->get_formatted_property('provider'),
+            'domainid' => $this->get_formatted_property('domainid'),
         ];
     }
 }

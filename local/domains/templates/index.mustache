@@ -9,7 +9,47 @@
     </div>
 
     <div class="create-domain-form-container">
-        {{{mform}}}
+        {{{subdomainform}}}
+    </div>
+
+    <div class="domains-list-container">
+        <table class="domains-list sub-domains-list table table-hover">
+            <tr>
+                <th class="list-title list-title-first">Name</th>
+                <th class="list-title">Status</th>
+                <th class="list-title">Added Date</th>
+                <th class="list-title">Primary Domain</th>
+                <th class="list-title">Actions</th>
+            </tr>
+            {{#active_subdomains_list}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{status}}</td>
+                    <td>{{timecreated}}</td>
+                    <td></td>
+                    <td>
+                        <a href="{{action_url}}?domainid={{id}}&action=delete" id="delete_domain_button">Delete</a>
+                        |
+                        <a href="{{action_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
+                    </td>
+                </tr>
+            {{/active_subdomains_list}}
+        </table>
+    </div>
+</div>
+
+<div class="container-fluid table-container sub-domain-table-container">
+    <div class="table-title-container">
+        <div class="table-title">
+            Connect a Third Party Domain
+        </div>
+        <div class="table-sub-title">
+            Enter the domain name you want to connect for the learning platform.
+        </div>
+    </div>
+
+    <div class="create-domain-form-container">
+        {{{domainform}}}
     </div>
 
     <div class="domains-list-container">
@@ -40,41 +80,5 @@
             {{/active_domains_list}}
         </table>
     </div>
-</div>
-
-<div class="container-fluid table-container sub-domain-table-container">
-    <div class="table-title-container">
-        <div class="table-title">
-            Connect a Third Party Domain
-        </div>
-        <div class="table-sub-title">
-            Enter the domain name you want to connect for the learning platform.
-        </div>
-    </div>
-
-    <div class="create-domain-form-container">
-        {{{mform}}}
-    </div>
-
-    <table class="domains-list-table table table-hover table-bordered">
-        <tr>
-            <th>Name</th>
-            <th>Token</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        {{#active_domains_list}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{token}}</td>
-                <td>{{status}}</td>
-                <td>
-                    <a href="{{action_url}}?domainid={{id}}&action=delete" id="delete_domain_button">Delete</a>
-                    |
-                    <a href="{{action_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
-                </td>
-            </tr>
-        {{/active_domains_list}}
-    </table>
 </div>
 

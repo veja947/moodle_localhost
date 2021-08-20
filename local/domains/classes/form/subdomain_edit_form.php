@@ -24,7 +24,7 @@ require_once("$CFG->libdir/formslib.php");
 
 
 
-class edit extends moodleform
+class subdomain_edit_form extends moodleform
 {
 
     protected function definition()
@@ -36,9 +36,10 @@ class edit extends moodleform
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
-        // 1. domain name
+        // 1. subdomain name
         $mform->addElement('text', 'name', '', [
-            'placeholder' => 'example.com',
+            'id' => 'subdomain_name_input',
+            'placeholder' => 'Your company name',
         ]);
         $mform->setType('name', PARAM_NOTAGS);
         $mform->setDefault('name', '');
@@ -52,7 +53,7 @@ class edit extends moodleform
     {
         $errors = parent::validation($data, $files);
         if (empty($data['name'])) {
-            $errors['name'] = 'domain name is required';
+            $errors['name'] = 'subdomain name is required';
         }
         return $errors;
     }

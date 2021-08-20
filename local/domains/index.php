@@ -25,9 +25,10 @@ require_once(__DIR__ . '/../../config.php'); // load config.php
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
 require_once($CFG->dirroot . '/webservice/lib.php');
-require_once($CFG->dirroot . '/local/domains/classes/form/edit.php');
+require_once($CFG->dirroot . '/local/domains/classes/form/domain_edit_form.php');
+require_once($CFG->dirroot . '/local/domains/classes/form/subdomain_edit_form.php');
 $PAGE->requires->css('/local/domains/css/styles.css');
-//admin_externalpage_setup('programslist');
+//admin_externalpage_setup('domainsindex');
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/domains/index.php'));
@@ -35,13 +36,17 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Domains');
 
 $manager = new \local_domains\manager();
-$mform = new edit();
-$formhtml = $mform->render();
 
-if ($mform->is_cancelled()) {
+$domainform = new domain_edit_form();
+$domainformhtml = $domainform->render();
+
+$subdomainform = new subdomain_edit_form();
+$subdomainformhtml = $subdomainform->render();
+
+if ($domainform->is_cancelled()) {
     // go back to index.php page
     redirect($CFG->wwwroot . '/local/domains/index.php');
-} else if ($fromform = $mform->get_data()) {
+} else if ($fromform = $domainform->get_data()) {
     // create new domain
     $new_domain = $manager->create_domain((object)[
         'name' => $fromform->name,
@@ -58,7 +63,32 @@ if ($mform->is_cancelled()) {
         'You created a new Domain: ' . $fromform->name);
 }
 
+if ($subdomainform->is_cancelled()) {
+    // go back to index.php page
+    redirect($CFG->wwwroot . '/local/domains/index.php');
+} else if ($subfromform = $subdomainform->get_data()) {
+    // create new domain
+    $new_subdomain = $manager->create_subdomain((object)[
+        'name' => $subfromform->name,
+        'status' => 0,
+        'primarydomain' => 0,
+        'tenantid' => 99, // TODO: instead real tenantid
+        'timecreated' => time(),
+    ]);
+
+    // go back to index.php page
+    redirect($CFG->wwwroot . '/local/domains/index.php',
+        'You created a new Sub Domain: ' . $subfromform->name);
+}
+
+
+
+
+
+
+
 $domainid = $_GET['domainid'] ?? null;
+$subdomainid = $_GET['subdomainid'] ?? null;
 $action = $_GET['action'] ?? null;
 switch ($action) {
     case \local_domains\manager::DOMAIN_ACTION_VERIFY:
@@ -71,13 +101,17 @@ switch ($action) {
 }
 
 $activedomains = $manager->get_active_domains();
+$activesubdomains = $manager->get_active_subdomains();
 $activedomainsdisplay = $manager->get_domains_display_array($activedomains);
+$activesubdomainsdisplay = $manager->get_domains_display_array($activesubdomains);
 
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),
+    'active_subdomains_list' => array_values($activesubdomainsdisplay),
     'edit_url' => \local_domains\manager::get_editor_url(),
     'action_url' => \local_domains\manager::get_base_url(),
-    'mform' => $formhtml,
+    'domainform' => $domainformhtml,
+    'subdomainform' => $subdomainformhtml,
 ];
 
 echo $OUTPUT->header();

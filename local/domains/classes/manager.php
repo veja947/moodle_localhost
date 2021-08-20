@@ -24,6 +24,9 @@
 
 namespace local_domains;
 
+use local_domains\domain;
+use local_domains\subdomain;
+
 defined('MOODLE_INTERNAL') || die();
 class manager
 {
@@ -44,6 +47,17 @@ class manager
             $domains[$record->id] = new domain(0, $record);
         }
         return $domains ?? [];
+    }
+
+    public function get_active_subdomains(): array
+    {
+        global $DB;
+        $active_subdomains = $DB->get_records(subdomain::TABLE);
+        $subdomains = [];
+        foreach ($active_subdomains as $record) {
+            $subdomains[$record->id] = new subdomain(0, $record);
+        }
+        return $subdomains ?? [];
     }
 
     public function get_domains_display_array(array $domains): array
