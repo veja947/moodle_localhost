@@ -94,7 +94,7 @@ class domain extends persistent
             'id' => $this->get('id'),
             'name' => $this->get_formatted_property('name'),
             'token' => $this->get_formatted_property('token'),
-            'status' => $this->get('status') ? 'Connected' : 'Not connected',
+            'status' => $this->get('status'),
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),

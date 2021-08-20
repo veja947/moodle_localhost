@@ -103,7 +103,7 @@ class subdomain extends persistent
         return [
             'id' => $this->get('id'),
             'name' => $this->get_formatted_subdomain_name_property(),
-            'status' => $this->get('status') ? 'Verified' : 'Not verified',
+            'status' => $this->get('status'),
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),

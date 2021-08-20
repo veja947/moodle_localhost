@@ -134,6 +134,30 @@
                 letter-spacing: 0.02em;
                 color: #0D2138;
 
+                .status-pill {
+                    padding: 4px;
+                    position: static;
+                    width: 57px;
+                    height: 23px;
+                    left: 10px;
+                    top: 10px;
+                    border-radius: 10px;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 14px;
+                    line-height: 14px;
+                    letter-spacing: 0.02em;
+                    color: #FFFFFF;
+
+                    &.green-pill {
+                        background: #52C41A;
+                    }
+
+                    &.red-pill {
+                        background: #FF7875;
+                    }
+                }
+
                 .delete-item-link {
                     width: 20px;
                     height: 20px;
