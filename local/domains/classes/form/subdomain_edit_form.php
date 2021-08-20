@@ -23,6 +23,8 @@
 require_once("$CFG->libdir/formslib.php");
 
 
+use local_domains\domain;
+
 
 class subdomain_edit_form extends moodleform
 {
@@ -44,6 +46,9 @@ class subdomain_edit_form extends moodleform
         $mform->setType('name', PARAM_NOTAGS);
         $mform->setDefault('name', '');
 
+        // 2. verified domains list
+        $mform->addElement('select', 'domainid', '', $this->get_all_verified_domains_array());
+
         // add submit and cancel button
         $this->add_action_buttons(false, 'Add');
     }
@@ -56,5 +61,20 @@ class subdomain_edit_form extends moodleform
             $errors['name'] = 'subdomain name is required';
         }
         return $errors;
+    }
+
+    private function get_all_verified_domains_array(): array
+    {
+        global $DB;
+        $results = [];
+        $rs = $DB->get_recordset(domain::TABLE, ['status' => 1], '', 'id, name');
+        if (!$rs->valid()) {
+            return $results;
+        }
+        foreach ($rs as $record) {
+            $results[$record->id] = $record->name;
+        }
+
+        return $results ?? [];
     }
 }

@@ -59,6 +59,31 @@
                     font-weight: normal;
                     font-size: 16px;
                     line-height: 24px;
+
+                    &#subdomain_name_input {
+                        width: 242px;
+                    }
+                }
+
+                select#id_domainid {
+                    width: 103px;
+                    height: 40px;
+                    left: 242px;
+                    top: 0;
+                    background: #EFEFEF;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: normal;
+                    line-height: 24px;
+                    color: #000;
+                    border: none;
+                    cursor: pointer;
+                    transition: 1s;
+
+                    &:hover {
+                        background: rgb(119, 119, 119);
+                        color: #fff;
+                    }
                 }
 
                 input.btn.btn-primary {

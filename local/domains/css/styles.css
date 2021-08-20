@@ -54,6 +54,28 @@
   font-size: 16px;
   line-height: 24px;
 }
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.form-control#subdomain_name_input {
+  width: 242px;
+}
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid {
+  width: 103px;
+  height: 40px;
+  left: 242px;
+  top: 0;
+  background: #EFEFEF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 24px;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: 1s;
+}
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid:hover {
+  background: #777777;
+  color: #fff;
+}
 .table-container .create-domain-form-container form.mform .form-group.row .form-inline input.btn.btn-primary {
   padding: 0 16px;
   height: 40px;

@@ -60,7 +60,7 @@ class manager
         return $subdomains ?? [];
     }
 
-    public function get_domains_display_array(array $domains): array
+    public function get_domains_or_subdomains_display_array(array $domains): array
     {
         $result = [];
         foreach ($domains as $domain) {
@@ -93,6 +93,13 @@ class manager
         $domain = new domain(0, $data);
         $domain->create();
         return $domain;
+    }
+
+    public function create_subdomain(\stdClass $data): subdomain
+    {
+        $subdomain = new subdomain(0, $data);
+        $subdomain->create();
+        return $subdomain;
     }
 
     /**

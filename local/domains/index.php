@@ -67,13 +67,14 @@ if ($subdomainform->is_cancelled()) {
     // go back to index.php page
     redirect($CFG->wwwroot . '/local/domains/index.php');
 } else if ($subfromform = $subdomainform->get_data()) {
-    // create new domain
+    // create new subdomain
     $new_subdomain = $manager->create_subdomain((object)[
         'name' => $subfromform->name,
         'status' => 0,
         'primarydomain' => 0,
         'tenantid' => 99, // TODO: instead real tenantid
         'timecreated' => time(),
+        'domainid' => $subfromform->domainid,
     ]);
 
     // go back to index.php page
@@ -102,8 +103,8 @@ switch ($action) {
 
 $activedomains = $manager->get_active_domains();
 $activesubdomains = $manager->get_active_subdomains();
-$activedomainsdisplay = $manager->get_domains_display_array($activedomains);
-$activesubdomainsdisplay = $manager->get_domains_display_array($activesubdomains);
+$activedomainsdisplay = $manager->get_domains_or_subdomains_display_array($activedomains);
+$activesubdomainsdisplay = $manager->get_domains_or_subdomains_display_array($activesubdomains);
 
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),
