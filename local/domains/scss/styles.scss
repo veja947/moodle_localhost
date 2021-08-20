@@ -133,6 +133,13 @@
                 line-height: 22px;
                 letter-spacing: 0.02em;
                 color: #0D2138;
+
+                .delete-item-link {
+                    width: 20px;
+                    height: 20px;
+                    display: block;
+                    background: url("../img/delete-icon.png") no-repeat no-repeat left;
+                }
             }
         }
     }

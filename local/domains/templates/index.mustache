@@ -24,13 +24,11 @@
             {{#active_subdomains_list}}
                 <tr>
                     <td>{{name}}</td>
-                    <td>{{status}}</td>
+                    <td><span class="status-pill">{{status}}</span></td>
                     <td>{{timecreated}}</td>
                     <td></td>
                     <td>
-                        <a href="{{action_url}}?domainid={{id}}&action=delete" id="delete_domain_button">Delete</a>
-                        |
-                        <a href="{{action_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
+                        <a href="{{action_url}}?subdomainid={{id}}&action=delete" class="delete-item-link" id="delete_subdomain_button"></a>
                     </td>
                 </tr>
             {{/active_subdomains_list}}
@@ -72,9 +70,7 @@
                     <td>{{timecreated}}</td>
                     <td></td>
                     <td>
-                        <a href="{{action_url}}?domainid={{id}}&action=delete" id="delete_domain_button">Delete</a>
-                        |
-                        <a href="{{action_url}}?domainid={{id}}&action=verify" id="verify_domain_button">Verify</a>
+                        <a href="{{action_url}}?domainid={{id}}&action=delete" class="delete-item-link" id="delete_domain_button"></a>
                     </td>
                 </tr>
             {{/active_domains_list}}

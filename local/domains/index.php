@@ -91,15 +91,20 @@ if ($subdomainform->is_cancelled()) {
 $domainid = $_GET['domainid'] ?? null;
 $subdomainid = $_GET['subdomainid'] ?? null;
 $action = $_GET['action'] ?? null;
-switch ($action) {
-    case \local_domains\manager::DOMAIN_ACTION_VERIFY:
-        $manager->verify_domain((int)$domainid);
-        break;
 
-    case \local_domains\manager::DOMAIN_ACTION_DELETE:
-        $manager->delete_domain((int)$domainid);
-        break;
+if ($action === \local_domains\manager::DOMAIN_ACTION_DELETE) {
+    $domainid ? $manager->delete_domain($domainid) : $manager->delete_subdomain($subdomainid);
 }
+
+//switch ($action) {
+//    case \local_domains\manager::DOMAIN_ACTION_VERIFY:
+//        $manager->verify_domain((int)$domainid);
+//        break;
+//
+//    case \local_domains\manager::DOMAIN_ACTION_DELETE:
+//        $manager->delete_domain((int)$domainid);
+//        break;
+//}
 
 $activedomains = $manager->get_active_domains();
 $activesubdomains = $manager->get_active_subdomains();

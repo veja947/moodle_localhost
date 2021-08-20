@@ -82,6 +82,19 @@ class manager
         return null;
     }
 
+    private function get_subdomain_by_id(int $id, \moodle_url $exceptionlink = null, bool $showexception = true): ?subdomain
+    {
+        $subdomains = $this->get_active_subdomains();
+        if (array_key_exists($id, $subdomains)) {
+            return $subdomains[$id];
+        }
+        if ($showexception) {
+            throw new \moodle_exception('subdomainnotfound', subdomain::TABLE,
+                $exceptionlink ?: self::get_base_url());
+        }
+        return null;
+    }
+
     /**
      * Create a new Domain
      *
@@ -106,6 +119,7 @@ class manager
      * Delete a Domain
      *
      * @param int $id
+     * @throws \moodle_exception
      */
     public function delete_domain(int $id): ?domain
     {
@@ -120,6 +134,27 @@ class manager
         $domain->delete();
 
         return $domain;
+    }
+
+    /**
+     * Delete a SubDomain
+     *
+     * @param int $id
+     * @throws \moodle_exception
+     */
+    public function delete_subdomain(int $id): ?subdomain
+    {
+        global $DB;
+        if (!$DB->get_record(subdomain::TABLE, ['id' => $id])) {
+            return null;
+        }
+
+        $subdomain = $this->get_subdomain_by_id($id);
+
+        // delete subdomain record
+        $subdomain->delete();
+
+        return $subdomain;
     }
 
     private function update_domain(domain $domain, \stdClass $newData): ?domain
@@ -137,6 +172,7 @@ class manager
      * verify a Domain
      *
      * @param int $id
+     * @throws \moodle_exception
      */
     public function verify_domain(int $id): ?domain
     {
@@ -158,6 +194,9 @@ class manager
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function generate_token(): string
     {
         $token = random_bytes(15);
