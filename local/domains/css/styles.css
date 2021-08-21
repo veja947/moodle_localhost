@@ -5,7 +5,7 @@
   /* Light shadow */
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.06);
 }
-.table-container.domain-table-container {
+.table-container.sub-domain-table-container {
   margin-bottom: 30px;
 }
 .table-container .table-title-container {
@@ -136,6 +136,16 @@
 }
 .table-container .domains-list-container .table.domains-list td .status-pill.red-pill {
   background: #FF7875;
+}
+.table-container .domains-list-container .table.domains-list td .primary-domain-radio {
+  background: url("../img/primary-domain-radio.png") no-repeat no-repeat left;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.table-container .domains-list-container .table.domains-list td .primary-domain-radio.primary-domain-selected {
+  background: url("../img/primary-domain-selected.png") no-repeat no-repeat left;
 }
 .table-container .domains-list-container .table.domains-list td .delete-item-link {
   width: 20px;

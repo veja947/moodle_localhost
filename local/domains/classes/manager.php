@@ -32,6 +32,7 @@ class manager
 {
     const DOMAIN_ACTION_VERIFY = 'verify';
     const DOMAIN_ACTION_DELETE = 'delete';
+    const DOMAIN_ACTION_PRIMARY_DOMAIN = 'primary';
 
     /**
      * Returns list of active domains in the system
@@ -113,6 +114,30 @@ class manager
         $subdomain = new subdomain(0, $data);
         $subdomain->create();
         return $subdomain;
+    }
+
+    public function primary_domain(int $id): ?domain
+    {
+        global $DB;
+        if (!$DB->get_record(domain::TABLE, ['id' => $id, 'status' => 1])) {
+            return null;
+        }
+
+        $domain = $this->get_domain_by_id($id);
+
+        // revert current primary domain to non-primary
+        if ($previous_domain_obj = $DB->get_record(domain::TABLE, ['primarydomain' => 1], 'id')) {
+            $previous_domain_id = $previous_domain_obj->id;
+            $previous_domain = $this->get_domain_by_id($previous_domain_id);
+            $this->update_domain($previous_domain, (object)[
+                'primarydomain' => 0,
+            ]);
+        }
+
+        // update new primary domain
+        return $this->update_domain($domain, (object)[
+            'primarydomain' => 1,
+        ]);
     }
 
     /**

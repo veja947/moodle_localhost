@@ -5,7 +5,7 @@
     /* Light shadow */
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.06);
 
-    &.domain-table-container {
+    &.sub-domain-table-container {
         margin-bottom: 30px;
     }
 
@@ -155,6 +155,18 @@
 
                     &.red-pill {
                         background: #FF7875;
+                    }
+                }
+
+                .primary-domain-radio {
+                    background: url("../img/primary-domain-radio.png") no-repeat no-repeat left;
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+
+                    &.primary-domain-selected {
+                        background: url("../img/primary-domain-selected.png") no-repeat no-repeat left;
                     }
                 }
 
