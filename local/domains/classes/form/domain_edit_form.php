@@ -22,7 +22,7 @@
  */
 require_once("$CFG->libdir/formslib.php");
 
-
+use local_domains\domain;
 
 class domain_edit_form extends moodleform
 {
@@ -51,9 +51,15 @@ class domain_edit_form extends moodleform
     // custom validation should be added here
     function validation($data, $files)
     {
+        global $DB;
         $errors = parent::validation($data, $files);
-        if (empty($data['name'])) {
+        if (empty(trim($data['name']))) {
             $errors['name'] = 'domain name is required';
+        }
+        if ($record = $DB->get_record(
+            domain::TABLE,
+            ['name' => trim($data['name'])])) {
+            $errors['name'] = 'domain name is already existed.';
         }
         return $errors;
     }
