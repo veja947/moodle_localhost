@@ -30,6 +30,23 @@
         }
     }
 
+    .add-token-notice-text {
+        background: #FFFFFF;
+        border: 1px solid #F5222D;
+        box-sizing: border-box;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+        border-radius: 2px;
+        background: url("../img/orange-exclamation-icon.png") no-repeat no-repeat left;
+        background-position-x: 17px;
+        margin: 15px;
+        padding: 10px 10px 10px 40px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+
     .create-domain-form-container form.mform {
         padding: 15px;
 
