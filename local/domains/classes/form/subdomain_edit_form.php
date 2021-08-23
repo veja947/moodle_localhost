@@ -58,14 +58,24 @@ class subdomain_edit_form extends moodleform
     function validation($data, $files)
     {
         global $DB;
+        $_POST['domainid'] = 4;
         $errors = parent::validation($data, $files);
         if (empty($data['name'])) {
             $errors['name'] = 'sub-domain name is required';
         }
+
         if ($record = $DB->get_record(
             subdomain::TABLE,
             ['name' => trim($data['name'])])) {
             $errors['name'] = 'sub-domain name is already existed.';
+        }
+
+        if (!$DB->get_record(
+            domain::TABLE,
+            [
+                'id' => (int)$_POST['domainid'],
+            ])) {
+            $errors['name'] = 'selected domain is not available.';
         }
         return $errors;
     }

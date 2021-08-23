@@ -92,7 +92,7 @@ class subdomain extends persistent
         global $DB;
         $domainname = $DB->get_record(domain::TABLE,
             ['id' => $this->get_formatted_property('domainid')],
-            'name')->name;
+            'name')->name ?? domain::DEFAULT_FTNT_INFO_DOMAIN;
 
         $name = $this->get_formatted_property('name');
         return $name . '.' . $domainname;
