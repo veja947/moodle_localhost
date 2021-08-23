@@ -58,7 +58,6 @@ class subdomain_edit_form extends moodleform
     function validation($data, $files)
     {
         global $DB;
-        $_POST['domainid'] = 4;
         $errors = parent::validation($data, $files);
         if (empty($data['name'])) {
             $errors['name'] = 'sub-domain name is required';

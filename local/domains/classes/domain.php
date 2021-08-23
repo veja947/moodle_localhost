@@ -71,12 +71,6 @@ class domain extends persistent
                 'default' => null,
                 'null' => NULL_ALLOWED,
             ),
-            'provider' => array(
-                'type' => PARAM_TEXT,
-                'description' => 'Domain provider name',
-                'default' => null,
-                'null' => NULL_ALLOWED,
-            ),
         ];
     }
 
@@ -99,7 +93,6 @@ class domain extends persistent
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),
-            'provider' => $this->get_formatted_property('provider'),
         ];
     }
 }
