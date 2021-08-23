@@ -51,7 +51,7 @@ class subdomain_edit_form extends moodleform
         $mform->addElement('select', 'domainid', '', $this->get_all_verified_domains_array());
 
         // add submit and cancel button
-        $this->add_action_buttons(false, 'Add');
+        $this->add_action_buttons(false, 'Save');
     }
 
     // custom validation should be added here

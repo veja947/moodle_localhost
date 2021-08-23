@@ -32,10 +32,10 @@
                     <td>{{token}}</td>
                     <td>
                         {{#status}}
-                            <span class="status-pill green-pill">Connected</span>
+                            <span class="status-pill green-pill">Verified</span>
                         {{/status}}
                         {{^status}}
-                            <span class="status-pill red-pill">Not connected</span>
+                            <span class="status-pill red-pill">Not Verified</span>
                         {{/status}}
                     </td>
                     <td>{{timecreated}}</td>
@@ -48,6 +48,7 @@
                     </td>
                     <td>
                         <a href="{{action_url}}?domainid={{id}}&action=delete" class="delete-item-link" id="delete_domain_button"></a>
+                        <a href="{{action_url}}?domainid={{id}}&action=verify" class="verify-item-link" id="verify_domain_button"></a>
                     </td>
                 </tr>
             {{/active_domains_list}}
@@ -83,10 +84,10 @@
                     <td>{{name}}</td>
                     <td>
                         {{#status}}
-                            <span class="status-pill green-pill">Verified</span>
+                            <span class="status-pill green-pill">Connected</span>
                         {{/status}}
                         {{^status}}
-                            <span class="status-pill red-pill">Not Verified</span>
+                            <span class="status-pill red-pill">Pending</span>
                         {{/status}}
                     </td>
                     <td>{{timecreated}}</td>
