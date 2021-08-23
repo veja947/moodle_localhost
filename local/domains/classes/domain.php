@@ -31,6 +31,7 @@ class domain extends persistent
 {
     /** The table name. */
     const TABLE = 'local_domains';
+    const DEFAULT_FTNT_INFO_DOMAIN = 'ftnt.info';
 
     /**
      * Return the definition of the properties of this model.
