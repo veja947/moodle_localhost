@@ -87,27 +87,25 @@ class subdomain extends persistent
         return gmdate("M d, Y", (int)$date) ?? '';
     }
 
-    public function get_formatted_subdomain_name_property(): string
+    public function get_domain_name(): string
     {
         global $DB;
-        $domainname = $DB->get_record(domain::TABLE,
-            ['id' => $this->get_formatted_property('domainid')],
-            'name')->name ?? domain::DEFAULT_FTNT_INFO_DOMAIN;
-
-        $name = $this->get_formatted_property('name');
-        return $name . '.' . $domainname;
+        return $DB->get_record(domain::TABLE,
+                ['id' => $this->get_formatted_property('domainid')],
+                'name')->name ?? domain::DEFAULT_FTNT_INFO_DOMAIN;
     }
 
     public function get_properties_display(): array
     {
         return [
             'id' => $this->get('id'),
-            'name' => $this->get_formatted_subdomain_name_property(),
+            'name' => $this->get_formatted_property('name') . '.' . $this->get_domain_name(),
             'status' => $this->get('status'),
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),
             'domainid' => $this->get_formatted_property('domainid'),
+            'cname' => 'cname' . '.' . $this->get_domain_name(),
         ];
     }
 }

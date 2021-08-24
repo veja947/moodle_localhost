@@ -69,6 +69,7 @@
                 <th class="list-title">Status</th>
                 <th class="list-title">Added Date</th>
                 <th class="list-title">Primary Domain</th>
+                <th class="list-title">CNAME</th>
                 <th class="list-title">Actions</th>
             </tr>
             {{#active_subdomains_list}}
@@ -94,6 +95,7 @@
                             {{#primarydomain}}<span class="primary-domain-text">Primary domain</span>{{/primarydomain}}
                         {{/status}}
                     </td>
+                    <td>{{cname}}</td>
                     <td>
                         <a href="{{action_url}}?subdomainid={{id}}&action=delete" class="delete-item-link" id="delete_subdomain_button"></a>
                     </td>
