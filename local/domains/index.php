@@ -75,7 +75,7 @@ if ($subdomainform->is_cancelled()) {
         'primarydomain' => 0,
         'tenantid' => 99, // TODO: instead real tenantid
         'timecreated' => time(),
-        'domainid' => $subfromform->domainid,
+        'domainid' => $subfromform->domainid ?: null,
     ]);
 
     // go back to index.php page
@@ -101,9 +101,7 @@ switch ($action) {
         break;
 
     case \local_domains\manager::DOMAIN_ACTION_PRIMARY_DOMAIN:
-        $domainid
-            ? $manager->primary_domain($domainid)
-            : $manager->primary_subdomain($subdomainid);
+        $manager->primary_subdomain($subdomainid);
         break;
 }
 

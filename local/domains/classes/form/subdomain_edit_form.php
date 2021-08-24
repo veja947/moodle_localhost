@@ -65,15 +65,19 @@ class subdomain_edit_form extends moodleform
 
         if ($record = $DB->get_record(
             subdomain::TABLE,
-            ['name' => trim($data['name'])])) {
+            [
+                'name' => trim($data['name']),
+                'domainid' => (int)$_POST['domainid'],
+            ])) {
             $errors['name'] = 'sub-domain name is already existed.';
         }
 
-        if (!$DB->get_record(
+        if (!empty($_POST['domainid']) && !$DB->get_record(
             domain::TABLE,
             [
                 'id' => (int)$_POST['domainid'],
             ])) {
+            $tet = empty($_POST['domainid']);
             $errors['name'] = 'selected domain is not available.';
         }
         return $errors;

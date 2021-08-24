@@ -202,8 +202,23 @@
                 .delete-item-link {
                     width: 20px;
                     height: 20px;
-                    display: block;
+                    display: inline-block;
+                    vertical-align: middle;
                     background: url("../img/delete-icon.png") no-repeat no-repeat left;
+                }
+
+                .verify-item-link {
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 24px;
+                    text-align: center;
+                    color: #1890FF;
+                    border: 1px solid #1890FF;
+                    box-sizing: border-box;
+                    border-radius: 2px;
+                    padding: 5px 10px;
+                    margin-left: 10px;
                 }
             }
         }
