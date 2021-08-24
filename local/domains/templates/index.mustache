@@ -23,7 +23,6 @@
                 <th class="list-title">Token</th>
                 <th class="list-title">Status</th>
                 <th class="list-title">Added Date</th>
-                <th class="list-title">Primary Domain</th>
                 <th class="list-title">Actions</th>
             </tr>
             {{#active_domains_list}}
@@ -39,13 +38,6 @@
                         {{/status}}
                     </td>
                     <td>{{timecreated}}</td>
-                    <td>
-                        {{#status}}
-                            <a href="{{action_url}}?domainid={{id}}&action=primary" class="primary-domain-link">
-                                <span class="primary-domain-radio {{#primarydomain}}primary-domain-selected{{/primarydomain}}"></span>
-                            </a>
-                        {{/status}}
-                    </td>
                     <td>
                         <a href="{{action_url}}?domainid={{id}}&action=delete" class="delete-item-link" id="delete_domain_button"></a>
                         <a href="{{action_url}}?domainid={{id}}&action=verify" class="verify-item-link" id="verify_domain_button"></a>
@@ -93,10 +85,13 @@
                     <td>{{timecreated}}</td>
                     <td>
                         {{#status}}
-                            <a href="{{action_url}}?subdomainid={{id}}&action=primary" class="primary-domain-link" >
-                            <span class="primary-domain-radio {{#primarydomain}}primary-domain-selected{{/primarydomain}}">
-                            </span>
-                            </a>
+                            <button type="button"
+                                    data-id="{{id}}"
+                                    class="primary-domain-radio {{#primarydomain}}primary-domain-selected{{/primarydomain}}"
+                                    data-toggle="modal"
+                                    data-target="#page_modal_container">
+                            </button>
+                            {{#primarydomain}}<span class="primary-domain-text">Primary domain</span>{{/primarydomain}}
                         {{/status}}
                     </td>
                     <td>
@@ -105,6 +100,27 @@
                 </tr>
             {{/active_subdomains_list}}
         </table>
+    </div>
+</div>
+<div class="modal fade" id="page_modal_container" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Set Primary Domain</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Confirm to choose this domain as the Primary Domain?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+            </div>
+        </div>
     </div>
 </div>
 

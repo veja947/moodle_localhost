@@ -54,11 +54,6 @@ class domain extends persistent
                 'description' => 'Is verified or not.',
                 'default' => 0,
             ),
-            'primarydomain' => array(
-                'type' => PARAM_INT,
-                'description' => 'Is domain the primary one or not.',
-                'default' => 0,
-            ),
             'tenantid' => array(
                 'type' => PARAM_INT,
                 'description' => 'Tenant id',
@@ -90,7 +85,6 @@ class domain extends persistent
             'name' => $this->get_formatted_property('name'),
             'token' => $this->get_formatted_property('token'),
             'status' => $this->get('status'),
-            'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),
         ];

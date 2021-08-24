@@ -116,26 +116,26 @@ class manager
         return $subdomain;
     }
 
-    public function primary_domain(int $id): ?domain
+    public function primary_subdomain(int $id): ?subdomain
     {
         global $DB;
-        if (!$DB->get_record(domain::TABLE, ['id' => $id, 'status' => 1])) {
+        if (!$DB->get_record(subdomain::TABLE, ['id' => $id, 'status' => 1])) {
             return null;
         }
 
-        $domain = $this->get_domain_by_id($id);
+        $subdomain = $this->get_subdomain_by_id($id);
 
         // revert current primary domain to non-primary
-        if ($previous_domain_obj = $DB->get_record(domain::TABLE, ['primarydomain' => 1], 'id')) {
-            $previous_domain_id = $previous_domain_obj->id;
-            $previous_domain = $this->get_domain_by_id($previous_domain_id);
-            $this->update_domain($previous_domain, (object)[
+        if ($previous_subdomain_obj = $DB->get_record(subdomain::TABLE, ['primarydomain' => 1], 'id')) {
+            $previous_subdomain_id = $previous_subdomain_obj->id;
+            $previous_subdomain = $this->get_subdomain_by_id($previous_subdomain_id);
+            $this->update_subdomain($previous_subdomain, (object)[
                 'primarydomain' => 0,
             ]);
         }
 
         // update new primary domain
-        return $this->update_domain($domain, (object)[
+        return $this->update_subdomain($subdomain, (object)[
             'primarydomain' => 1,
         ]);
     }
@@ -191,6 +191,17 @@ class manager
         }
         $domain->save();
         return $domain;
+    }
+
+    private function update_subdomain(subdomain $subdomain, \stdClass $newData): ?subdomain
+    {
+        foreach ($newData as $key => $value) {
+            if (subdomain::has_property($key) && $key !== 'id') {
+                $subdomain->set($key, $value);
+            }
+        }
+        $subdomain->save();
+        return $subdomain;
     }
 
     /**

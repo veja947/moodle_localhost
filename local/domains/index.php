@@ -28,6 +28,9 @@ require_once($CFG->dirroot . '/webservice/lib.php');
 require_once($CFG->dirroot . '/local/domains/classes/form/domain_edit_form.php');
 require_once($CFG->dirroot . '/local/domains/classes/form/subdomain_edit_form.php');
 $PAGE->requires->css('/local/domains/css/styles.css');
+$PAGE->requires->jquery();
+$PAGE->requires->js(new moodle_url(
+    $CFG->wwwroot . '/local/domains/js/index.js'));
 //admin_externalpage_setup('domainsindex');
 global $DB;
 
@@ -52,10 +55,8 @@ if ($domainform->is_cancelled()) {
         'name' => $fromform->name,
         'token' => $manager->generate_token(),
         'status' => 0,
-        'primarydomain' => 0,
         'tenantid' => 99, // TODO: instead real tenantid
         'timecreated' => time(),
-        'provider' => null, // TODO: get provider name
     ]);
 
     // go back to index.php page

@@ -31,6 +31,7 @@
     }
 
     .add-token-notice-text {
+        display: inline-block;
         background: #FFFFFF;
         border: 1px solid #F5222D;
         box-sizing: border-box;
@@ -38,7 +39,7 @@
         border-radius: 2px;
         background: url("../img/orange-exclamation-icon.png") no-repeat no-repeat left;
         background-position-x: 17px;
-        margin: 15px;
+        margin: 0 15px 15px 15px;
         padding: 10px 10px 10px 40px;
         font-style: normal;
         font-weight: normal;
@@ -181,10 +182,21 @@
                     width: 20px;
                     height: 20px;
                     cursor: pointer;
+                    border: none;
+                    vertical-align: inherit;
 
                     &.primary-domain-selected {
                         background: url("../img/primary-domain-selected.png") no-repeat no-repeat left;
                     }
+                }
+
+                .primary-domain-text {
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 14px;
+                    line-height: 22px;
+                    letter-spacing: 0.02em;
+                    color: #1890FF;
                 }
 
                 .delete-item-link {
