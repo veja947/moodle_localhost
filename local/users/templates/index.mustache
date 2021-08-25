@@ -1,1 +1,64 @@
-<h1>{{ hello }}</h1>
+<div class="container-fluid table-container users-table-container">
+
+    <div class="users-header-banner">
+        <div class="users-header-title">
+            All Users
+        </div>
+        <div class="users-header-buttons-container">
+            <button type="button"
+                    class="add-new-user-button btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#page_modal_container">Add New User
+            </button>
+            <button class="upload-user-file-button btn btn-info">
+                Upload Users via Text File
+            </button>
+        </div>
+    </div>
+    <div class="users-list-container">
+        <table class="users-list table table-hover">
+            <tr>
+                <th class="list-title list-title-first">User Name</th>
+                <th class="list-title">Email Address</th>
+                <th class="list-title">Last Access Time</th>
+                <th class="list-title">Actions</th>
+            </tr>
+            {{#all_users_list}}
+                <tr>
+                    <td><a href="#">{{username}}</a></td>
+                    <td>{{email}}</td>
+                    <td>{{lastaccess}}</td>
+                    <td>
+                        <a href="{{action_url}}?userid={{id}}&action=edit" class="edit-item-link" id="edit_user_button">Edit</a>
+                        <a href="{{action_url}}?userid={{id}}&action=delete" class="delete-item-link" id="delete_user_button">Delete</a>
+                    </td>
+                </tr>
+            {{/all_users_list}}
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="page_modal_container" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>User's Email</p>
+                <label for="new_user_email_input">
+                    <input name="new_user_email_input" type="text" placeholder="example@email.com" />
+                </label>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

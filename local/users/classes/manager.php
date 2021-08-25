@@ -15,31 +15,36 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Class manager and methods for managing the list of users
  *
  * @package    local_users
  * @author     Joey Zhang
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php'); // load config.php
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
-require_once($CFG->dirroot . '/webservice/lib.php');
-$PAGE->requires->css('/local/users/css/index.css');
-global $DB;
+namespace local_users;
 
-$PAGE->set_url(new moodle_url('/local/users/index.php'));
-$PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Users');
 
-$manager = new \local_users\manager();
+defined('MOODLE_INTERNAL') || die();
+class manager
+{
+    /**
+     * Returns list of users in the system
+     *
+     * @return array
+     */
+    public function get_all_users(): array
+    {
+        global $DB;
+        $users = (array)get_users(true, '', false, null, 'firstname ASC',
+            '', '', $page='1',
+            '10', 'id, username, email, lastaccess');
 
-$users = $manager->get_all_users();
-$templateContext = (object)[
-    'hello' => 'hello users',
-    'all_users_list' => array_values($users),
-];
-
-echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_users/index', $templateContext);
-echo $OUTPUT->footer();
+        $userslist = (array)get_users_listing('lastaccess', 'ASC', 1, 10);
+        $result = [];
+        foreach ($users as $user) {
+            $result[$user->id] = (array)$user;
+        }
+        return $result;
+    }
+}

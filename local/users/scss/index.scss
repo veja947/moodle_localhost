@@ -1,0 +1,93 @@
+.users-table-container {
+    .users-header-banner {
+        height: 80px;
+
+        .users-header-title {
+            display: inline-block;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 80px;
+            color: rgba(0, 0, 0, 0.85);
+            padding-left: 15px;
+        }
+
+        .users-header-buttons-container {
+            display: inline-block;
+            right: 0;
+            float: right;
+            margin: auto;
+
+            .add-new-user-button {
+                padding: 5px 15px;
+                background: #1890FF;
+                border: 1px solid #1890FF;
+                box-sizing: border-box;
+                box-shadow: 0px 2px 0px rgb(0 0 0 / 4%);
+                border-radius: 2px;
+                line-height: 22px;
+                display: inline-block;
+                margin: 22px 0;
+            }
+
+            .upload-user-file-button {
+                padding: 5px 15px;
+                line-height: 22px;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.85);
+                background: #FFFFFF;
+                border: 1px solid #D9D9D9;
+                box-sizing: border-box;
+                box-shadow: 0px 2px 0px rgb(0 0 0 / 2%);
+                border-radius: 2px;
+                margin: 22px 0px;
+            }
+        }
+    }
+    table.users-list {
+        .list-title {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 22px;
+            color: rgba(0, 0, 0, 0.85);
+            background: #FAFAFA;
+            box-shadow: -18px 0px 0px -17px rgba(0, 0, 0, 0.06);
+            border-radius: 0;
+
+            &.list-title-first {
+                box-shadow: 0 0 0px -17px rgba(0, 0, 0, 0.06);
+            }
+        }
+
+        td {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 22px;
+            color: rgba(0, 0, 0, 0.85);
+
+            .edit-item-link {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                /* line-height: 22px; */
+                color: #1890FF;
+                padding-right: 5px;
+            }
+
+            .delete-item-link {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                /* line-height: 22px; */
+                color: #1890FF;
+                padding-left: 7.5px;
+                border-left: 1px rgba(0, 0, 0, 0.06) solid;
+            }
+        }
+    }
+}
