@@ -98,6 +98,9 @@
                     <td>{{cname}}</td>
                     <td>
                         <a href="{{action_url}}?subdomainid={{id}}&action=delete" class="delete-item-link" id="delete_subdomain_button"></a>
+                    {{#domainid}}
+                        <a href="{{action_url}}?domainid={{id}}&action=verify" class="verify-item-link" id="verify_domain_button">Verify</a>
+                    {{/domainid}}
                     </td>
                 </tr>
             {{/active_subdomains_list}}
