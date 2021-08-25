@@ -25,6 +25,7 @@ require_once(__DIR__ . '/../../config.php'); // load config.php
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
 require_once($CFG->dirroot . '/webservice/lib.php');
+require_once($CFG->dirroot . '/local/users/classes/form/new_user_form.php');
 $PAGE->requires->css('/local/users/css/index.css');
 global $DB;
 
@@ -33,11 +34,22 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Users');
 
 $manager = new \local_users\manager();
+$newuserform = new new_user_form();
+$newuserformhtml = $newuserform->render();
+
+if ($newuserform->is_cancelled()) {
+    // go back to index.php page
+    redirect($CFG->wwwroot . '/local/users/index.php');
+} else if ($fromform = $newuserform->get_data()) {
+    // TODO: send confirmation email
+    $email = $fromform->email;
+}
 
 $users = $manager->get_all_users();
 $templateContext = (object)[
     'hello' => 'hello users',
     'all_users_list' => array_values($users),
+    'new_user_form' => $newuserformhtml,
 ];
 
 echo $OUTPUT->header();

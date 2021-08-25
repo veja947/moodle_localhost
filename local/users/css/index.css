@@ -80,4 +80,21 @@
   border-left: 1px rgba(0, 0, 0, 0.06) solid;
 }
 
+#page_modal_container .new-user-email-label {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.85);
+}
+#page_modal_container .new-user-email-input {
+  border: 1px solid #d9d9d9;
+  box-sizing: border-box;
+  border-radius: 2px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  padding: 5px 12px;
+}
+
 /*# sourceMappingURL=index.css.map */

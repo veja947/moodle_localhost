@@ -91,3 +91,23 @@
         }
     }
 }
+
+#page_modal_container {
+    .new-user-email-label {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    .new-user-email-input {
+        border: 1px solid rgb(217, 217, 217);
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        padding: 5px 12px;
+    }
+}
