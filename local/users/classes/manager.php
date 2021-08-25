@@ -47,4 +47,13 @@ class manager
         }
         return $result;
     }
+
+    /**
+     * Upload users page url
+     * @return \moodle_url
+     */
+    public static function get_upload_users_url(): \moodle_url
+    {
+        return new \moodle_url('/local/users/uploadusers.php');
+    }
 }

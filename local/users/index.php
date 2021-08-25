@@ -50,6 +50,7 @@ $templateContext = (object)[
     'hello' => 'hello users',
     'all_users_list' => array_values($users),
     'new_user_form' => $newuserformhtml,
+    'upload_users_url' => \local_users\manager::get_upload_users_url(),
 ];
 
 echo $OUTPUT->header();
