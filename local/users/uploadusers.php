@@ -39,9 +39,16 @@ if ($mform->is_cancelled()) {
     redirect($CFG->wwwroot . '/local/users/index.php');
 } else if ($fromform = $mform->get_data()) {
     // TODO: validate users
+    $contentstring = $mform->get_file_content('usersfile') ?? '';
+    $contentarray = preg_split('/[\ \n\,]+/', $contentstring);
+    if ($uploadfinished = $manager->check_users_emails_in_file($contentarray)) {
+        // go back to index.php page
+        redirect($CFG->wwwroot . '/local/users/index.php',
+            'Users upload is successful.');
+    } else {
+        \core\notification::error('Upload failed, please check your file.');
+    }
 
-    // go back to manage.php page
-    redirect($CFG->wwwroot . '/local/users/index.php');
 }
 
 

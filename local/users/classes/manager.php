@@ -25,9 +25,28 @@
 namespace local_users;
 
 
+use local_domains\domain;
+
 defined('MOODLE_INTERNAL') || die();
 class manager
 {
+
+    public function check_users_emails_in_file(array $contentarray): bool
+    {
+        $varifieddomains = $this->get_verified_domains();
+        foreach ($contentarray as $value) {
+            if (!strpos($value, '@')) {
+                continue;
+            }
+            $domainname = substr($value, strpos($value, '@') + 1);
+            if (!in_array($domainname, $varifieddomains)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     /**
      * Returns list of users in the system
      *
@@ -55,5 +74,22 @@ class manager
     public static function get_upload_users_url(): \moodle_url
     {
         return new \moodle_url('/local/users/uploadusers.php');
+    }
+
+    /**
+     * get verified domains array
+     * @return domain[]
+     * @throws \dml_exception
+     */
+    public function get_verified_domains(): array
+    {
+        global $DB;
+        $results = [];
+        $rs = $DB->get_recordset(domain::TABLE, ['status' => 1], '', 'id, name');
+        foreach ($rs as $record) {
+            array_push($results, $record->name);
+        }
+        $rs->close();
+        return $results;
     }
 }

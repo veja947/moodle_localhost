@@ -30,23 +30,24 @@ class upload_users_form extends \moodleform
         $mform = $this->_form;
 
         // 0. example button
-        $mform->addElement('html', '<a href="#" class="btn btn-outline-info">example.csv</a>' . "\n", 'Example text file');
-//        $mform->addElement(
-//            'button',
-//            'exampledownload',
-//            'example.csv',
-//            [
-//                'class' => ''
-//            ],
-//
-//        );
+        $mform->addElement('html',
+            '<a href="' . $CFG->wwwroot .'/local/users/files/example.csv" 
+                class="btn btn-outline-info" 
+                download="example.csv">example.csv</a>' . "\n",
+            'Example text file');
 
         // 1. file upload
+        $filemanageroptions = array(
+            'accepted_types' => array('.csv'),
+            'maxbytes' => 0,
+            'maxfiles' => 1,
+            'subdirs' => 0
+        );
         $mform->addElement('filepicker',
             'usersfile',
             'Upload text file',
             null,
-            ['accepted_types' => ['.csv']]);
+            $filemanageroptions);
         $mform->addRule('usersfile', null, 'required');
 
         // add submit and cancel button
@@ -58,6 +59,7 @@ class upload_users_form extends \moodleform
     {
         global $DB;
         $errors = parent::validation($data, $files);
+
 
         return $errors;
     }
