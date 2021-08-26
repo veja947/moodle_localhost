@@ -30,11 +30,12 @@ class upload_users_form extends \moodleform
         $mform = $this->_form;
 
         // 0. example button
-        $mform->addElement('html',
-            '<a href="' . $CFG->wwwroot .'/local/users/files/example.csv" 
-                class="btn btn-outline-info" 
-                download="example.csv">example.csv</a>' . "\n",
-            'Example text file');
+        $url = new moodle_url('/local/users/files/example.csv');
+        $link = html_writer::link($url, 'example.csv', [
+            'class' => 'btn btn-outline-info example-csv-link'
+        ]);
+        $mform->addElement('static', 'examplecsv', get_string('examplecsv', 'tool_uploaduser'), $link);
+
 
         // 1. file upload
         $filemanageroptions = array(
