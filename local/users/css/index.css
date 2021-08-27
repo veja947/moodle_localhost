@@ -79,6 +79,34 @@
   padding-left: 7.5px;
   border-left: 1px rgba(0, 0, 0, 0.06) solid;
 }
+.users-table-container .pagination {
+  display: inline-block;
+  float: right;
+}
+.users-table-container .pagination a.pagination-link {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.users-table-container .pagination a.pagination-link.active {
+  color: #1890FF;
+  border: 1px solid #1890FF;
+}
+.users-table-container .pagination a.pagination-link.disabled-link {
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.users-table-container .pagination a.pagination-link:hover.disabled-link {
+  background-color: #ddd;
+}
+.users-table-container .pagination a.pagination-link:hover:not(.active) {
+  background-color: #ddd;
+}
 
 #page_modal_container .new-user-email-label {
   font-style: normal;

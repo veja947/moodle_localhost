@@ -31,6 +31,7 @@ defined('MOODLE_INTERNAL') || die();
 class manager
 {
     const DEFAULT_USER_EMAIL = 'Moodle2012!';
+    const USERS_TABLE_PAGINATION_SIZE = 5;
 
     public function users_file_handler(string $file_string): ?array
     {
@@ -83,6 +84,32 @@ class manager
         return true;
     }
 
+    public function get_all_confirmed_users(int $page): array
+    {
+        global $DB;
+        $results = [];
+        $sql = "SELECT DISTINCT u.id, u.username, u.email, u.firstname, u.lastname, u.lastaccess 
+                FROM {user} u
+                WHERE u.confirmed=1 
+                AND u.username<>'guest'";
+        $users = $DB->get_records_sql($sql, null, ($page - 1) * self::USERS_TABLE_PAGINATION_SIZE, self::USERS_TABLE_PAGINATION_SIZE);
+        foreach ($users as $user) {
+            $results[$user->id] = (array)$user;
+        }
+        return $results;
+    }
+
+    public function get_users_table_pages_number(): int
+    {
+        global $DB;
+        $sql = "SELECT COUNT(DISTINCT u.id) AS totalnumber FROM mdl_user u
+                WHERE u.confirmed=1
+                AND u.username<>'guest'";
+        $users = $DB->get_records_sql($sql);
+        $totalnumber = array_pop($users)->totalnumber;
+        return (int)ceil((int)$totalnumber / self::USERS_TABLE_PAGINATION_SIZE);
+    }
+
 
     /**
      * Returns list of users in the system
@@ -94,7 +121,7 @@ class manager
         global $DB;
         $users = (array)get_users(true, '', false, null, 'firstname ASC',
             '', '', $page='1',
-            '10', 'id, username, email, lastaccess');
+            '10', 'id, firstname, lastname, email, lastaccess');
 
         $userslist = (array)get_users_listing('lastaccess', 'ASC', 1, 10);
         $result = [];
@@ -114,6 +141,15 @@ class manager
     }
 
     /**
+     * users page index url
+     * @return \moodle_url
+     */
+    public static function get_users_base_url(): \moodle_url
+    {
+        return new \moodle_url('/local/users/index.php');
+    }
+
+    /**
      * get verified domains array
      * @return domain[]
      * @throws \dml_exception
@@ -128,5 +164,20 @@ class manager
         }
         $rs->close();
         return $results;
+    }
+
+    public function return_heading_html(): string
+    {
+        return '<h1>Users</h1><div id="users_header_buttons_container">
+            <button type="button"
+                    class="add-new-user-button btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#page_modal_container">Add New User
+            </button>
+            <a href="' . self::get_upload_users_url() . '"
+               class="upload-user-file-button btn btn-info">
+                Upload Users via Text File
+            </a>
+        </div>';
     }
 }

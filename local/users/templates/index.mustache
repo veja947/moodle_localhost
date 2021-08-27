@@ -1,5 +1,4 @@
 <div class="container-fluid table-container users-table-container">
-
     <div class="users-header-banner">
         <div class="users-header-title">
             All Users
@@ -19,14 +18,16 @@
     <div class="users-list-container">
         <table class="users-list table table-hover">
             <tr>
-                <th class="list-title list-title-first">User Name</th>
+                <th class="list-title list-title-first">First Name</th>
+                <th class="list-title">Last Name</th>
                 <th class="list-title">Email Address</th>
                 <th class="list-title">Last Access Time</th>
                 <th class="list-title">Actions</th>
             </tr>
             {{#all_users_list}}
                 <tr>
-                    <td><a href="#">{{username}}</a></td>
+                    <td><a href="#">{{firstname}}</a></td>
+                    <td>{{lastname}}</td>
                     <td>{{email}}</td>
                     <td>{{lastaccess}}</td>
                     <td>
@@ -36,6 +37,13 @@
                 </tr>
             {{/all_users_list}}
         </table>
+        <div class="pagination">
+            <a class="pagination-link {{#no_previous_page}}disabled-link{{/no_previous_page}}"
+                {{#no_previous_page}}{{/no_previous_page}}{{^no_previous_page}}href="{{users_index_url}}?page={{previous_page}}"{{/no_previous_page}}>&laquo;</a>
+<!--            <a href="#" class="pagination-link active">1</a>-->
+            <a class="pagination-link {{#no_next_page}}disabled-link{{/no_next_page}}"
+               {{#no_next_page}}{{/no_next_page}}{{^no_next_page}}href="{{users_index_url}}?page={{next_page}}"{{/no_next_page}}>&raquo;</a>
+        </div>
     </div>
 </div>
 <div class="modal fade" id="page_modal_container" tabindex="-1" role="dialog">

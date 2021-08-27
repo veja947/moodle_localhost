@@ -90,6 +90,40 @@
             }
         }
     }
+
+    .pagination {
+        display: inline-block;
+        float: right;
+
+        a.pagination-link {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+
+            &.active {
+                color: #1890FF;
+                border: 1px solid #1890FF;
+            }
+
+            &.disabled-link {
+                cursor: not-allowed;
+                opacity: 0.5;
+                text-decoration: none;
+            }
+
+            &:hover.disabled-link {
+                background-color: #ddd;
+            }
+
+            &:hover:not(.active) {
+                background-color: #ddd;
+            }
+        }
+    }
 }
 
 #page_modal_container {

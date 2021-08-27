@@ -26,31 +26,50 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/webservice/lib.php');
 require_once($CFG->dirroot . '/webservice/lib.php');
 require_once($CFG->dirroot . '/local/users/classes/form/new_user_form.php');
+require_once($CFG->dirroot . '/user/externallib.php');
 $PAGE->requires->css('/local/users/css/index.css');
 global $DB;
+$manager = new \local_users\manager();
 
 $PAGE->set_url(new moodle_url('/local/users/index.php'));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title('Users');
+$PAGE->set_heading('Users', false);
+$PAGE->set_title('All Users');
 
-$manager = new \local_users\manager();
 $newuserform = new new_user_form();
 $newuserformhtml = $newuserform->render();
 
+$page = $_GET['page'] ?? 1;
+
 if ($newuserform->is_cancelled()) {
     // go back to index.php page
-    redirect($CFG->wwwroot . '/local/users/index.php');
+    $newuserform->reset();
+//    redirect($CFG->wwwroot . '/local/users/index.php');
 } else if ($fromform = $newuserform->get_data()) {
-    // TODO: send confirmation email
     $email = $fromform->email;
+    $userinfo = array(
+        'username' => $fromform->email,
+        'firstname' => $fromform->firstname,
+        'lastname' => $fromform->lastname,
+        'email' => $fromform->email,
+        'password' => \local_users\manager::DEFAULT_USER_EMAIL,
+    );
+    $createduser = core_user_external::create_users([$userinfo]);
+    $manager->setting_to_new_user($createduser[0]['id']);
 }
+$totalpage = $manager->get_users_table_pages_number();
 
-$users = $manager->get_all_users();
 $templateContext = (object)[
-    'hello' => 'hello users',
-    'all_users_list' => array_values($users),
+    'all_users_list' => array_values($manager->get_all_confirmed_users($page)),
+    'users_list_page_number' => $totalpage,
+    'current_page' => $page,
+    'next_page' => $page + 1 < $totalpage ? $page + 1 : $totalpage,
+    'no_next_page' => $page + 1 > $totalpage,
+    'previous_page' => $page <= 1 ? 1 : $page - 1,
+    'no_previous_page' => $page <= 1,
     'new_user_form' => $newuserformhtml,
     'upload_users_url' => \local_users\manager::get_upload_users_url(),
+    'users_index_url' => \local_users\manager::get_users_base_url(),
 ];
 
 echo $OUTPUT->header();
