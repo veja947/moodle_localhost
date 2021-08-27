@@ -30,6 +30,43 @@ use local_domains\domain;
 defined('MOODLE_INTERNAL') || die();
 class manager
 {
+    const DEFAULT_USER_EMAIL = 'Moodle2012!';
+
+    public function users_file_handler(string $file_string): ?array
+    {
+        $results = [];
+        $file_to_arrays =  explode("\r\n", $file_string);
+        $header_array = explode(",", $file_to_arrays[0]);
+        foreach (array_slice($file_to_arrays, 1) as $k => $value) {
+            $user_array = array_combine($header_array, explode(",", $value));
+            if (!$this->check_email_domain_verified($user_array['email'])) {
+                return null;
+            }
+            $user_array['password'] = self::DEFAULT_USER_EMAIL;
+            array_push($results, $user_array);
+        }
+        return $results;
+    }
+
+    public function setting_to_new_user(int $user_id): \stdClass
+    {
+        global $DB;
+        $user_obj = $DB->get_record('user', ['id'=> $user_id]);
+        $noreplyuser = \core_user::get_noreply_user();
+        email_to_user($user_obj, $noreplyuser,
+            'email subject',
+            'email message',
+            '<h1>email html</h1>');
+        set_user_preference('create_password', 1, $user_obj);
+        return $user_obj;
+    }
+
+    public function check_email_domain_verified(string $email): bool
+    {
+        $varified_domains = $this->get_verified_domains();
+        $domain_name = substr($email, strpos($email, '@') + 1);
+        return in_array($domain_name, $varified_domains);
+    }
 
     public function check_users_emails_in_file(array $contentarray): bool
     {

@@ -30,21 +30,13 @@ require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/uploaduser/user_form.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 $pagetitle = 'Upload Users via Text File';
+$uploadfailedmessage = "Failed to upload users \n Not all users’ email domains are verified. Please go to Domain page to verify.";
+
 $manager = new \local_users\manager();
 
 $PAGE->set_url(new moodle_url('/local/users/uploadusers.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title($pagetitle);
-
-
-
-$iid         = optional_param('iid', '', PARAM_INT);
-$previewrows = optional_param('previewrows', 10, PARAM_INT);
-core_php_time_limit::raise(60 * 60); // 1 hour should be enough.
-raise_memory_limit(MEMORY_HUGE);
-
-
-
 
 $mform = new upload_users_form();
 
@@ -53,35 +45,19 @@ if ($mform->is_cancelled()) {
     redirect($CFG->wwwroot . '/local/users/index.php');
 } else if ($fromform = $mform->get_data()) {
     global $DB;
-    // TODO: validate users
     $contentstring = $mform->get_file_content('usersfile') ?? '';
-    $contentarray = preg_split('/[\ \n\,]+/', $contentstring);
-    if ($uploadfinished = $manager->check_users_emails_in_file($contentarray)) {
+    $newusersarray = $manager->users_file_handler($contentstring);
+    if (is_null($newusersarray)) {
+        \core\notification::error($uploadfailedmessage);
+    } else {
+        $createdusers = core_user_external::create_users($newusersarray);
 
-
-
-
-        $user1 = array(
-            'username' => 'usernametest6',
-            'firstname' => 'First Name User Test 6',
-            'lastname' => 'Last Name User Test 6',
-            'email' => 'usertest6@example.com',
-            'password' => 'Moodle2012!'
-        );
-        $createdusers = core_user_external::create_users(array($user1));
-        $noreplyuser = \core_user::get_noreply_user();
         foreach ($createdusers as $singleuser) {
-            email_to_user($DB->get_record('user', ['id'=> $singleuser['id']]), $noreplyuser, 'email subject', 'email message', '<h1>email html</h1>');
+            $manager->setting_to_new_user((int)$singleuser['id']);
         }
-
-
-
-
         // go back to index.php page
         redirect($CFG->wwwroot . '/local/users/index.php',
             'Users upload is successful.');
-    } else {
-        \core\notification::error('Upload failed, please check your file.');
     }
 
 }
