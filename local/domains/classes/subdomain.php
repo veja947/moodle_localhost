@@ -81,6 +81,11 @@ class subdomain extends persistent
                 ['context' => \context_system::instance(), 'escape' => false]) ?? '';
     }
 
+    public function get_formatted_subdomain_full_name(): string
+    {
+        return $this->get_formatted_property('name') . '.' . $this->get_domain_name();
+    }
+
     public function get_formatted_date_property($name): string
     {
         $date = $this->get_formatted_property($name);
@@ -95,17 +100,22 @@ class subdomain extends persistent
                 'name')->name ?? domain::DEFAULT_FTNT_INFO_DOMAIN;
     }
 
+    public function get_subdomain_cname(): string
+    {
+        return 'cname' . '.' . $this->get_domain_name();
+    }
+
     public function get_properties_display(): array
     {
         return [
             'id' => $this->get('id'),
-            'name' => $this->get_formatted_property('name') . '.' . $this->get_domain_name(),
+            'name' => $this->get_formatted_subdomain_full_name(),
             'status' => $this->get('status'),
             'primarydomain' => $this->get('primarydomain') ? 1 : 0,
             'tenantid' => $this->get_formatted_property('tenantid'),
             'timecreated' => $this->get_formatted_date_property('timecreated'),
             'domainid' => $this->get_formatted_property('domainid'),
-            'cname' => 'cname' . '.' . $this->get_domain_name(),
+            'cname' => $this->get_subdomain_cname(),
         ];
     }
 }

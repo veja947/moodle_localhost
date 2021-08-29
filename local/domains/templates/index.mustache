@@ -12,8 +12,8 @@
         {{{domainform}}}
     </div>
 
-    <div class="add-token-notice-text">
-        Add the token generated below as a DNS TXT record in your domain DNS configuration to prove that you own the domain.
+    <div class="domain-notification-text {{domain_notification_type}}">
+        {{domain_notification_text}}
     </div>
 
     <div class="domains-list-container">
@@ -39,8 +39,8 @@
                     </td>
                     <td>{{timecreated}}</td>
                     <td>
-                        <a href="{{action_url}}?domainid={{id}}&action=delete" class="delete-item-link" id="delete_domain_button"></a>
                         <a href="{{action_url}}?domainid={{id}}&action=verify" class="verify-item-link" id="verify_domain_button">Verify</a>
+                        <a href="{{action_url}}?domainid={{id}}&action=delete" class="delete-item-link" id="delete_domain_button"></a>
                     </td>
                 </tr>
             {{/active_domains_list}}
@@ -60,6 +60,10 @@
 
     <div class="create-domain-form-container">
         {{{subdomainform}}}
+    </div>
+
+    <div class="subdomain-notification-text {{subdomain_notification_type}}">
+        {{subdomain_notification_text}}
     </div>
 
     <div class="domains-list-container">
@@ -97,10 +101,12 @@
                     </td>
                     <td>{{cname}}</td>
                     <td>
+                        <a {{#domainid}}href="{{action_url}}?domainid={{id}}&action=verify"{{/domainid}}
+                            class="verify-item-link {{^domainid}}disabled-link{{/domainid}}"
+                            id="verify_domain_button">
+                            Verify
+                        </a>
                         <a href="{{action_url}}?subdomainid={{id}}&action=delete" class="delete-item-link" id="delete_subdomain_button"></a>
-                    {{#domainid}}
-                        <a href="{{action_url}}?domainid={{id}}&action=verify" class="verify-item-link" id="verify_domain_button">Verify</a>
-                    {{/domainid}}
                     </td>
                 </tr>
             {{/active_subdomains_list}}

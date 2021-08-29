@@ -24,17 +24,21 @@
   font-size: 14px;
   line-height: 120%;
   color: rgba(0, 0, 0, 0.6);
-  margin: 12px 0;
+  margin-top: 12px;
 }
-.table-container .add-token-notice-text {
+.table-container .domain-notification-text, .table-container .subdomain-notification-text {
   display: inline-block;
-  background: #FFFFFF;
-  border: 1px solid #F5222D;
+  max-width: 60%;
   box-sizing: border-box;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #FFE58F;
   border-radius: 2px;
-  background: url("../img/orange-exclamation-icon.png") no-repeat no-repeat left;
+  background-color: #FFFBE6;
+  background-image: url("../img/orange-exclamation-icon.png");
+  background-repeat: no-repeat;
+  background-position-y: center;
   background-position-x: 17px;
+  background-size: 14px 14px;
   margin: 0 15px 15px 15px;
   padding: 10px 10px 10px 40px;
   font-style: normal;
@@ -43,8 +47,18 @@
   line-height: 22px;
   color: rgba(0, 0, 0, 0.85);
 }
+.table-container .domain-notification-text.error, .table-container .subdomain-notification-text.error {
+  background-image: url("../img/red-failed-icon.png");
+  background-color: #FFF1F0;
+  border: 1px solid #FFCCC7;
+}
+.table-container .domain-notification-text.success, .table-container .subdomain-notification-text.success {
+  background-image: url("../img/green-checkmark-icon.png");
+  background-color: #F6FFED;
+  border: 1px solid #B7EB8F;
+}
 .table-container .create-domain-form-container form.mform {
-  padding: 15px;
+  padding: 0 15px 15px 15px;
 }
 .table-container .create-domain-form-container form.mform .form-group.row {
   margin: 0;
@@ -78,19 +92,19 @@
   height: 40px;
   left: 242px;
   top: 0;
-  background: #EFEFEF;
+  background-image: url("../img/down-arrow.png");
+  background-color: #FFFFFF;
   font-size: 16px;
   font-style: normal;
   font-weight: normal;
   line-height: 24px;
   color: #000;
-  border: none;
+  border: 1px solid #D9D9D9;
   cursor: pointer;
   transition: 1s;
 }
 .table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid:hover {
-  background: #777777;
-  color: #fff;
+  background-color: #D9D9D9;
 }
 .table-container .create-domain-form-container form.mform .form-group.row .form-inline input.btn.btn-primary {
   padding: 0 16px;
@@ -191,7 +205,12 @@
   box-sizing: border-box;
   border-radius: 2px;
   padding: 5px 10px;
-  margin-left: 10px;
+  margin-right: 10px;
+}
+.table-container .domains-list-container .table.domains-list td .verify-item-link.disabled-link {
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

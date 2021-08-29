@@ -26,6 +26,11 @@ use local_domains\domain;
 
 class domain_edit_form extends moodleform
 {
+    private $isSubmit;
+
+//    public function __construct() {
+//        $this->isSubmit = $this->no_submit_button_pressed() ?? true;
+//    }
 
     protected function definition()
     {
@@ -53,14 +58,28 @@ class domain_edit_form extends moodleform
     {
         global $DB;
         $errors = parent::validation($data, $files);
-        if (empty(trim($data['name']))) {
-            $errors['name'] = 'domain name is required';
-        }
+//        if (empty(trim($data['name']))) {
+//            $errors['name'] = 'domain name is required';
+//        }
         if ($record = $DB->get_record(
             domain::TABLE,
             ['name' => trim($data['name'])])) {
             $errors['name'] = 'domain name is already existed.';
         }
+        $test = $this->no_submit_button_pressed() ?? true;
         return $errors;
+    }
+
+    /**
+     * Returns validation errors (used in CLI)
+     *
+     * @return array
+     */
+    public function get_validation_errors(): array {
+        return $this->_form->_errors;
+    }
+
+    public function reset() {
+        $this->_form->updateSubmission(null, null);
     }
 }

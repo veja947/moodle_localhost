@@ -231,6 +231,32 @@ class manager
     }
 
     /**
+     * verify a sub Domain
+     *
+     * @param int $id
+     * @throws \moodle_exception
+     */
+    public function verify_subdomain(int $id): ?subdomain
+    {
+        global $DB;
+        if (!$DB->get_record(subdomain::TABLE, ['id' => $id])) {
+            return null;
+        }
+
+        $subdomain = $this->get_subdomain_by_id($id);
+
+        // verify token
+        $name = $subdomain->get('name');
+        $cname = $subdomain->get_subdomain_cname();
+        $status = $this->verify_cname($name, $cname);
+
+        // update domain
+        return $this->update_subdomain($subdomain, (object)[
+            'status' => (int)$status,
+        ]);
+    }
+
+    /**
      * @throws \Exception
      */
     public function generate_token(): string
@@ -244,6 +270,17 @@ class manager
         $records = dns_get_record($domain, DNS_TXT);
         foreach ($records as $record) {
             if ($record['txt'] === $token) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function verify_cname(string $domain, string $token): bool
+    {
+        $records = dns_get_record($domain, DNS_CNAME);
+        foreach ($records as $record) {
+            if ($record['cname'] === $token) {
                 return true;
             }
         }
