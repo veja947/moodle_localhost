@@ -30,7 +30,7 @@ use local_domains\domain;
 defined('MOODLE_INTERNAL') || die();
 class manager
 {
-    const DEFAULT_USER_EMAIL = 'Moodle2012!';
+    const DEFAULT_USER_PASSWORD = 'Moodle2012!';
     const USERS_TABLE_PAGINATION_SIZE = 5;
 
     public function users_file_handler(string $file_string): ?array
@@ -43,7 +43,7 @@ class manager
             if (!$this->check_email_domain_verified($user_array['email'])) {
                 return null;
             }
-            $user_array['password'] = self::DEFAULT_USER_EMAIL;
+            $user_array['password'] = self::DEFAULT_USER_PASSWORD;
             array_push($results, $user_array);
         }
         return $results;

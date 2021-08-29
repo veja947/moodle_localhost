@@ -40,24 +40,29 @@ $newuserform = new new_user_form();
 $newuserformhtml = $newuserform->render();
 
 $page = $_GET['page'] ?? 1;
+$totalpage = $manager->get_users_table_pages_number();
 
 if ($newuserform->is_cancelled()) {
     // go back to index.php page
     $newuserform->reset();
 //    redirect($CFG->wwwroot . '/local/users/index.php');
 } else if ($fromform = $newuserform->get_data()) {
+
     $email = $fromform->email;
     $userinfo = array(
         'username' => $fromform->email,
         'firstname' => $fromform->firstname,
         'lastname' => $fromform->lastname,
         'email' => $fromform->email,
-        'password' => \local_users\manager::DEFAULT_USER_EMAIL,
+        'password' => \local_users\manager::DEFAULT_USER_PASSWORD,
     );
+
+
     $createduser = core_user_external::create_users([$userinfo]);
     $manager->setting_to_new_user($createduser[0]['id']);
+} else {
+    $test = $newuserform->is_validated();
 }
-$totalpage = $manager->get_users_table_pages_number();
 
 $templateContext = (object)[
     'all_users_list' => array_values($manager->get_all_confirmed_users($page)),
