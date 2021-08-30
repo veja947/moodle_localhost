@@ -31,7 +31,7 @@ $PAGE->requires->css('/local/domains/css/styles.css');
 $PAGE->requires->jquery();
 $PAGE->requires->js(new moodle_url(
     $CFG->wwwroot . '/local/domains/js/index.js'));
-global $DB;
+global $DB, $USER;
 
 $PAGE->set_url(new \moodle_url('/local/domains/index.php'));
 $PAGE->set_context(\context_system::instance());
@@ -61,7 +61,7 @@ if ($domainform->is_cancelled()) {
             'name' => $fromform->name,
             'token' => $manager->generate_token(),
             'status' => 0,
-            'tenantid' => 99, // TODO: instead real tenantid
+            'tenantid' => $USER->tenantid ?? 0,
             'timecreated' => time(),
         ]);
 
@@ -93,7 +93,7 @@ if ($subdomainform->is_cancelled()) {
             'name' => $subfromform->name,
             'status' => 0,
             'primarydomain' => 0,
-            'tenantid' => 99, // TODO: instead real tenantid
+            'tenantid' => $USER->tenantid ?? 0,
             'timecreated' => time(),
             'domainid' => $subfromform->domainid ?: null,
         ]);

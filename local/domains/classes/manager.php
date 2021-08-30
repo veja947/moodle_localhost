@@ -116,6 +116,11 @@ class manager
         return $subdomain;
     }
 
+    /**
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public function primary_subdomain(int $id): ?subdomain
     {
         global $DB;
@@ -135,9 +140,22 @@ class manager
         }
 
         // update new primary domain
-        return $this->update_subdomain($subdomain, (object)[
+        $subdomain = $this->update_subdomain($subdomain, (object)[
             'primarydomain' => 1,
         ]);
+
+        // update local_bridge_meta
+        if($record = $DB->get_record(
+            'local_bridge_meta',
+            [
+                'table'=> 'tool_tenant',
+                'tableid'=> $subdomain->get_formatted_property('tenantid')
+            ])) {
+            $record->domain = $subdomain->get_formatted_subdomain_full_name();
+            $DB->update_record('local_bridge_meta', $record);
+        }
+
+        return $subdomain;
     }
 
     public function set_primary_subdomain_notification(?subdomain $subdomain): array
