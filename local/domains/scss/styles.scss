@@ -195,16 +195,19 @@
                 }
 
                 .primary-domain-radio {
-                    background: url("../img/primary-domain-radio.png") no-repeat no-repeat left;
+                    background-image: url("../img/primary-domain-radio.png");
+                    vertical-align: middle;
+                    background-position-y: center;
+                    background-repeat: no-repeat;
+                    background-color: transparent;
                     display: inline-block;
                     width: 20px;
                     height: 20px;
                     cursor: pointer;
                     border: none;
-                    vertical-align: inherit;
 
                     &.primary-domain-selected {
-                        background: url("../img/primary-domain-selected.png") no-repeat no-repeat left;
+                        background-image: url("../img/primary-domain-selected.png");
                     }
                 }
 
