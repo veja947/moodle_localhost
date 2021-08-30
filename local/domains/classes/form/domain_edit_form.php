@@ -64,14 +64,14 @@ class domain_edit_form extends moodleform
         $domain = trim($name);
         if (empty($domain)) {
             return [
-                'name' => 'Domain name is required.'
+                "name" => "Domain name <span class='highlight-in-notification'>" . $name . "</span> is required."
             ];
         }
         if ($DB->get_record(
             domain::TABLE,
             ['name' => $domain])) {
             return [
-                'name' => 'Domain ' . $domain . ' is already existed.'
+                "name" => "Domain <span class='highlight-in-notification'>" . $domain . "</span> is already existed."
             ];
         }
         return null;

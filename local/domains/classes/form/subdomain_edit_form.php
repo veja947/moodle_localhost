@@ -57,29 +57,7 @@ class subdomain_edit_form extends moodleform
     // custom validation should be added here
     function validation($data, $files)
     {
-        global $DB;
         $errors = parent::validation($data, $files);
-//        if (empty($data['name'])) {
-//            $errors['name'] = 'sub-domain name is required';
-//        }
-//
-//        if ($record = $DB->get_record(
-//            subdomain::TABLE,
-//            [
-//                'name' => trim($data['name']),
-//                'domainid' => (int)$_POST['domainid'],
-//            ])) {
-//            $errors['name'] = 'sub-domain name is already existed.';
-//        }
-//
-//        if (!empty($_POST['domainid']) && !$DB->get_record(
-//            domain::TABLE,
-//            [
-//                'id' => (int)$_POST['domainid'],
-//            ])) {
-//            $tet = empty($_POST['domainid']);
-//            $errors['name'] = 'selected domain is not available.';
-//        }
         return $errors;
     }
 
@@ -89,7 +67,7 @@ class subdomain_edit_form extends moodleform
         $domain = trim($name);
         if (empty($domain)) {
             return [
-                'name' => 'Domain name is required.'
+                "name" => "Domain name <span class='highlight-in-notification'>" . $name . "</span> is required."
             ];
         }
         if ($record = $DB->get_record(
@@ -99,7 +77,7 @@ class subdomain_edit_form extends moodleform
                 'domainid' => empty($domainid) ? null : $domainid,
             ])) {
             return [
-                'name' => 'Domain ' . $domain . ' is already existed.'
+                "name" => "Domain <span class='highlight-in-notification'>" . $domain . "</span> is already existed."
             ];
         }
         if (!empty($domainid) && !$DB->get_record(

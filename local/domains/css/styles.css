@@ -47,6 +47,9 @@
   line-height: 22px;
   color: rgba(0, 0, 0, 0.85);
 }
+.table-container .domain-notification-text .highlight-in-notification, .table-container .subdomain-notification-text .highlight-in-notification {
+  text-decoration: underline;
+}
 .table-container .domain-notification-text.error, .table-container .subdomain-notification-text.error {
   background-image: url("../img/red-failed-icon.png");
   background-color: #FFF1F0;

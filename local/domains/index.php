@@ -41,10 +41,14 @@ $manager = new \local_domains\manager();
 
 $domainform = new domain_edit_form();
 $subdomainform = new subdomain_edit_form();
-$domainnotificationtext = "Add the token generated below as a DNS TXT record in your domain DNS configuration to prove that you own the domain. Then click 'Verify' button.";
-$domainnotificationtype = 'default';
-$subdomainnotificationtext = "Click 'Connect' button to connect the domain name to the learning platform.";
-$subdomainnotificationtype = 'default';
+[
+    $domainnotificationtext,
+    $domainnotificationtype
+] = $manager->set_default_domain_notification();
+[
+    $subdomainnotificationtext,
+    $subdomainnotificationtype
+] = $manager->set_default_subdomain_notification();
 
 if ($domainform->is_cancelled()) {
     $domainform->reset();
@@ -65,7 +69,7 @@ if ($domainform->is_cancelled()) {
             'timecreated' => time(),
         ]);
 
-        $domainnotificationtext = 'Domain ' . $fromform->name . ' successfully created.';
+        $domainnotificationtext = "Domain <span class='highlight-in-notification'>" . $fromform->name . "</span> successfully created.";
         $domainnotificationtype = 'success';
     }
 
@@ -98,7 +102,7 @@ if ($subdomainform->is_cancelled()) {
             'domainid' => $subfromform->domainid ?: null,
         ]);
 
-        $subdomainnotificationtext = 'Domain ' . $subfromform->name . ' successfully created.';
+        $subdomainnotificationtext = "Domain <span class='highlight-in-notification'>" . $new_subdomain->get_formatted_subdomain_full_name() . "</span> successfully created.";
         $subdomainnotificationtype = 'success';
     }
     $subdomainform->reset();
@@ -119,15 +123,15 @@ $action = $_GET['action'] ?? null;
 switch ($action) {
     case \local_domains\manager::DOMAIN_ACTION_DELETE:
         $domainid
-            ? $deleteddomainid = $manager->delete_domain($domainid)
-            : $deletedsubdomainid = $manager->delete_subdomain($subdomainid);
-        if ($domainid) {
+            ? $deleteddomainname = $manager->delete_domain($domainid)
+            : $deletedsubdomainname = $manager->delete_subdomain($subdomainid);
+        if ($domainid && $deleteddomainname) {
             [$domainnotificationtext, $domainnotificationtype] =
-                $manager->set_domain_deletion_notification($domainid);
+                $manager->set_domain_deletion_notification($deleteddomainname);
         }
-        if ($subdomainid) {
+        if ($subdomainid && $deletedsubdomainname) {
             [$subdomainnotificationtext, $subdomainnotificationtype] =
-                $manager->set_subdomain_deletion_notification($subdomainid);
+                $manager->set_subdomain_deletion_notification($deletedsubdomainname);
         }
         break;
 
@@ -139,15 +143,15 @@ switch ($action) {
 
     case \local_domains\manager::DOMAIN_ACTION_VERIFY:
         $domainid
-            ? $manager->verify_domain($domainid)
-            : $manager->verify_subdomain($subdomainid);
-        if ($domainid) {
+            ? $domain = $manager->verify_domain($domainid)
+            : $subdomain = $manager->verify_subdomain($subdomainid);
+        if ($domainid && $domain) {
             [$domainnotificationtext, $domainnotificationtype] =
-                $manager->set_domain_deletion_notification($domainid);
+                $manager->set_domain_verify_notification($domain);
         }
-        if ($subdomainid) {
+        if ($subdomainid && $subdomain) {
             [$subdomainnotificationtext, $subdomainnotificationtype] =
-                $manager->set_subdomain_deletion_notification($subdomainid);
+                $manager->set_subdomain_verify_notification($subdomain);
         }
         break;
 }
@@ -158,6 +162,8 @@ $activedomainsdisplay = $manager->get_domains_or_subdomains_display_array($activ
 $activesubdomainsdisplay = $manager->get_domains_or_subdomains_display_array($activesubdomains);
 $domainformhtml = $domainform->render();
 $subdomainformhtml = $subdomainform->render();
+
+
 
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),

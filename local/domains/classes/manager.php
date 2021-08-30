@@ -145,7 +145,7 @@ class manager
         ]);
 
         // update local_bridge_meta
-        if($record = $DB->get_record(
+        if($DB->get_manager()->table_exists('local_bridge_meta') && $this-> $record = $DB->get_record(
             'local_bridge_meta',
             [
                 'table'=> 'tool_tenant',
@@ -161,7 +161,7 @@ class manager
     public function set_primary_subdomain_notification(?subdomain $subdomain): array
     {
         $subdomainnotificationtext = $subdomain
-            ? "Your primary domain has been changed to " . $subdomain->get_formatted_subdomain_full_name()
+            ? "Your primary domain has been changed to <span class='highlight-in-notification'>" . $subdomain->get_formatted_subdomain_full_name() . "</span>"
             : 'Your primary domain changing failed.';
         $subdomainnotificationtype = $subdomain ? 'success' : 'error';
         return [$subdomainnotificationtext, $subdomainnotificationtype];
@@ -173,7 +173,7 @@ class manager
      * @param int $id
      * @throws \moodle_exception
      */
-    public function delete_domain(int $id): ?int
+    public function delete_domain(int $id): ?string
     {
         global $DB;
         if (!$DB->get_record(domain::TABLE, ['id' => $id])) {
@@ -181,19 +181,34 @@ class manager
         }
 
         $domain = $this->get_domain_by_id($id);
+        $name = $domain->get_formatted_property('name');
 
         // delete domain record
-        $domain->delete();
+        $result = $domain->delete();
 
-        return $domain->get('id');
+        // delete sub domains records
+        $DB->delete_records(subdomain::TABLE, ['domainid' => $id]);
+
+        return $result ? $name : false;
     }
 
-    public function set_domain_deletion_notification(?int $domain_id): array
+    public function set_domain_deletion_notification(?string $name): array
     {
-        $domainnotificationtext = $domain_id
-            ? "Your domain has been deleted."
+        $domainnotificationtext = $name
+            ? "Your domain <span class='highlight-in-notification'>" . $name . "</span> has been deleted."
             : 'Your domain deletion failed.';
-        $domainnotificationtype = $domain_id ? 'success' : 'error';
+        $domainnotificationtype = $name ? 'success' : 'error';
+        return [$domainnotificationtext, $domainnotificationtype];
+    }
+
+    public function set_domain_verify_notification(domain $domain): array
+    {
+        $name = $domain->get_formatted_property('name');
+        $status = $domain->get_formatted_property('status');
+        $domainnotificationtext = $status
+            ? "Domain <span class='highlight-in-notification'>" . $name . "</span> successfully verified."
+            : "Domain <span class='highlight-in-notification'>" . $name . "</span> failed to verify.";
+        $domainnotificationtype = $status ? 'success' : 'error';
         return [$domainnotificationtext, $domainnotificationtype];
     }
 
@@ -203,7 +218,7 @@ class manager
      * @param int $id
      * @throws \moodle_exception
      */
-    public function delete_subdomain(int $id): ?int
+    public function delete_subdomain(int $id): ?string
     {
         global $DB;
         if (!$DB->get_record(subdomain::TABLE, ['id' => $id])) {
@@ -211,19 +226,32 @@ class manager
         }
 
         $subdomain = $this->get_subdomain_by_id($id);
+        $name = $subdomain->get_formatted_subdomain_full_name();
 
         // delete subdomain record
-        $subdomain->delete();
+        $result = $subdomain->delete();
 
-        return $subdomain->get('id');
+        return $result ? $name : false;
     }
 
-    public function set_subdomain_deletion_notification(?int $subdomain_id): array
+    public function set_subdomain_deletion_notification(?string $name): array
     {
-        $subdomainnotificationtext = $subdomain_id
-            ? "Your domain has been deleted."
-            : 'Your domain deletion failed.';
-        $subdomainnotificationtype = $subdomain_id ? 'success' : 'error';
+        $subdomainnotificationtext = $name
+            ? "Your domain <span class='highlight-in-notification'>" . $name . "</span> has been deleted."
+            : "Your domain <span class='highlight-in-notification'>" . $name . "</span> deletion failed.";
+        $subdomainnotificationtype = $name ? 'success' : 'error';
+        return [$subdomainnotificationtext, $subdomainnotificationtype];
+    }
+
+    public function set_subdomain_verify_notification(?subdomain $domain): array
+    {
+        $name = $domain->get_formatted_subdomain_full_name();
+        $status = $domain->get_formatted_property('status');
+        $subdomainnotificationtext = $status
+            ? "Domain <span class='highlight-in-notification'>" . $name . "</span> successfully connected."
+            : "Domain <span class='highlight-in-notification'>" . $name . "</span> failed to connect.";
+        $subdomainnotificationtype = $status ? 'success' : 'error';
+
         return [$subdomainnotificationtext, $subdomainnotificationtype];
     }
 
@@ -330,6 +358,20 @@ class manager
             }
         }
         return false;
+    }
+
+    public function set_default_domain_notification(): array
+    {
+        $domainnotificationtext = "Add the token generated below as a DNS TXT record in your domain DNS configuration to prove that you own the domain. Then click 'Verify' button.";
+        $domainnotificationtype = 'default';
+        return [$domainnotificationtext, $domainnotificationtype];
+    }
+
+    public function set_default_subdomain_notification(): array
+    {
+        $subdomainnotificationtext = "Click 'Connect' button to connect the domain name to the learning platform.";
+        $subdomainnotificationtype = 'default';
+        return [$subdomainnotificationtext, $subdomainnotificationtype];
     }
 
     /**
