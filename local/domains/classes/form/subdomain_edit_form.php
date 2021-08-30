@@ -59,28 +59,60 @@ class subdomain_edit_form extends moodleform
     {
         global $DB;
         $errors = parent::validation($data, $files);
-        if (empty($data['name'])) {
-            $errors['name'] = 'sub-domain name is required';
-        }
+//        if (empty($data['name'])) {
+//            $errors['name'] = 'sub-domain name is required';
+//        }
+//
+//        if ($record = $DB->get_record(
+//            subdomain::TABLE,
+//            [
+//                'name' => trim($data['name']),
+//                'domainid' => (int)$_POST['domainid'],
+//            ])) {
+//            $errors['name'] = 'sub-domain name is already existed.';
+//        }
+//
+//        if (!empty($_POST['domainid']) && !$DB->get_record(
+//            domain::TABLE,
+//            [
+//                'id' => (int)$_POST['domainid'],
+//            ])) {
+//            $tet = empty($_POST['domainid']);
+//            $errors['name'] = 'selected domain is not available.';
+//        }
+        return $errors;
+    }
 
+    public function validate_subdomain(string $name, string $domainid): ?array
+    {
+        global $DB;
+        $domain = trim($name);
+        if (empty($domain)) {
+            return [
+                'name' => 'Domain name is required.'
+            ];
+        }
         if ($record = $DB->get_record(
             subdomain::TABLE,
             [
-                'name' => trim($data['name']),
-                'domainid' => (int)$_POST['domainid'],
+                'name' => $domain,
+                'domainid' => empty($domainid) ? null : $domainid,
             ])) {
-            $errors['name'] = 'sub-domain name is already existed.';
+            return [
+                'name' => 'Domain ' . $domain . ' is already existed.'
+            ];
         }
-
-        if (!empty($_POST['domainid']) && !$DB->get_record(
-            domain::TABLE,
-            [
-                'id' => (int)$_POST['domainid'],
-            ])) {
-            $tet = empty($_POST['domainid']);
-            $errors['name'] = 'selected domain is not available.';
+        if (!empty($domainid) && !$DB->get_record(
+                domain::TABLE,
+                [
+                    'id' => $domainid,
+                    'status' => 1,
+                ])) {
+            return [
+                'name' => 'Selected Domain is not available.'
+            ];
         }
-        return $errors;
+        return null;
     }
 
     private function get_all_verified_domains_array(): array
@@ -101,5 +133,18 @@ class subdomain_edit_form extends moodleform
         }
 
         return $results ?? [];
+    }
+
+    /**
+     * Returns validation errors (used in CLI)
+     *
+     * @return array
+     */
+    public function get_validation_errors(): array {
+        return $this->_form->_errors;
+    }
+
+    public function reset() {
+        $this->_form->updateSubmission(null, null);
     }
 }

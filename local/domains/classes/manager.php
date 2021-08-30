@@ -140,13 +140,22 @@ class manager
         ]);
     }
 
+    public function set_primary_subdomain_notification(?subdomain $subdomain): array
+    {
+        $subdomainnotificationtext = $subdomain
+            ? "Your primary domain has been changed to " . $subdomain->get_formatted_subdomain_full_name()
+            : 'Your primary domain changing failed.';
+        $subdomainnotificationtype = $subdomain ? 'success' : 'error';
+        return [$subdomainnotificationtext, $subdomainnotificationtype];
+    }
+
     /**
      * Delete a Domain
      *
      * @param int $id
      * @throws \moodle_exception
      */
-    public function delete_domain(int $id): ?domain
+    public function delete_domain(int $id): ?int
     {
         global $DB;
         if (!$DB->get_record(domain::TABLE, ['id' => $id])) {
@@ -158,7 +167,16 @@ class manager
         // delete domain record
         $domain->delete();
 
-        return $domain;
+        return $domain->get('id');
+    }
+
+    public function set_domain_deletion_notification(?int $domain_id): array
+    {
+        $domainnotificationtext = $domain_id
+            ? "Your domain has been deleted."
+            : 'Your domain deletion failed.';
+        $domainnotificationtype = $domain_id ? 'success' : 'error';
+        return [$domainnotificationtext, $domainnotificationtype];
     }
 
     /**
@@ -167,7 +185,7 @@ class manager
      * @param int $id
      * @throws \moodle_exception
      */
-    public function delete_subdomain(int $id): ?subdomain
+    public function delete_subdomain(int $id): ?int
     {
         global $DB;
         if (!$DB->get_record(subdomain::TABLE, ['id' => $id])) {
@@ -179,7 +197,16 @@ class manager
         // delete subdomain record
         $subdomain->delete();
 
-        return $subdomain;
+        return $subdomain->get('id');
+    }
+
+    public function set_subdomain_deletion_notification(?int $subdomain_id): array
+    {
+        $subdomainnotificationtext = $subdomain_id
+            ? "Your domain has been deleted."
+            : 'Your domain deletion failed.';
+        $subdomainnotificationtype = $subdomain_id ? 'success' : 'error';
+        return [$subdomainnotificationtext, $subdomainnotificationtype];
     }
 
     private function update_domain(domain $domain, \stdClass $newData): ?domain
@@ -293,7 +320,7 @@ class manager
      */
     public static function get_base_url(): \moodle_url
     {
-        return new \moodle_url('/local/domains/index.php');
+        return new \moodle_url('/local/domains');
     }
 
     /**

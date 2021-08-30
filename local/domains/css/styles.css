@@ -57,21 +57,21 @@
   background-color: #F6FFED;
   border: 1px solid #B7EB8F;
 }
-.table-container .create-domain-form-container form.mform {
+.table-container .create-domain-form-container form.mform, .table-container .create-subdomain-form-container form.mform {
   padding: 0 15px 15px 15px;
 }
-.table-container .create-domain-form-container form.mform .form-group.row {
+.table-container .create-domain-form-container form.mform .form-group.row, .table-container .create-subdomain-form-container form.mform .form-group.row {
   margin: 0;
   display: inline-block;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .col-form-label {
+.table-container .create-domain-form-container form.mform .form-group.row .col-form-label, .table-container .create-subdomain-form-container form.mform .form-group.row .col-form-label {
   display: none !important;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .form-inline {
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline, .table-container .create-subdomain-form-container form.mform .form-group.row .form-inline {
   padding: 0;
   max-width: 100%;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.form-control {
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.form-control, .table-container .create-subdomain-form-container form.mform .form-group.row .form-inline input.form-control {
   background: url("../img/earth-icon.png") no-repeat no-repeat left;
   background-position-x: 12px;
   padding-left: 35px;
@@ -85,10 +85,10 @@
   font-size: 16px;
   line-height: 24px;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.form-control#subdomain_name_input {
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.form-control#subdomain_name_input, .table-container .create-subdomain-form-container form.mform .form-group.row .form-inline input.form-control#subdomain_name_input {
   width: 242px;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid {
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid, .table-container .create-subdomain-form-container form.mform .form-group.row .form-inline select#id_domainid {
   height: 40px;
   left: 242px;
   top: 0;
@@ -103,10 +103,10 @@
   cursor: pointer;
   transition: 1s;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid:hover {
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline select#id_domainid:hover, .table-container .create-subdomain-form-container form.mform .form-group.row .form-inline select#id_domainid:hover {
   background-color: #D9D9D9;
 }
-.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.btn.btn-primary {
+.table-container .create-domain-form-container form.mform .form-group.row .form-inline input.btn.btn-primary, .table-container .create-subdomain-form-container form.mform .form-group.row .form-inline input.btn.btn-primary {
   padding: 0 16px;
   height: 40px;
   /* Daybreak Blue / 6 */

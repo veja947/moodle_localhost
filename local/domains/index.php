@@ -31,20 +31,16 @@ $PAGE->requires->css('/local/domains/css/styles.css');
 $PAGE->requires->jquery();
 $PAGE->requires->js(new moodle_url(
     $CFG->wwwroot . '/local/domains/js/index.js'));
-//admin_externalpage_setup('domainsindex');
 global $DB;
 
-$PAGE->set_url(new moodle_url('/local/domains/index.php'));
+$PAGE->set_url(new \moodle_url('/local/domains/index.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage Domains');
 
 $manager = new \local_domains\manager();
 
 $domainform = new domain_edit_form();
-$domainformhtml = $domainform->render();
-
 $subdomainform = new subdomain_edit_form();
-$subdomainformhtml = $subdomainform->render();
 $domainnotificationtext = "Add the token generated below as a DNS TXT record in your domain DNS configuration to prove that you own the domain. Then click 'Verify' button.";
 $domainnotificationtype = 'default';
 $subdomainnotificationtext = "Click 'Connect' button to connect the domain name to the learning platform.";
@@ -55,55 +51,66 @@ if ($domainform->is_cancelled()) {
     // go back to index.php page
     redirect(\local_domains\manager::get_base_url());
 } else if ($fromform = $domainform->get_data()) {
-    // create new domain
-    $new_domain = $manager->create_domain((object)[
-        'name' => $fromform->name,
-        'token' => $manager->generate_token(),
-        'status' => 0,
-        'tenantid' => 99, // TODO: instead real tenantid
-        'timecreated' => time(),
-    ]);
+    // validation
+    if ($errors = $domainform->validate_domain($fromform->name)) {
+        $domainnotificationtext = $errors['name'];
+        $domainnotificationtype = 'error';
+    } else {
+        // create new domain
+        $new_domain = $manager->create_domain((object)[
+            'name' => $fromform->name,
+            'token' => $manager->generate_token(),
+            'status' => 0,
+            'tenantid' => 99, // TODO: instead real tenantid
+            'timecreated' => time(),
+        ]);
 
-    $domainnotificationtext = 'Domain ' . $fromform->name . ' successfully verified.';
-    $domainnotificationtype = 'success';
+        $domainnotificationtext = 'Domain ' . $fromform->name . ' successfully created.';
+        $domainnotificationtype = 'success';
+    }
+
     $domainform->reset();
-//    redirect(\local_domains\manager::get_base_url());
-} else if (!$domainform->is_validated()) {
+} else if ($domainform->is_validated()) {
+    $domainform->reset();
+} else {
     if (isset($domainform->get_validation_errors()['name'])) {
         $domainnotificationtext = $domainform->get_validation_errors()['name'];
         $domainnotificationtype = 'error';
     }
     $domainform->reset();
-    $test = $domainform->is_submitted();
-} else {
-    $test = $domainform->is_submitted();
 }
 
 if ($subdomainform->is_cancelled()) {
     // go back to index.php page
     redirect(\local_domains\manager::get_base_url());
-    exit();
 } else if ($subfromform = $subdomainform->get_data()) {
-    // create new subdomain
-    $new_subdomain = $manager->create_subdomain((object)[
-        'name' => $subfromform->name,
-        'status' => 0,
-        'primarydomain' => 0,
-        'tenantid' => 99, // TODO: instead real tenantid
-        'timecreated' => time(),
-        'domainid' => $subfromform->domainid ?: null,
-    ]);
+    if ($errors = $subdomainform->validate_subdomain($subfromform->name, $subfromform->domainid)) {
+        $subdomainnotificationtext = $errors['name'];
+        $subdomainnotificationtype = 'error';
+    } else {
+        // create new subdomain
+        $new_subdomain = $manager->create_subdomain((object)[
+            'name' => $subfromform->name,
+            'status' => 0,
+            'primarydomain' => 0,
+            'tenantid' => 99, // TODO: instead real tenantid
+            'timecreated' => time(),
+            'domainid' => $subfromform->domainid ?: null,
+        ]);
 
-    // go back to index.php page
-    redirect($CFG->wwwroot . '/local/domains/index.php',
-        'You created a new Sub Domain: ' . $subfromform->name);
+        $subdomainnotificationtext = 'Domain ' . $subfromform->name . ' successfully created.';
+        $subdomainnotificationtype = 'success';
+    }
+    $subdomainform->reset();
+} else if ($subdomainform->is_validated()) {
+    $subdomainform->reset();
+} else {
+    if (isset($subdomainform->get_validation_errors()['name'])) {
+        $subdomainnotificationtext = $subdomainform->get_validation_errors()['name'];
+        $subdomainnotificationtype = 'error';
+    }
+    $subdomainform->reset();
 }
-
-
-
-
-
-
 
 $domainid = $_GET['domainid'] ?? null;
 $subdomainid = $_GET['subdomainid'] ?? null;
@@ -112,22 +119,36 @@ $action = $_GET['action'] ?? null;
 switch ($action) {
     case \local_domains\manager::DOMAIN_ACTION_DELETE:
         $domainid
-            ? $manager->delete_domain($domainid)
-            : $manager->delete_subdomain($subdomainid);
+            ? $deleteddomainid = $manager->delete_domain($domainid)
+            : $deletedsubdomainid = $manager->delete_subdomain($subdomainid);
+        if ($domainid) {
+            [$domainnotificationtext, $domainnotificationtype] =
+                $manager->set_domain_deletion_notification($domainid);
+        }
+        if ($subdomainid) {
+            [$subdomainnotificationtext, $subdomainnotificationtype] =
+                $manager->set_subdomain_deletion_notification($subdomainid);
+        }
         break;
 
     case \local_domains\manager::DOMAIN_ACTION_PRIMARY_DOMAIN:
         $subdomain = $manager->primary_subdomain($subdomainid);
-        $subdomainnotificationtext = $subdomain
-            ? "Your primary domain has been changed to " . $subdomain->get_formatted_subdomain_full_name()
-            : 'Your primary domain changing failed.';
-        $subdomainnotificationtype = $subdomain ? 'success' : 'error';
+        [$subdomainnotificationtext, $subdomainnotificationtype] =
+            $manager->set_primary_subdomain_notification($subdomain);
         break;
 
     case \local_domains\manager::DOMAIN_ACTION_VERIFY:
         $domainid
             ? $manager->verify_domain($domainid)
             : $manager->verify_subdomain($subdomainid);
+        if ($domainid) {
+            [$domainnotificationtext, $domainnotificationtype] =
+                $manager->set_domain_deletion_notification($domainid);
+        }
+        if ($subdomainid) {
+            [$subdomainnotificationtext, $subdomainnotificationtype] =
+                $manager->set_subdomain_deletion_notification($subdomainid);
+        }
         break;
 }
 
@@ -135,6 +156,8 @@ $activedomains = $manager->get_active_domains();
 $activesubdomains = $manager->get_active_subdomains();
 $activedomainsdisplay = $manager->get_domains_or_subdomains_display_array($activedomains);
 $activesubdomainsdisplay = $manager->get_domains_or_subdomains_display_array($activesubdomains);
+$domainformhtml = $domainform->render();
+$subdomainformhtml = $subdomainform->render();
 
 $templateContext = (object)[
     'active_domains_list' => array_values($activedomainsdisplay),

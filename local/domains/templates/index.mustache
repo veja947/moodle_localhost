@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="create-domain-form-container">
+    <div class="create-subdomain-form-container">
         {{{subdomainform}}}
     </div>
 
@@ -101,7 +101,7 @@
                     </td>
                     <td>{{cname}}</td>
                     <td>
-                        <a {{#domainid}}href="{{action_url}}?domainid={{id}}&action=verify"{{/domainid}}
+                        <a {{#domainid}}href="{{action_url}}?subdomainid={{id}}&action=verify"{{/domainid}}
                             class="verify-item-link {{^domainid}}disabled-link{{/domainid}}"
                             id="verify_domain_button">
                             Verify
