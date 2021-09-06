@@ -26,8 +26,8 @@ Javascript:
 
 * remove folder theme/boost/amd/src/bootstrap
 * copy the js files from ~/bootstrap/js/src to theme/boost/amd/src/bootstrap (including the subfolder)
-* copy index.js from ~/bootstrap/js to theme/boost/amd/src
-* edit theme/boost/amd/src/index.js and update import path (src -> bootstrap)
+* copy domains.js from ~/bootstrap/js to theme/boost/amd/src
+* edit theme/boost/amd/src/domains.js and update import path (src -> bootstrap)
 * Moodle core includes the popper.js library, make sure each of the new Bootstrap js files
 includes the 'core/popper' library instead of 'popper.js'. For version 4.6.0 these files were: tooltip.js and dropdown.js
 * update ./thirdpartylibs.xml to include all new Bootstrap js files

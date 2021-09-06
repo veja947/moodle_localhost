@@ -92,5 +92,5 @@ theme/boost/amd/src/bootstrap/tab.js
 theme/boost/amd/src/bootstrap/toast.js
 theme/boost/amd/src/bootstrap/tooltip.js
 theme/boost/amd/src/bootstrap/util.js
-theme/boost/amd/src/index.js
+theme/boost/amd/src/domains.js
 theme/boost/scss/fontawesome/

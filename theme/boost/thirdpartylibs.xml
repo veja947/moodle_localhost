@@ -99,7 +99,7 @@
     <licenseversion></licenseversion>
   </library>
   <library>
-    <location>amd/src/index.js</location>
+    <location>amd/src/domains.js</location>
     <name>bootstrap-util</name>
     <license>(MIT)</license>
     <version>v4.6.0</version>
